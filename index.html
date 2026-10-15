@@ -335,6 +335,14 @@ body{font-family:'Heebo',sans-serif;background:#EAF5F4;color:var(--vme-dark);ove
 .form-group input[type="date"]{color:#577B72;font-family:'Heebo',sans-serif;font-size:16px}
 .form-group input[type="date"]:valid{color:var(--vme-dark)}
 .form-group input[type="date"]::-webkit-calendar-picker-indicator{opacity:0.4}
+.dob-wrap{position:relative}
+#dob-input{text-align:right;padding-left:48px} /* LTR digits, right-aligned like the other fields */
+#dob-input::placeholder{direction:rtl}
+.dob-cal{position:absolute;left:14px;top:50%;width:22px;height:22px;transform:translateY(-50%);pointer-events:none;color:#577B72;opacity:.75}
+.dob-cal svg{width:100%;height:100%;fill:none;stroke:currentColor;stroke-width:1.7;stroke-linecap:round}
+/* the real native date input sits invisibly over the calendar icon: tapping it opens the platform picker */
+.form-group .dob-native{position:absolute;left:4px;top:50%;width:44px;height:44px;transform:translateY(-50%);margin:0;padding:0;border:0;opacity:0;cursor:pointer;color:transparent;background:transparent}
+.form-group .dob-native::-webkit-calendar-picker-indicator{position:absolute;inset:0;width:100%;height:100%;margin:0;opacity:0;cursor:pointer}
 .form-group select{color:#577B72}
 .form-group select.filled{color:var(--vme-dark)}
 .form-group input:focus,
@@ -1448,10 +1456,13 @@ picture source{display:none} /* never a layout item (e.g. in flex containers wit
         <div class="form-group" style="margin-bottom:0;"><input type="text" name="last_name" placeholder="שם משפחה" autocomplete="family-name" aria-label="שם משפחה" /></div>
       </div>
       <div class="form-group">
-        <input type="text" name="birth_date" placeholder="תאריך לידה" id="dob-input" aria-label="תאריך לידה"
-          onfocus="this.type='date'"
-          onblur="if(!this.value){this.type='text'}"
-          style="width:100%;" />
+        <div class="dob-wrap">
+          <input type="text" id="dob-input" placeholder="תאריך לידה" aria-label="תאריך לידה (DD/MM/YYYY)"
+            inputmode="numeric" autocomplete="bday" maxlength="10" dir="ltr" style="width:100%;" />
+          <input type="date" id="dob-native" class="dob-native" tabindex="-1" aria-hidden="true" min="1900-01-01" />
+          <span class="dob-cal" aria-hidden="true"><svg viewBox="0 0 24 24"><rect x="3.5" y="5" width="17" height="15" rx="2.5"/><path d="M3.5 10h17M8 3v4M16 3v4"/></svg></span>
+          <input type="hidden" name="birth_date" id="dob-value" value="" />
+        </div>
         <p id="dob-error" class="field-error"></p>
       </div>
       <div class="form-group"><input type="tel" name="phone" placeholder="טלפון" inputmode="tel" autocomplete="tel" aria-label="טלפון" /></div>
@@ -1618,6 +1629,53 @@ function vmeReportValidationFailure(reason, message, errorEl) {
     errorEl.style.display = 'block';
   }
 }
+/* Date of birth: DD/MM/YYYY text entry + native picker, kept in sync; hidden #dob-value holds YYYY-MM-DD */
+function vmeParseDob(text) {
+  const m = /^(\d{2})\/(\d{2})\/(\d{4})$/.exec((text || '').trim());
+  if (!m) return null;
+  const d = +m[1], mo = +m[2], y = +m[3];
+  const date = new Date(y, mo - 1, d);                       // local date, no UTC shift
+  if (date.getFullYear() !== y || date.getMonth() !== mo - 1 || date.getDate() !== d) return null; // e.g. 31/02
+  if (y < 1900) return null;
+  return date;
+}
+function vmeIsoDate(date) {
+  const p = n => String(n).padStart(2, '0');
+  return date.getFullYear() + '-' + p(date.getMonth() + 1) + '-' + p(date.getDate());
+}
+(function () {
+  const text = document.getElementById('dob-input');
+  const nat = document.getElementById('dob-native');
+  const hidden = document.getElementById('dob-value');
+  if (!text || !nat || !hidden) return;
+  nat.max = vmeIsoDate(new Date());
+  function syncFromText() {
+    const date = vmeParseDob(text.value);
+    hidden.value = date ? vmeIsoDate(date) : '';
+    if (date) nat.value = hidden.value;
+  }
+  text.addEventListener('input', function (e) {
+    // keep digits only and insert the slashes automatically: DD/MM/YYYY
+    const deleting = e.inputType && e.inputType.indexOf('delete') === 0;
+    let digits = text.value.replace(/\D/g, '').slice(0, 8);
+    let out = digits.slice(0, 2);
+    if (digits.length > 2 || (digits.length === 2 && !deleting)) out += '/';
+    out += digits.slice(2, 4);
+    if (digits.length > 4 || (digits.length === 4 && !deleting)) out += '/';
+    out += digits.slice(4);
+    text.value = out;
+    syncFromText();
+  });
+  text.addEventListener('blur', syncFromText);
+  nat.addEventListener('change', function () {
+    if (!nat.value) return;
+    const p = nat.value.split('-');                       // native value is always YYYY-MM-DD
+    text.value = p[2] + '/' + p[1] + '/' + p[0];
+    syncFromText();
+    text.dispatchEvent(new Event('change', { bubbles: true }));
+  });
+})();
+
 function vmeCalculateAge(birthDate) {
   const today = new Date();
   let age = today.getFullYear() - birthDate.getFullYear();
@@ -1677,16 +1735,18 @@ if (vmeStep1Next) {
         return;
       }
 
-      const dobValue = dobInput ? dobInput.value : '';
+      const dobValue = dobInput ? dobInput.value.trim() : '';
       if (!dobValue) {
         vmeReportValidationFailure('birth date missing', 'נא להזין תאריך לידה.', step1ErrorEl);
         vmeShowFieldError(dobInput, dobErrorEl, 'נא להזין תאריך לידה.');
         return;
       }
 
-      const birthDate = new Date(dobValue);
+      const birthDate = vmeParseDob(dobValue);
       const today = new Date();
-      if (isNaN(birthDate.getTime()) || birthDate > today) {
+      const dobHidden = document.getElementById('dob-value');
+      if (dobHidden) dobHidden.value = birthDate ? vmeIsoDate(birthDate) : '';
+      if (!birthDate || birthDate > today) {
         vmeReportValidationFailure('birth date invalid', 'נא להזין תאריך לידה תקין.', step1ErrorEl);
         vmeShowFieldError(dobInput, dobErrorEl, 'נא להזין תאריך לידה תקין.');
         return;
