@@ -182,12 +182,14 @@ body{font-family:'Heebo',sans-serif;background:#EAF5F4;color:var(--vme-dark);ove
 
 /* ══════ FEATURES — white ══════ */
 .features{
-  background:#fff;
+  background:linear-gradient(180deg,#F6ECE6 0%,#FAF4F0 30%,#FDFAF8 60%); /* soft warm tint: visible edge against the white section above */
   padding:130px 24px 140px;text-align:center;
   clip-path:var(--diag-top);
   margin-top:-100px;
 }
 .features h2{font-size:clamp(26px,4vw,40px);font-weight:900;color:var(--vme-dark);margin-bottom:12px}
+.features .features-title{margin:0 auto 30px;line-height:1.3;text-wrap:balance}
+.features .features-title::after{content:'';display:block;width:56px;height:3px;border-radius:3px;margin:16px auto 0;background:linear-gradient(to left,var(--vme-pink),var(--vme-coral),var(--vme-teal-dark))}
 .features-sub{font-size:20px;color:#666;margin-bottom:56px;max-width:500px;margin-left:auto;margin-right:auto;line-height:1.65}
 .feat-grid{display:grid;grid-template-columns:1fr;gap:18px;max-width:900px;margin:0 auto 50px} @media(max-width:768px){.feat-grid{grid-template-columns:1fr!important;max-width:100%!important;} .feat-card{grid-column:auto!important;}}
 .feat-card{
@@ -294,12 +296,6 @@ body{font-family:'Heebo',sans-serif;background:#EAF5F4;color:var(--vme-dark);ove
 
 /* ══════ TRUST — white ══════ */
 .trust{background:#fff;padding:130px 24px 140px;text-align:center;clip-path:var(--diag-top);margin-top:-100px}
-.trust h2{font-size:clamp(20px,3vw,30px);font-weight:900;color:var(--vme-dark);margin-bottom:40px}
-.trust-row{display:grid;grid-template-columns:1fr 1fr;gap:28px;justify-items:center;max-width:380px;margin:0 auto 48px}
-.trust-item{display:flex;flex-direction:column;align-items:center;gap:10px;max-width:160px}
-.trust-icon{width:96px;height:96px;border-radius:50%;display:flex;align-items:center;justify-content:center;font-size:46px;background:linear-gradient(135deg,var(--vme-berry),var(--vme-pink));box-shadow:0 6px 20px var(--pink-glow)}
-.trust-icon.tl{background:linear-gradient(135deg,var(--vme-teal-dark),var(--vme-teal-light));box-shadow:0 6px 20px var(--teal-glow)}
-.trust-item p{font-size:18px;color:#555;font-weight:700;text-align:center;line-height:1.4}
 
 /* ══════ FORM — soft teal ══════ */
 .form-section{
@@ -510,10 +506,6 @@ img, video, iframe { max-width: 100%; height: auto; }
   .form-box { max-width: 100% !important; }
 
   /* Layout */
-  .trust-row { grid-template-columns: 1fr !important; max-width: 420px !important; gap: 18px !important; justify-items: stretch; }
-  .trust-item { flex-direction: row; max-width: none; gap: 16px; }
-  .trust-icon { width: 64px; height: 64px; font-size: 30px; flex: none; }
-  .trust-item p { text-align: right; font-size: 17px; margin: 0; }
   .hero-btns { flex-direction: column !important; align-items: center; gap:12px !important; }
   .float-cards { flex-wrap: wrap !important; justify-content:center !important; }
   .float-card { min-width: 140px !important; }
@@ -561,17 +553,14 @@ html { scroll-behavior: smooth; }
 .fit-col-header{display:flex;align-items:center;justify-content:space-between;margin-bottom:6px}
 .fit-col-header h3{font-size:19px;font-weight:800;margin:0}
 .fit-col-yes h3{color:var(--vme-dark)}
-.fit-col-no h3{color:var(--vme-magenta)}
 .fit-header-icon{flex-shrink:0;width:40px;height:40px;border-radius:50%;display:flex;align-items:center;justify-content:center;font-size:18px}
 .fit-col-yes .fit-header-icon{background:var(--vme-teal-pale)}
-.fit-col-no .fit-header-icon{background:rgba(207,28,113,0.08)}
 .fit-col ul{list-style:none;padding:0;margin:0}
 .fit-col li{display:flex;align-items:center;justify-content:space-between;gap:14px;padding:15px 0;border-bottom:1px solid rgba(130,167,156,0.15)}
 .fit-col li:last-child{border-bottom:none}
 .fit-text{flex:1;text-align:right;font-size:15px;line-height:1.5;color:var(--vme-dark)}
 .fit-icon{flex-shrink:0;width:26px;height:26px;border-radius:50%;display:flex;align-items:center;justify-content:center;font-size:12px;font-weight:700}
 .fit-col-yes .fit-icon{background:var(--vme-teal-pale);color:#679285}
-.fit-col-no .fit-icon{background:rgba(207,28,113,0.1);color:var(--vme-pink)}
 @media(max-width:600px){
   .fit-section{padding:70px 18px 80px;}
   .fit-col{padding:20px 18px;}
@@ -875,11 +864,99 @@ html { scroll-behavior: smooth; }
 .pm-reply{justify-content:flex-start;font-size:1.693cqw;color:#8C9391;padding:0 1.248cqw;white-space:nowrap}
 @media (max-width:899px){ .phone-mock{max-width:280px} }
 
+/* ── Content hub: "תוכן שמלווה את הדרך" (after "כך זה קורה") ── */
+.hub{position:relative;background:linear-gradient(180deg,#F5E2EA 0%,#F9ECF2 22%,#FCF5F8 48%);clip-path:var(--diag-top);margin-top:-100px;padding-left:24px;padding-right:24px}
+.hub-inner{max-width:1040px;margin:0 auto;display:grid;grid-template-columns:340px minmax(0,1fr);gap:64px;align-items:center}
+.hub-text{text-align:right;min-width:0}
+.hub-label{display:inline-block;padding:7px 18px;border-radius:50px;background:#fff;border:1.5px solid rgba(207,28,113,0.3);color:var(--vme-berry);font-size:16px;font-weight:500;margin-bottom:10px}
+.hub h2{margin:0 0 14px;font-size:clamp(28px,3vw,40px);font-weight:900;line-height:1.25;color:var(--vme-dark)}
+.hub-sub{margin:0 0 28px;max-width:34em;font-size:18px;line-height:1.7;color:#4A5550}
+.hub-cards{display:flex;flex-direction:column;gap:12px}
+.hub-card{display:flex;align-items:center;gap:16px;padding:16px 20px;background:#fff;border:1px solid rgba(65,66,66,0.06);border-radius:16px;box-shadow:var(--shadow-card)}
+.hub-card h3{margin:0 0 2px;font-size:18px;font-weight:800;line-height:1.35;color:var(--vme-dark)}
+.hub-card p{margin:0;font-size:15.5px;line-height:1.55;color:#4A5550}
+.hub-visual{display:flex;justify-content:center;order:-1} /* desktop: visual on the right (RTL first column) */
+/* content hub visual: two overlapping phones (HTML/CSS) */
+.hub-mock{position:relative;width:100%;max-width:340px;aspect-ratio:4/5;margin:0 auto}
+.hub-mock::before{content:'';position:absolute;inset:8% 4%;border-radius:50%;z-index:0;
+  background:radial-gradient(closest-side,rgba(207,28,113,0.14),rgba(130,167,156,0.16) 55%,transparent 78%)}
+.hp-phone{position:absolute;z-index:1;width:56%;aspect-ratio:9/18.5;padding:2.4%;box-sizing:border-box;border-radius:15% / 7.4%;
+  background:#1F2324;box-shadow:0 18px 40px rgba(46,52,51,0.22),0 4px 10px rgba(46,52,51,0.12)}
+.hp-back{left:2%;top:0;transform:rotate(-4deg)}
+.hp-front{right:2%;bottom:0;z-index:2;transform:rotate(3deg)}
+.hp-screen{position:relative;width:100%;height:100%;border-radius:12% / 5.9%;overflow:hidden;background:#EDE6E0}
+.hp-screen img{display:block;width:100%;height:100%;object-fit:cover}
+.hp-screen::after{content:'';position:absolute;inset:0;background:linear-gradient(to top,rgba(31,35,36,0.55),transparent 38%)}
+.hp-notch{position:absolute;top:3%;left:50%;width:30%;height:3.6%;transform:translateX(-50%);border-radius:20px;background:#1F2324;z-index:1}
+.hp-play{position:absolute;top:72%;left:50%;width:22%;aspect-ratio:1;transform:translate(-50%,-50%);border-radius:50%;z-index:1;
+  background:rgba(255,255,255,0.88);box-shadow:0 4px 12px rgba(0,0,0,0.2)}
+.hp-play::after{content:'';position:absolute;top:50%;left:54%;transform:translate(-50%,-50%);border-style:solid;border-width:7px 0 7px 11px;border-color:transparent transparent transparent var(--vme-pink)}
+.hp-bar{position:absolute;left:9%;right:9%;bottom:6%;height:3px;border-radius:3px;background:rgba(255,255,255,0.4);z-index:1}
+.hp-bar i{position:absolute;right:0;top:0;bottom:0;width:38%;border-radius:3px;background:var(--vme-pink)}
+.hp-front .hp-bar i{width:62%;background:var(--vme-coral)}
+.hp-name{position:absolute;right:9%;bottom:11%;z-index:1;color:#fff;font-size:16px;font-weight:800;text-shadow:0 1px 6px rgba(0,0,0,0.35)}
+.hp-back .hp-name{right:auto;left:9%} /* left side stays visible behind the front phone */
+@media (max-width:899px){
+  .hub-inner{grid-template-columns:minmax(0,560px);justify-content:center;gap:32px}
+  .hub-visual{order:0} /* phones: visual below the content */
+  .hub-mock{max-width:300px}
+  .hp-name{font-size:15px}
+}
+@media (max-width:768px){
+  .hub{padding-left:16px;padding-right:16px}
+  .hub h2{font-size:clamp(26px,7vw,32px)}
+  .hub-sub{font-size:16.5px;margin-bottom:22px;text-wrap:pretty}
+  .hub-sub br{display:none}
+  .hub-card{padding:14px 16px;gap:14px}
+  .hub-card h3{font-size:17px}
+  .hub-card p{font-size:15px;text-wrap:balance}
+}
+
+/* ── Section transitions: four styles, each drawn by the lower section's top edge ──
+     diagonal      rises to the right   (A)  quote, how-steps, fit
+     diagonal      rises to the left    (B)  pain, founder, form
+     straight      clean flat edge      (C)  features, method, FAQ, footer
+     soft blend    no edge, colour fade (D)  profiles, hub, trust
+   Order down the page: D A C B C A D B D A C B C, so no two cuts in a row share a
+   shape and two diagonals never follow each other. Every style keeps the existing
+   overlap and paddings, so content positions and the spacing system don't change.
+   Diagonals get a soft shade just under the edge (the upper section lies on top);
+   straight edges sit halfway down the diagonal band and stay clean. */
+:root{
+  --cut-a: polygon(0 var(--diag), 100% 0, 100% 100%, 0 100%);
+  --cut-b: polygon(0 0, 100% var(--diag), 100% 100%, 0 100%);
+  --cut-flat: inset(calc(var(--diag) / 2) 0 0 0);
+  --cut-shade: rgba(52,78,72,0.085) 50%, rgba(52,78,72,0.03) 56%, transparent 66%;
+}
+.profiles,.quote,.features,.pain,.method,.how-steps,.hub,.founder,.trust,.fit-section,.faq-section,.form-section,footer{position:relative;isolation:isolate}
+.profiles::before,.quote::before,.features::before,.pain::before,.method::before,.how-steps::before,.hub::before,.founder::before,
+.trust::before,.fit-section::before,.faq-section::before,.form-section::before,footer::before{
+  content:'';position:absolute;top:0;left:0;right:0;height:calc(2 * var(--diag));z-index:-1;pointer-events:none}
+/* A: diagonal rising to the right */
+.quote,.how-steps,.fit-section{clip-path:var(--cut-a)!important}
+.quote::before,.how-steps::before,.fit-section::before{background:linear-gradient(to bottom right,transparent 49.5%,var(--cut-shade)) right top / 200% 100% no-repeat}
+/* B: diagonal rising to the left */
+.pain,.founder,.form-section{clip-path:var(--cut-b)}
+.pain::before,.founder::before,.form-section::before{background:linear-gradient(to bottom left,transparent 49.5%,var(--cut-shade)) left top / 200% 100% no-repeat}
+/* C: clean straight edge */
+.features,.method,.faq-section,footer{clip-path:var(--cut-flat)}
+.features::before,.method::before,.faq-section::before,footer::before{display:none}
+/* D: soft blend, no edge: the section starts in the colour above it and fades into its own */
+.profiles,.hub,.trust{clip-path:none}
+.profiles{background:linear-gradient(180deg,rgba(234,245,244,0) 0,#EAF5F4 120px)} /* the hero's own gradient shows through the overlap */
+/* hub: a short, decisive fade from the teal above into its blush, finished before the content starts */
+.hub::before{height:clamp(52px,6.5vw,92px);background:linear-gradient(180deg,#EAF5F4 0,rgba(234,245,244,0.85) 25%,rgba(234,245,244,0.4) 60%,rgba(234,245,244,0))}
+.trust::before{height:260px;background:linear-gradient(180deg,#FBF8F5 0,rgba(251,248,245,0.9) 38%,rgba(251,248,245,0.45) 68%,rgba(251,248,245,0))}
+/* footer: a deeper teal, so the page clearly ends after the form */
+footer{background:var(--vme-teal-dark);margin-top:calc(-1 * var(--diag));padding-top:calc(40px + var(--diag))}
+/* hub keeps a blush tint at its bottom edge, so it doesn't melt into the cream founder letter */
+.hub{background:linear-gradient(180deg,#F5E2EA 0%,#F9ECF2 22%,#FCF5F8 48%,#FCF5F8 72%,#F7E7EE 100%)}
+
 /* ── Section spacing system ──
    Three gap levels between the content of neighbouring sections:
      tight    phone 104px / desktop 152px   hero→profiles, fit→FAQ
      standard phone 136px / desktop 184px   profiles→quote, quote→pain, about→how, how→trust, trust→fit, form→footer
-     major    phone 168px / desktop 224px   pain→method (desktop), features→about, FAQ→form, method→features (phones)
+     major    phone 168px / desktop 224px   pain→method (desktop), features→about, FAQ→form, method→features (phones), how→hub
      pain→method is standard on phones; method→features is standard on desktop (on phones the next section's 100px overlap makes major the smallest level)
    Paddings below are tuned per section to land on those levels. Minimums keep
    content clear of the diagonal band (--diag) on both sides of every seam. */
@@ -888,9 +965,10 @@ html { scroll-behavior: smooth; }
 .quote{padding-top:124px;padding-bottom:154px}
 .pain{padding-top:130px;padding-bottom:158px}
 .method{padding-top:130px;padding-bottom:124px}
-.features{padding-top:130px;padding-bottom:200px}
+.hub{padding-top:100px;padding-bottom:160px}
+.features{padding-top:130px;padding-bottom:194px}
 .founder{padding-top:124px;padding-bottom:113px}
-.how-steps{padding-top:calc(53px + var(--diag));padding-bottom:147px}
+.how-steps{padding-top:calc(53px + var(--diag));padding-bottom:127px}
 .trust{padding-top:130px;padding-bottom:160px}
 .fit-section{padding-top:124px;padding-bottom:88px}
 .faq-section{padding-top:124px;padding-bottom:124px}
@@ -901,9 +979,10 @@ html { scroll-behavior: smooth; }
   .quote{padding-top:80px;padding-bottom:124px}
   .pain{padding-top:112px;padding-bottom:102px}
   .method{padding-top:98px;padding-bottom:78px}
-  .features{padding-top:130px;padding-bottom:190px}
+  .hub{padding-top:62px;padding-bottom:158px}
+  .features{padding-top:80px;padding-bottom:156px}
   .founder{padding-top:78px;padding-bottom:104px}
-  .how-steps{padding-top:calc(51px + var(--diag));padding-bottom:131px}
+  .how-steps{padding-top:calc(51px + var(--diag));padding-bottom:117px}
   .trust{padding-top:105px;padding-bottom:158px}
   .fit-section{padding-top:78px;padding-bottom:86px}
   .faq-section{padding-top:78px;padding-bottom:78px}
@@ -1087,6 +1166,35 @@ picture source{display:none} /* never a layout item (e.g. in flex containers wit
   </div>
 </section>
 
+<!-- FEATURES -->
+<section class="features">
+  <div class="rev">
+    <h2 class="features-title">בלי מסכות, בלי משחקים</h2>
+  </div>
+  <div class="bubbles-grid">
+    <div class="bubbles-row">
+      <div class="bubble" style="background:linear-gradient(135deg,#CF1C71,#D72A86);">
+        <span>תכירו אנשים אמיתיים ותחוו אותם באופן אותנטי</span>
+      </div>
+      <div class="bubble" style="background:linear-gradient(135deg,#A3C8C5,#C2DCD9);color:#2F3B38;">
+        <span>תצפו בפרופילים מבוססי וידאו שיאפשרו לעוד חושים שלכם לעבוד</span>
+      </div>
+      <div class="bubble" style="background:linear-gradient(135deg,#8A0052,#CF1C71);">
+        <span>תתמגנטו לאופי ואנרגיה מעבר למראה</span>
+      </div>
+    </div>
+    <div class="bubbles-row">
+      <div class="bubble" style="background:linear-gradient(135deg,#4C746F,#577B71);">
+        <span>תחסכו אנרגיה וזמן יקר שיושקע רק במקומות שהרגשתם חיבור אמיתי</span>
+      </div>
+      <div class="bubble" style="background:linear-gradient(135deg,#F0A882,#F6C3A8);color:#2F3B38;">
+        <span>תיהנו מתהליך חוויתי ומעצים בדרך למציאת אהבה</span>
+      </div>
+    </div>
+  </div>
+  <div class="rev"><a class="btn-pink" href="#form">איפה נרשמים ←</a></div>
+</section>
+
 <!-- PAIN -->
 <section class="pain">
   <div class="rev">
@@ -1233,35 +1341,65 @@ picture source{display:none} /* never a layout item (e.g. in flex containers wit
   </div>
 </section>
 
-<!-- FEATURES -->
-<section class="features">
-  <div class="rev">
-    <span class="sec-label tl">✨ מה שונה ב-<picture><source type="image/webp" srcset="assets/images/vme-logo.webp" /><img src="assets/images/vme-logo.png" alt="Vme" width="613" height="206" loading="lazy" decoding="async" style="height:60px;width:auto;vertical-align:middle;display:inline-block;" /></picture></span>
-    
-    <p class="features-sub">בלי מסכות, בלי משחקים</p>
-  </div>
-  <div class="bubbles-grid">
-    <div class="bubbles-row">
-      <div class="bubble" style="background:linear-gradient(135deg,#CF1C71,#D72A86);">
-        <span>תכירו אנשים אמיתיים ותחוו אותם באופן אותנטי</span>
+<!-- CONTENT HUB: תוכן שמלווה את הדרך -->
+<section class="hub">
+  <div class="hub-inner">
+    <div class="hub-text">
+      <div class="hub-head rev">
+        <span class="hub-label">תוכן שמלווה את הדרך</span>
+        <h2>לא רק למצוא אהבה<br>
+        <span class="pk">גם להיות מוכנים אליה</span></h2>
+        <p class="hub-sub">ב-Vme תקבלו גישה לתובנות, כלים ותוכן ממומחים<br>
+        בתחומי הזוגיות, התקשורת וההתפתחות האישית<br>
+        כדי לבחור נכון יותר, להכיר עמוק יותר ולבנות קשר בריא</p>
       </div>
-      <div class="bubble" style="background:linear-gradient(135deg,#A3C8C5,#C2DCD9);color:#2F3B38;">
-        <span>תצפו בפרופילים מבוססי וידאו שיאפשרו לעוד חושים שלכם לעבוד</span>
-      </div>
-      <div class="bubble" style="background:linear-gradient(135deg,#8A0052,#CF1C71);">
-        <span>תתמגנטו לאופי ואנרגיה מעבר למראה</span>
+      <div class="hub-cards">
+        <div class="hub-card rev">
+          <span class="mc-icon mc-pink"><svg viewBox="0 0 24 24" aria-hidden="true"><path d="M4 6.5A2.5 2.5 0 0 1 6.5 4h11A2.5 2.5 0 0 1 20 6.5v7a2.5 2.5 0 0 1-2.5 2.5H10l-4 3.5V16h0A2.5 2.5 0 0 1 4 13.5z"/><path d="M12 7.2v2.6M12 12h.01"/></svg></span>
+          <div>
+            <h3>תשובות שמגיעות בזמן</h3>
+            <p>תוכן קצר וממוקד לרגעים שבהם צריך בהירות</p>
+          </div>
+        </div>
+        <div class="hub-card rev">
+          <span class="mc-icon mc-teal"><svg viewBox="0 0 24 24" aria-hidden="true"><path d="M8.5 18.5L3.8 13.9a3.2 3.2 0 0 1 4.6-4.5l.1.1.1-.1a3.2 3.2 0 0 1 4.6 4.5z"/><path d="M14.6 7.2l.4-.4a3.2 3.2 0 0 1 4.6 4.5l-4.7 4.6-1.8-1.8"/></svg></span>
+          <div>
+            <h3>כלים לקשר בריא</h3>
+            <p>תובנות מעשיות שיעזרו לכם לבחור, להבין ולתקשר טוב יותר</p>
+          </div>
+        </div>
+        <div class="hub-card rev">
+          <span class="mc-icon mc-orange"><svg viewBox="0 0 24 24" aria-hidden="true"><path d="M12 20v-8"/><path d="M12 12c0-3.6-2.6-6-6.5-6 0 3.6 2.6 6 6.5 6z"/><path d="M12 14c0-3.3 2.4-5.5 6-5.5 0 3.3-2.4 5.5-6 5.5z"/></svg></span>
+          <div>
+            <h3>התפתחות אישית לצד היכרות</h3>
+            <p>כי הדרך לזוגיות טובה מתחילה גם בקשר עם עצמכם</p>
+          </div>
+        </div>
       </div>
     </div>
-    <div class="bubbles-row">
-      <div class="bubble" style="background:linear-gradient(135deg,#4C746F,#577B71);">
-        <span>תחסכו אנרגיה וזמן יקר שיושקע רק במקומות שהרגשתם חיבור אמיתי</span>
-      </div>
-      <div class="bubble" style="background:linear-gradient(135deg,#F0A882,#F6C3A8);color:#2F3B38;">
-        <span>תיהנו מתהליך חוויתי ומעצים בדרך למציאת אהבה</span>
+    <div class="hub-visual rev">
+      <div class="hub-mock">
+        <div class="hp-phone hp-back">
+          <div class="hp-screen">
+            <picture><source type="image/webp" srcset="assets/images/hub-shira.webp" /><img src="assets/images/hub-shira.jpg" width="520" height="711" loading="lazy" decoding="async" alt="" style="object-position:50% 30%" /></picture>
+            <span class="hp-notch" aria-hidden="true"></span>
+            <span class="hp-play" aria-hidden="true"></span>
+            <span class="hp-bar" aria-hidden="true"><i></i></span>
+            <span class="hp-name">שירה</span>
+          </div>
+        </div>
+        <div class="hp-phone hp-front">
+          <div class="hp-screen">
+            <picture><source type="image/webp" srcset="assets/images/hub-shahar.webp" /><img src="assets/images/hub-shahar.jpg" width="520" height="743" loading="lazy" decoding="async" alt="" style="object-position:55% 32%" /></picture>
+            <span class="hp-notch" aria-hidden="true"></span>
+            <span class="hp-play" aria-hidden="true"></span>
+            <span class="hp-bar" aria-hidden="true"><i></i></span>
+            <span class="hp-name">שחר</span>
+          </div>
+        </div>
       </div>
     </div>
   </div>
-  <div class="rev"><a class="btn-pink" href="#form">איפה נרשמים ←</a></div>
 </section>
 
 <!-- ABOUT -->
@@ -1308,7 +1446,7 @@ picture source{display:none} /* never a layout item (e.g. in flex containers wit
 <!-- QUOTE LAOZI -->
 
 <section class="trust">
-  <div class="rev" style="background:#EAF5F4;border-radius:20px;padding:40px 36px;position:relative;margin-bottom:44px;border-right:4px solid #CF1C71;max-width:580px;margin-left:auto;margin-right:auto;overflow:hidden;text-align:center;">
+  <div class="rev" style="background:#EAF5F4;border-radius:20px;padding:40px 36px;position:relative;margin-bottom:0;border-right:4px solid #CF1C71;max-width:580px;margin-left:auto;margin-right:auto;overflow:hidden;text-align:center;">
     <div style="font-size:72px;color:rgba(207,28,113,0.07);font-family:Georgia,serif;line-height:1;position:absolute;top:10px;right:18px;pointer-events:none;letter-spacing:-4px;">""</div>
     <p style="font-size:clamp(20px,3.5vw,26px);font-weight:700;color:#414242;line-height:1.9;margin:0 0 24px;position:relative;z-index:1;">
       אהבה אמיתית מתחילה<br>כשמישהו מכיר אותך כפי שאתה,<br>ועדיין בוחר בך
@@ -1316,14 +1454,6 @@ picture source{display:none} /* never a layout item (e.g. in flex containers wit
     <div style="width:36px;height:2px;background:#CF1C71;margin:0 auto 16px;"></div>
     <p style="font-size:14px;font-weight:600;color:#CF1C71;margin:0;letter-spacing:0.2px;">לאו דזה, פילוסוף סיני ומייסד הטאואיזם</p>
   </div>
-  <div class="rev"><h2>למה כאן זה עובד אחרת</h2></div>
-  <div class="trust-row">
-    <div class="trust-item rev"><div class="trust-icon tl">🧠</div><p>ליווי מעצים<br>מאנשי מקצוע<br>כלים ותוכן<br>שעוזרים לך ליצור חיבור נכון</p></div>
-    <div class="trust-item rev"><div class="trust-icon">⏳</div><p>חוסכים דייטים<br>לא רלוונטיים<br>מרגישים חיבור לפני<br>שמשקיעים זמן, כסף ואנרגיה</p></div>
-    <div class="trust-item rev"><div class="trust-icon tl">🛡️</div><p>מרחב בטוח לאנשים<br>שמחפשים קשר משמעותי<br>בלי זיופים, בלי משחקים</p></div>
-    <div class="trust-item rev"><div class="trust-icon">🎥</div><p>פוקוס על אותנטיות<br>רואים, שומעים וחווים אותך<br>נוכחות, אנרגיה<br>וכימיה אמיתית</p></div>
-  </div>
-  <div class="rev"><a class="btn-pink" href="#form">רוצה להיות חלק ←</a></div>
 </section>
 
 <!-- FIT -->
@@ -1340,23 +1470,11 @@ picture source{display:none} /* never a layout item (e.g. in flex containers wit
         <span class="fit-header-icon">🌿</span>
       </div>
       <ul>
-        <li><span class="fit-icon">✓</span><span class="fit-text">לאנשים שמחפשים קשר רציני ולא עוד שיחה שנמרחת</span></li>
+        <li><span class="fit-icon">✓</span><span class="fit-text">לאנשים שמחפשים קשר רציני</span></li>
         <li><span class="fit-icon">✓</span><span class="fit-text">לאנשים שרוצים להבין יותר על האדם עוד לפני שנוצר קשר</span></li>
         <li><span class="fit-icon">✓</span><span class="fit-text">לאנשים שרוצים שיכירו אותם באמת לפני ששולחים להם הודעה</span></li>
         <li><span class="fit-icon">✓</span><span class="fit-text">לאנשים שמעדיפים פחות התאמות, אבל חיבורים מדויקים יותר</span></li>
         <li><span class="fit-icon">✓</span><span class="fit-text">לאנשים שמוכנים להכיר בצורה פתוחה, אותנטית וקצת יותר אמיצה</span></li>
-      </ul>
-    </div>
-    <div class="fit-col fit-col-no rev">
-      <div class="fit-col-header">
-        <h3>למי זה פחות מתאים</h3>
-        <span class="fit-header-icon">🔻</span>
-      </div>
-      <ul>
-        <li><span class="fit-icon">✕</span><span class="fit-text">למי שמחפש קשר קליל או לא מחייב</span></li>
-        <li><span class="fit-icon">✕</span><span class="fit-text">למי שמעדיף להכיר רק דרך תמונות וטקסט</span></li>
-        <li><span class="fit-icon">✕</span><span class="fit-text">למי שלא מוכן להשקיע כמה דקות ביצירת פרופיל אמיתי ואותנטי</span></li>
-        <li><span class="fit-icon">✕</span><span class="fit-text">למי שמחפש להעביר את הזמן ולא באמת להכיר</span></li>
       </ul>
     </div>
   </div>
