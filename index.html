@@ -332,8 +332,12 @@ body{font-family:'Heebo',sans-serif;background:#EAF5F4;color:var(--vme-dark);ove
 .form-group input[type="date"]:valid{color:var(--vme-dark)}
 .form-group input[type="date"]::-webkit-calendar-picker-indicator{opacity:0.4}
 .dob-wrap{position:relative}
-#dob-input{text-align:right;padding-left:48px} /* LTR digits, right-aligned like the other fields */
-#dob-input::placeholder{direction:rtl}
+#dob-input{text-align:right;padding-left:48px;transition:border-color .3s,box-shadow .3s,background-color .3s} /* LTR digits, right-aligned like the other fields; padding follows the format mask instantly */
+#dob-input::placeholder{direction:ltr} /* the input is LTR: placeholder written so the Hebrew label lands on the right */
+#dob-input:focus::placeholder{color:transparent} /* while typing, the format mask takes over */
+/* format mask: the part of DD/MM/YYYY not typed yet, shown in grey right after the typed digits */
+.dob-mask{position:absolute;right:19.5px;top:50%;transform:translateY(-50%);direction:ltr;pointer-events:none;white-space:pre;
+  font-family:'Heebo',sans-serif;font-size:16px;line-height:1;color:#8FA7A0}
 .dob-cal{position:absolute;left:14px;top:50%;width:22px;height:22px;transform:translateY(-50%);pointer-events:none;color:#577B72;opacity:.75}
 .dob-cal svg{width:100%;height:100%;fill:none;stroke:currentColor;stroke-width:1.7;stroke-linecap:round}
 /* the real native date input sits invisibly over the calendar icon: tapping it opens the platform picker */
@@ -637,6 +641,36 @@ html { scroll-behavior: smooth; }
 }
 .select-wrap select.filled ~ .select-clear{display:flex}
 .select-clear:hover{color:var(--vme-pink)}
+/* Phones: selects open a bottom sheet instead of the small native popup.
+   The real <select> stays the source of truth (value, validation, submission). */
+@media (max-width:768px){
+  .select-wrap select{pointer-events:none} /* taps reach the wrapper, which opens the sheet */
+  .select-wrap{cursor:pointer;-webkit-tap-highlight-color:transparent}
+}
+.vsheet{position:fixed;inset:0;z-index:1000;display:flex;align-items:flex-end;justify-content:center}
+.vsheet[hidden]{display:none}
+.vsheet-backdrop{position:absolute;inset:0;background:rgba(31,40,38,0.42);animation:vsFade .2s ease}
+.vsheet-panel{position:relative;width:100%;max-width:560px;max-height:85vh;display:flex;flex-direction:column;box-sizing:border-box;
+  background:#fff;border-radius:22px 22px 0 0;padding:10px 16px calc(20px + env(safe-area-inset-bottom));
+  box-shadow:0 -10px 40px rgba(46,52,51,0.18);font-family:'Heebo',sans-serif;text-align:right;animation:vsUp .24s cubic-bezier(.2,.8,.2,1)}
+.vsheet-panel:focus{outline:none}
+.vsheet-handle{width:40px;height:4px;border-radius:4px;background:rgba(130,167,156,0.4);margin:0 auto 10px}
+.vsheet-head{display:flex;align-items:center;justify-content:space-between;gap:12px;margin-bottom:14px}
+.vsheet-title{margin:0;font-size:19px;font-weight:800;color:var(--vme-dark);line-height:1.3}
+.vsheet-close{flex:none;width:44px;height:44px;margin-left:-8px;border:none;border-radius:50%;background:transparent;color:#577B72;font-size:20px;line-height:1;cursor:pointer}
+.vsheet-list{display:flex;flex-direction:column;gap:10px;overflow-y:auto;-webkit-overflow-scrolling:touch}
+.vsheet-opt{display:flex;align-items:center;justify-content:space-between;gap:12px;width:100%;min-height:58px;padding:14px 18px;box-sizing:border-box;
+  background:#fff;border:1.5px solid rgba(163,200,197,0.55);border-radius:14px;font-family:'Heebo',sans-serif;font-size:18px;font-weight:500;
+  color:var(--vme-dark);text-align:right;cursor:pointer;-webkit-tap-highlight-color:transparent;transition:border-color .15s,background-color .15s}
+.vsheet-opt:active{background:#F4F9F8}
+.vsheet-opt[aria-selected="true"]{border-color:var(--vme-pink);background:rgba(207,28,113,0.05);font-weight:700}
+.vsheet-check{flex:none;width:24px;height:24px;border-radius:50%;border:1.5px solid rgba(130,167,156,0.6);box-sizing:border-box;display:flex;align-items:center;justify-content:center}
+.vsheet-opt[aria-selected="true"] .vsheet-check{border:none;background:var(--vme-pink)}
+.vsheet-opt[aria-selected="true"] .vsheet-check::after{content:'';width:10px;height:6px;border:2px solid #fff;border-top:0;border-right:0;transform:translateY(-1px) rotate(-45deg)}
+.vsheet-opt:focus-visible,.vsheet-close:focus-visible{outline:3px solid var(--vme-teal-light);outline-offset:2px}
+@keyframes vsUp{from{transform:translateY(100%)}to{transform:none}}
+@keyframes vsFade{from{opacity:0}to{opacity:1}}
+@media (prefers-reduced-motion:reduce){.vsheet-panel,.vsheet-backdrop{animation:none}}
 .consent-group{margin:18px 0 4px;display:flex;flex-direction:column;gap:14px}
 .consent-item{display:flex;align-items:flex-start;gap:10px;cursor:pointer;padding:4px 0}
 .consent-item input[type="checkbox"]{
@@ -1612,8 +1646,9 @@ picture source{display:none} /* never a layout item (e.g. in flex containers wit
       </div>
       <div class="form-group">
         <div class="dob-wrap">
-          <input type="text" id="dob-input" placeholder="תאריך לידה" aria-label="תאריך לידה (DD/MM/YYYY)"
+          <input type="text" id="dob-input" placeholder="DD/MM/YYYY  תאריך לידה" aria-label="תאריך לידה (DD/MM/YYYY)"
             inputmode="numeric" autocomplete="bday" maxlength="10" dir="ltr" style="width:100%;" />
+          <span class="dob-mask" id="dob-mask" aria-hidden="true"></span>
           <input type="date" id="dob-native" class="dob-native" tabindex="-1" aria-hidden="true" min="1900-01-01" />
           <span class="dob-cal" aria-hidden="true"><svg viewBox="0 0 24 24"><rect x="3.5" y="5" width="17" height="15" rx="2.5"/><path d="M3.5 10h17M8 3v4M16 3v4"/></svg></span>
           <input type="hidden" name="birth_date" id="dob-value" value="" />
@@ -1809,24 +1844,54 @@ function vmeIsoDate(date) {
     hidden.value = date ? vmeIsoDate(date) : '';
     if (date) nat.value = hidden.value;
   }
+  const mask = document.getElementById('dob-mask');
+  const TEMPLATE = 'DD/MM/YYYY';
+  let ctx = null;
+  function updateMask() {
+    // show the rest of DD/MM/YYYY after what was typed, and make room for it so the caret sits right before it
+    const v = text.value;
+    const rest = (v || document.activeElement === text) ? TEMPLATE.slice(v.length) : '';
+    mask.textContent = rest;
+    if (!ctx) ctx = document.createElement('canvas').getContext('2d');
+    const cs = getComputedStyle(text);
+    ctx.font = cs.fontWeight + ' ' + cs.fontSize + ' ' + cs.fontFamily;
+    text.style.paddingRight = rest ? (18 + Math.ceil(ctx.measureText(rest).width)) + 'px' : '';
+  }
+  function formatDob(raw, deleting) {
+    const iso = /^(\d{4})-(\d{2})-(\d{2})$/.exec(raw.trim());      // e.g. browser autofill
+    if (iso) return iso[3] + '/' + iso[2] + '/' + iso[1];
+    const f = ['', '', ''], max = [2, 2, 4];
+    let i = 0;
+    for (const ch of raw) {
+      if (/\d/.test(ch)) {
+        if (f[i].length === max[i] && i < 2) i++;
+        if (f[i].length < max[i]) f[i] += ch;
+      } else if (f[i].length && i < 2) {                            // separator typed by the user
+        if (f[i].length === 1) f[i] = '0' + f[i];
+        i++;
+      }
+    }
+    let out = f[0];
+    if (f[1] || (f[0].length === 2 && !deleting)) out += '/';
+    out += f[1];
+    if (f[2] || (f[1].length === 2 && !deleting)) out += '/';
+    return out + f[2];
+  }
   text.addEventListener('input', function (e) {
-    // keep digits only and insert the slashes automatically: DD/MM/YYYY
     const deleting = e.inputType && e.inputType.indexOf('delete') === 0;
-    let digits = text.value.replace(/\D/g, '').slice(0, 8);
-    let out = digits.slice(0, 2);
-    if (digits.length > 2 || (digits.length === 2 && !deleting)) out += '/';
-    out += digits.slice(2, 4);
-    if (digits.length > 4 || (digits.length === 4 && !deleting)) out += '/';
-    out += digits.slice(4);
-    text.value = out;
+    text.value = formatDob(text.value, deleting);
     syncFromText();
+    updateMask();
   });
-  text.addEventListener('blur', syncFromText);
+  text.addEventListener('focus', updateMask);
+  text.addEventListener('blur', function () { syncFromText(); updateMask(); });
+  if (document.fonts && document.fonts.ready) document.fonts.ready.then(updateMask);
   nat.addEventListener('change', function () {
     if (!nat.value) return;
     const p = nat.value.split('-');                       // native value is always YYYY-MM-DD
     text.value = p[2] + '/' + p[1] + '/' + p[0];
     syncFromText();
+    updateMask();
     text.dispatchEvent(new Event('change', { bubbles: true }));
   });
 })();
@@ -1840,6 +1905,65 @@ function vmeCalculateAge(birthDate) {
   }
   return age;
 }
+/* Phones: bottom-sheet selector for the questionnaire selects (the native <select> keeps the value) */
+(function () {
+  const mq = window.matchMedia('(max-width: 768px)');
+  let sheet = null, current = null;
+  function build() {
+    sheet = document.createElement('div');
+    sheet.className = 'vsheet'; sheet.hidden = true; sheet.dir = 'rtl';
+    sheet.innerHTML = '<div class="vsheet-backdrop"></div>' +
+      '<div class="vsheet-panel" role="dialog" aria-modal="true" aria-labelledby="vsheet-title" tabindex="-1">' +
+      '<div class="vsheet-handle" aria-hidden="true"></div>' +
+      '<div class="vsheet-head"><h3 class="vsheet-title" id="vsheet-title"></h3><button type="button" class="vsheet-close" aria-label="סגירה">✕</button></div>' +
+      '<div class="vsheet-list" role="listbox" aria-labelledby="vsheet-title"></div></div>';
+    document.body.appendChild(sheet);
+    sheet.querySelector('.vsheet-backdrop').addEventListener('click', close);
+    sheet.querySelector('.vsheet-close').addEventListener('click', close);
+    document.addEventListener('keydown', function (e) { if (e.key === 'Escape' && !sheet.hidden) close(); });
+  }
+  function open(select) {
+    if (!sheet) build();
+    current = select;
+    const ph = select.querySelector('option[value=""]');
+    sheet.querySelector('.vsheet-title').textContent = ph ? ph.textContent : (select.getAttribute('aria-label') || '');
+    const list = sheet.querySelector('.vsheet-list');
+    list.innerHTML = '';
+    [...select.options].filter(o => o.value !== '' && !o.disabled).forEach(function (o) {
+      const b = document.createElement('button');
+      b.type = 'button'; b.className = 'vsheet-opt'; b.setAttribute('role', 'option');
+      b.setAttribute('aria-selected', String(select.value === o.value));
+      const t = document.createElement('span'); t.textContent = o.textContent;
+      const c = document.createElement('span'); c.className = 'vsheet-check'; c.setAttribute('aria-hidden', 'true');
+      b.append(t, c);
+      b.addEventListener('click', function () {
+        select.value = o.value;
+        select.dispatchEvent(new Event('input', { bubbles: true }));
+        select.dispatchEvent(new Event('change', { bubbles: true }));
+        close();
+      });
+      list.appendChild(b);
+    });
+    sheet.hidden = false;
+    document.documentElement.style.overflow = 'hidden';
+    sheet.querySelector('.vsheet-panel').focus({ preventScroll: true }); // focus moves into the dialog, no option pre-highlighted
+  }
+  function close() {
+    if (!sheet || sheet.hidden) return;
+    sheet.hidden = true; current = null;
+    document.documentElement.style.overflow = '';
+  }
+  document.querySelectorAll('.select-wrap').forEach(function (wrap) {
+    const select = wrap.querySelector('select');
+    if (!select) return;
+    wrap.addEventListener('click', function (e) {
+      if (!mq.matches || e.target.closest('.select-clear')) return;
+      e.preventDefault();
+      open(select);
+    });
+  });
+})();
+
 function vmeClearSelect(btn) {
   const select = btn.previousElementSibling;
   if (!select) return;
@@ -1901,6 +2025,11 @@ if (vmeStep1Next) {
       const today = new Date();
       const dobHidden = document.getElementById('dob-value');
       if (dobHidden) dobHidden.value = birthDate ? vmeIsoDate(birthDate) : '';
+      if (/^\d{2}\/\d{2}\/\d{1,3}$/.test(dobValue)) {
+        vmeReportValidationFailure('birth date year incomplete', 'נא להזין שנה מלאה, 4 ספרות (לדוגמה 25/06/1970)', step1ErrorEl);
+        vmeShowFieldError(dobInput, dobErrorEl, 'נא להזין שנה מלאה, 4 ספרות (לדוגמה 25/06/1970)');
+        return;
+      }
       if (!birthDate || birthDate > today) {
         vmeReportValidationFailure('birth date invalid', 'נא להזין תאריך לידה תקין', step1ErrorEl);
         vmeShowFieldError(dobInput, dobErrorEl, 'נא להזין תאריך לידה תקין');
