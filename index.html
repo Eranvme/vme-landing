@@ -673,6 +673,8 @@ html { scroll-behavior: smooth; }
 .hero-brand{display:flex;flex-direction:column;align-items:center;gap:8px;margin-bottom:28px}
 .hero h1{margin:0 0 14px;font-size:clamp(34px,3.4vw,46px);line-height:1.22;letter-spacing:-0.01em;text-wrap:balance}
 .hero-sub{margin:0 0 30px;font-size:clamp(19px,1.8vw,23px);font-weight:600;line-height:1.5;color:var(--vme-dark)}
+.hero-sub:has(+ .hero-sub2){margin-bottom:10px}
+.hero-sub2{margin:0;max-width:30em;font-size:clamp(17px,1.4vw,19px);font-weight:400;line-height:1.6;color:#4A5550;text-wrap:balance}
 .hero-logo{height:52px;width:auto;display:block}
 .hero-signature{margin:0;font-size:11px;font-weight:600;letter-spacing:0.28em;color:#4A6B63;white-space:nowrap}
 
@@ -689,6 +691,7 @@ html { scroll-behavior: smooth; }
 .hero-cta:focus-visible{outline:3px solid var(--vme-teal-light);outline-offset:3px}
 
 .hero-media{width:100%;max-width:360px;margin-top:36px}
+.hero-cta-wrap{display:flex;justify-content:center;margin-top:26px} /* CTA under the video */
 .hero-video{
   position:relative;aspect-ratio:9/16;border-radius:24px;overflow:hidden;background:#1f2323;
   box-shadow:0 0 0 2px rgba(255,255,255,0.9),0 0 0 4px rgba(163,200,197,0.55),0 24px 60px rgba(65,66,66,0.2),0 8px 20px rgba(130,167,156,0.25);
@@ -723,6 +726,9 @@ html { scroll-behavior: smooth; }
   .hero-brand{margin-bottom:22px}
   .hero h1{font-size:clamp(26px,7.4vw,34px) !important}
   .hero-sub{font-size:18px;margin-bottom:24px}
+  .hero-sub:has(+ .hero-sub2){margin-bottom:8px}
+  .hero-sub2{font-size:16.5px}
+  .hero-cta-wrap{margin-top:22px}
   .hero-copy{width:100%}
   .hero-cta{width:100%;max-width:320px}
   .hero-media{margin-top:30px}
@@ -780,6 +786,7 @@ html { scroll-behavior: smooth; }
 .method-sub{margin:0 0 12px;font-size:22px;font-weight:700;line-height:1.4;color:var(--vme-berry)}
 .method-text{margin:0 auto;max-width:34em;font-size:18px;line-height:1.7;color:#4A5550;text-wrap:pretty}
 .method-bar{display:block;width:56px;height:3px;border-radius:3px;margin:26px auto 32px;background:linear-gradient(to left,var(--vme-pink),var(--vme-coral),var(--vme-teal-dark))}
+.method-cta{text-align:center;margin-top:36px}
 .method-grid{display:grid;grid-template-columns:repeat(2,1fr);gap:16px;text-align:right}
 .method-card{display:flex;align-items:flex-start;gap:16px;padding:20px 22px;background:#fff;border:1px solid rgba(65,66,66,0.06);border-radius:16px;box-shadow:var(--shadow-card)}
 .method-card h3{margin:0 0 4px;font-size:19px;font-weight:800;line-height:1.35;color:var(--vme-dark)}
@@ -852,6 +859,22 @@ html { scroll-behavior: smooth; }
   .founder-pull{font-size:24px!important}
 }
 
+/* ── "כך זה קורה" phone mockup: real HTML text over the clean image (positions/sizes relative to the image) ── */
+.phone-mock{position:relative;z-index:1;width:100%;max-width:340px;margin:0 auto;container-type:inline-size}
+.phone-mock img{max-width:none!important}
+.pm-screen{position:absolute;inset:0;z-index:2;pointer-events:none;font-family:'Heebo',sans-serif;color:#2E3433}
+.pm-screen span{position:absolute;display:flex;align-items:center;box-sizing:border-box;line-height:1.35;overflow:hidden}
+.pm-day{justify-content:center;font-size:1.604cqw;font-weight:500;color:#6B7371}
+.pm-time{justify-content:flex-start;direction:ltr;font-size:1.426cqw;color:#8C9391} /* time sits bottom-left of the bubble */
+.pm-name{justify-content:flex-start;font-size:2.406cqw;font-weight:700}
+.pm-msg{justify-content:flex-start;text-align:right;font-size:1.872cqw;line-height:1.55!important;color:#3A3F3E;padding:0 0.713cqw}
+.pm-title{justify-content:center;text-align:center;background:#FDFDFD;font-size:2.406cqw;font-weight:800;white-space:nowrap}
+.pm-body{justify-content:center;text-align:center;background:#FDFDFD;font-size:1.783cqw;line-height:1.5!important;color:#5A6260;padding:0 0.357cqw}
+.pm-main{justify-content:center;font-size:2.050cqw;font-weight:700;color:#fff;white-space:nowrap;text-shadow:0 1px 2px rgba(0,0,0,.12)}
+.pm-ok,.pm-no{justify-content:center;font-size:1.872cqw;font-weight:600;color:#3A3F3E;white-space:nowrap}
+.pm-reply{justify-content:flex-start;font-size:1.693cqw;color:#8C9391;padding:0 1.248cqw;white-space:nowrap}
+@media (max-width:899px){ .phone-mock{max-width:280px} }
+
 /* ── Section spacing system ──
    Three gap levels between the content of neighbouring sections:
      tight    phone 104px / desktop 152px   hero→profiles, fit→FAQ
@@ -863,10 +886,10 @@ html { scroll-behavior: smooth; }
 .hero{padding-bottom:148px}
 .profiles{padding-top:124px;padding-bottom:180px}
 .quote{padding-top:124px;padding-bottom:154px}
-.pain{padding-top:130px;padding-bottom:194px}
-.method{padding-top:130px;padding-bottom:154px}
+.pain{padding-top:130px;padding-bottom:158px}
+.method{padding-top:130px;padding-bottom:124px}
 .features{padding-top:130px;padding-bottom:200px}
-.founder{padding-top:124px;padding-bottom:90px}
+.founder{padding-top:124px;padding-bottom:113px}
 .how-steps{padding-top:calc(53px + var(--diag));padding-bottom:147px}
 .trust{padding-top:130px;padding-bottom:160px}
 .fit-section{padding-top:124px;padding-bottom:88px}
@@ -876,11 +899,11 @@ html { scroll-behavior: smooth; }
   .hero{padding-bottom:144px}
   .profiles{padding-top:80px;padding-bottom:176px}
   .quote{padding-top:80px;padding-bottom:124px}
-  .pain{padding-top:112px;padding-bottom:138px}
-  .method{padding-top:98px;padding-bottom:138px}
+  .pain{padding-top:112px;padding-bottom:102px}
+  .method{padding-top:98px;padding-bottom:78px}
   .features{padding-top:130px;padding-bottom:190px}
-  .founder{padding-top:78px;padding-bottom:58px}
-  .how-steps{padding-top:calc(51px + var(--diag));padding-bottom:124px}
+  .founder{padding-top:78px;padding-bottom:104px}
+  .how-steps{padding-top:calc(51px + var(--diag));padding-bottom:131px}
   .trust{padding-top:105px;padding-bottom:158px}
   .fit-section{padding-top:78px;padding-bottom:86px}
   .faq-section{padding-top:78px;padding-bottom:78px}
@@ -918,9 +941,9 @@ picture source{display:none} /* never a layout item (e.g. in flex containers wit
         <picture><source type="image/webp" srcset="assets/images/vme-logo.webp" /><img class="hero-logo" src="assets/images/vme-logo.png" alt="Vme" width="613" height="206" /></picture>
         <p class="hero-signature" dir="ltr" lang="en">LOVE STARTS WITH A VIBE</p>
       </div>
-      <h1>מפרופילים <span class="pk">לאנשים.</span></h1>
-      <p class="hero-sub">Vme משנה את הדרך שבה מכירים.</p>
-      <a class="hero-cta" href="#form">להכיר בדרך חדשה</a>
+      <h1>מפרופילים <span class="pk">לאנשים</span></h1>
+      <p class="hero-sub">Vme משנה את הדרך שבה מכירים</p>
+      <p class="hero-sub2">בואו לגלות איך אנחנו הופכים את תהליך מציאת האהבה ליותר חווייתי, זורם ואותנטי</p>
     </div>
 
     <div class="hero-media">
@@ -938,6 +961,7 @@ picture source{display:none} /* never a layout item (e.g. in flex containers wit
           </iframe>
         </noscript>
       </div>
+      <div class="hero-cta-wrap"><a class="hero-cta" href="#form">להכיר בדרך חדשה</a></div>
       <script>
       // Show our own poster. After the page has loaded, preload the YouTube player
       // underneath it, so a click only has to start playback.
@@ -1016,14 +1040,14 @@ picture source{display:none} /* never a layout item (e.g. in flex containers wit
           <p>בעולם בו אנשים מנסים למצוא זוגיות ואהבה<br>
           לפי תמונה וכמה מילים, Vme מייצרת <span class="hl">מרחב חדש</span><br>
           דרכו אפשר לראות, לשמוע, ולהרגיש את האדם<br>
-          שמאחורי הפרופיל.</p>
+          שמאחורי הפרופיל</p>
           <p>על ידי שיטה ייחודית וחווייתית וכלי הוידאו,<br>
           Vme עוזרת <span class="hl">לאישיות האמיתית</span> לצאת<br>
-          החוצה – באופן טבעי, עמוק ואותנטי.</p>
+          החוצה – באופן טבעי, עמוק ואותנטי</p>
           <p>כך תוכלו להרגיש <span class="hl">בתוך דקות</span> את מי תרצו לפגוש,<br>
-          בלי לעבור ימים של סווייפים והתכתבויות.</p>
+          בלי לעבור ימים של סווייפים והתכתבויות</p>
       </div>
-      <p class="profiles-tagline"><span class="tg-see">לראות.</span> <span class="tg-hear">לשמוע.</span> <span class="tg-feel">להרגיש.</span></p>
+      <p class="profiles-tagline"><span class="tg-see">לראות</span> <span class="tg-hear">לשמוע</span> <span class="tg-feel">להרגיש</span></p>
     </div>
     <div class="profiles-visual rev">
       <picture>
@@ -1074,14 +1098,13 @@ picture source{display:none} /* never a layout item (e.g. in flex containers wit
     <p class="msg">מתמקדות בעיקר בנראות</p>
     <p class="msg">מלאות בפרופילים מזויפים או ריקים מתוכן</p>
     <p class="msg">יוצרות יותר גוסטינג מאשר חיבורים אמיתיים</p>
-    <p class="msg msg-vme">Vme מציעה דרך אחרת.</p>
+    <p class="msg msg-vme">Vme מציעה דרך אחרת</p>
   </div>
   <p class="pain-bottom rev">
     אם חשבתם כבר לא פעם לוותר,<br>
     אבל עמוק בפנים עדיין בוער בכם הרצון לאהבה<br><br>
     <strong>כאן בדיוק Vme נכנסת<br>ועושה את כל ההבדל</strong>
   </p>
-  <div class="rev"><a class="btn-pink" href="#form">אני רוצה להכיר אחרת ←</a></div>
 </section>
 
 <!-- METHOD: לא רק וידאו -->
@@ -1094,10 +1117,10 @@ picture source{display:none} /* never a layout item (e.g. in flex containers wit
   </svg>
   <div class="method-inner">
     <div class="method-head rev">
-      <h2>לא רק <span class="pk">וידאו.</span></h2>
-      <p class="method-sub">שיטה שהופכת פרופיל לנוכחות אנושית.</p>
+      <h2>לא רק <span class="pk">וידאו</span></h2>
+      <p class="method-sub">שיטה שהופכת פרופיל לנוכחות אנושית</p>
       <p class="method-text">שאלות וידאו מדויקות עוזרות לאישיות, לערכים ולקול של<br>
-      כל אדם לבוא לידי ביטוי באופן טבעי ואותנטי.</p>
+      כל אדם לבוא לידי ביטוי באופן טבעי ואותנטי</p>
       <span class="method-bar" aria-hidden="true"></span>
     </div>
     <div class="method-grid">
@@ -1105,8 +1128,8 @@ picture source{display:none} /* never a layout item (e.g. in flex containers wit
         <span class="mc-icon mc-berry"><svg viewBox="0 0 24 24" aria-hidden="true"><path d="M3.2 11.6a2.6 2.6 0 0 1 2.6-2.6h7a2.6 2.6 0 0 1 2.6 2.6v3.6a2.6 2.6 0 0 1-2.6 2.6H8.6l-3.2 2.6v-2.7a2.6 2.6 0 0 1-2.2-2.5z"/><path d="M8.6 6.4A2.6 2.6 0 0 1 11.2 3.8h7a2.6 2.6 0 0 1 2.6 2.6V10a2.6 2.6 0 0 1-2.2 2.6v2.6l-2.4-2"/><path d="M7 13.4h.01"/><path d="M9.4 13.4h.01"/><path d="M11.8 13.4h.01"/></svg></span>
         <div>
           <h3>שאלות שמייצרות עומק</h3>
-          <p>לא רק להציג את עצמך,<br>
-            אלא להביא את מי שאת/ה.</p>
+          <p>לא רק להציג את עצמכם<br>
+            אלא להביא את מי שאתם</p>
         </div>
       </div>
       <div class="method-card rev">
@@ -1115,7 +1138,7 @@ picture source{display:none} /* never a layout item (e.g. in flex containers wit
           <h3>אותנטיות טבעית</h3>
           <p>פורמט שמאפשר להיות<br>
             אמיתיים, בלי להרגיש<br>
-            מבוימים.</p>
+            מבויימים</p>
         </div>
       </div>
       <div class="method-card rev">
@@ -1123,18 +1146,89 @@ picture source{display:none} /* never a layout item (e.g. in flex containers wit
         <div>
           <h3>נוכחות שאפשר להרגיש</h3>
           <p>הקול, המבט והאישיות<br>
-            יוצרים רושם אנושי יותר.</p>
+            יוצרים רושם אנושי יותר</p>
         </div>
       </div>
       <div class="method-card rev">
         <span class="mc-icon mc-pink"><svg viewBox="0 0 24 24" aria-hidden="true"><circle cx="12" cy="13.6" r="7.1"/><path d="M9.8 2.8h4.4"/><path d="M12 2.8v3.7"/><path d="M18.4 6.9l1.5-1.5"/><path d="M12 13.6V10"/><path d="M12 13.6l2.6 1.6"/></svg></span>
         <div>
           <h3>היכרות מהירה יותר</h3>
-          <p>מבינים בתוך דקות<br>
-            אם באמת מתחשק<br>
-            להמשיך.</p>
+          <p>מבינים בזמן קצר<br>
+            אם באמת מתחשק להמשיך</p>
         </div>
       </div>
+    </div>
+    <div class="method-cta rev"><a class="btn-pink" href="#form">סיקרנתם, איפה נרשמים ←</a></div>
+  </div>
+</section>
+
+<!-- TIMELINE -->
+<section class="how-steps" style="background:#EAF5F4;padding-left:24px;padding-right:24px;text-align:center;margin-top:calc(-1 * var(--diag));clip-path:var(--diag-top);">
+  <h2 style="font-size:clamp(20px,3vw,30px);font-weight:900;color:#414242;margin-bottom:24px;" class="rev">כך זה קורה</h2>
+  <div class="how-layout">
+    <div class="how-steps-col">
+      <div style="display:flex;flex-direction:column;align-items:center;gap:0;max-width:480px;margin:0 auto;">
+
+        <div class="rev" style="background:#fff;border-radius:20px;padding:12px 16px;width:100%;display:flex;align-items:center;gap:14px;border-right:3px solid #CF1C71;box-shadow:var(--shadow-card);box-sizing:border-box;">
+          <div style="width:36px;height:36px;border-radius:50%;background:rgba(207,28,113,0.1);display:flex;align-items:center;justify-content:center;font-size:18px;flex-shrink:0;">📝</div>
+          <div style="text-align:right;flex:1;">
+            <p style="font-size:19px;font-weight:800;color:#414242;margin:0 0 4px;">נרשמים</p>
+            <p style="font-size:15px;color:#5A6B66;margin:0;line-height:1.5;">בונים פרופיל אותנטי בשיטה הייחודית של <span class="nowrap">V-me</span></p>
+          </div>
+        </div>
+
+        <div class="how-arrow" aria-hidden="true">↓</div>
+
+        <div class="rev" style="background:#fff;border-radius:20px;padding:12px 16px;width:100%;display:flex;align-items:center;gap:14px;border-right:3px solid #82A79C;box-shadow:var(--shadow-card);box-sizing:border-box;">
+          <div style="width:36px;height:36px;border-radius:50%;background:#D4ECEA;display:flex;align-items:center;justify-content:center;font-size:18px;flex-shrink:0;">👀</div>
+          <div style="text-align:right;flex:1;">
+            <p style="font-size:19px;font-weight:800;color:#414242;margin:0 0 4px;">מכירים</p>
+            <p style="font-size:15px;color:#5A6B66;margin:0;line-height:1.5;">מרגישים את ה Vibe עוד לפני התכתבות ושיחה</p>
+          </div>
+        </div>
+
+        <div class="how-arrow" aria-hidden="true">↓</div>
+
+        <div class="rev" style="background:#fff;border-radius:20px;padding:12px 16px;width:100%;display:flex;align-items:center;gap:14px;border-right:3px solid #CF1C71;box-shadow:var(--shadow-card);box-sizing:border-box;">
+          <div style="width:36px;height:36px;border-radius:50%;background:rgba(207,28,113,0.1);display:flex;align-items:center;justify-content:center;font-size:18px;flex-shrink:0;">💬</div>
+          <div style="text-align:right;flex:1;">
+            <p style="font-size:19px;font-weight:800;color:#414242;margin:0 0 4px;">מתחברים</p>
+            <p style="font-size:15px;color:#5A6B66;margin:0;line-height:1.5;">השיחה נפתחת רק כשיש חיבור וכימיה הדדיים</p>
+          </div>
+        </div>
+
+        <div class="how-arrow" aria-hidden="true">↓</div>
+
+        <div class="rev" style="background:#fff;border-radius:20px;padding:12px 16px;width:100%;display:flex;align-items:center;gap:14px;border-right:3px solid #82A79C;box-shadow:var(--shadow-card);box-sizing:border-box;">
+          <div style="width:36px;height:36px;border-radius:50%;background:#D4ECEA;display:flex;align-items:center;justify-content:center;font-size:18px;flex-shrink:0;">💕</div>
+          <div style="text-align:right;flex:1;">
+            <p style="font-size:19px;font-weight:800;color:#414242;margin:0 0 4px;">נפגשים באמת</p>
+            <p style="font-size:15px;color:#5A6B66;margin:0;line-height:1.5;">דייט שמתחיל ממקום מחובר</p>
+          </div>
+        </div>
+
+      </div>
+      <div class="how-phone rev">
+        <div class="phone-mock">
+          <picture>
+            <source type="image/webp" srcset="assets/images/pastel-phones-560.webp 560w, assets/images/pastel-phones-1122.webp 1122w" sizes="(max-width: 899px) 280px, 340px" />
+            <img src="assets/images/pastel_dating_app_phone_mockup.png" width="1122" height="1402" loading="lazy" decoding="async" alt="אפליקציית Vme: שיחה ופרופיל וידאו על שני טלפונים" />
+          </picture>
+          <div class="pm-screen" dir="rtl" aria-hidden="true">
+            <span class="pm-day" style="left:31.373%;top:20.471%;width:10.160%;height:2.782%">היום</span>
+            <span class="pm-name" style="left:38.324%;top:13.980%;width:10.873%;height:2.282%">מיכל</span>
+            <span class="pm-msg" style="left:14.795%;top:25.250%;width:35.829%;height:6.847%">ראיתי את הסרטון שלך עם הגיטרה<br>ולא הפסקתי לחייך 🙂 מנגן הרבה?</span>
+            <span class="pm-time" style="left:15.152%;top:32.240%;width:8.200%;height:2.140%">14:52</span>
+            <span class="pm-title" style="left:17.469%;top:51.427%;width:38.503%;height:3.281%">מיכל רוצה לדבר איתך</span>
+            <span class="pm-body" style="left:15.686%;top:55.350%;width:42.068%;height:5.849%">בואו להכיר את מיכל, אישור פותח את השיחה<br>פחות מתאים? לא לדאוג, אנחנו נשלח לה הודעה :)</span>
+            <span class="pm-main" style="left:15.152%;top:62.054%;width:42.959%;height:5.064%">לצפות בפרופיל של מיכל</span>
+            <span class="pm-ok" style="left:38.414%;top:68.545%;width:19.608%;height:4.993%">אישור שיחה</span>
+            <span class="pm-no" style="left:15.241%;top:68.545%;width:21.925%;height:4.993%">לא מתאים</span>
+            <span class="pm-reply" style="left:21.034%;top:86.163%;width:36.542%;height:3.424%">אפשר גם פשוט להגיב כאן...</span>
+          </div>
+        </div>
+      </div>
+      <div class="rev" style="text-align:center;margin-top:32px;"><a class="btn-pink" href="#form">נשמע מתאים, רוצה להירשם ←</a></div>
     </div>
   </div>
 </section>
@@ -1187,15 +1281,15 @@ picture source{display:none} /* never a layout item (e.g. in flex containers wit
   <div class="founder-layout">
     <div class="founder-letter rev">
       <p>בפנים, כולנו רוצים את אותו הדבר:</p>
-      <p class="founder-pull">שייכות ואהבה.</p>
-      <p>למצוא אדם שנוכל להיות לידו בדיוק מי <span class="nowrap">שאנחנו —</span> בלי מסכות, בלי משחקים ובלי לנסות להרשים.</p>
-      <p>אבל בתקופה שבה יותר ויותר אנשים חווים בדידות וקושי לתת אמון, הדרך לאהבה הפכה מורכבת יותר. הטכנולוגיה אמנם מקרבת בינינו, אך לא תמיד עוזרת לנו להרגיש מי באמת נמצא בצד השני.</p>
-      <p>במשך שנים עזרתי לאנשים לתקשר, להביע את עצמם ולהביא את הקול האמיתי שלהם לעולם. מתוך המקום הזה נולדה <span class="nowrap">Vme —</span> מרחב שמאפשר לראות, לשמוע ולהרגיש את האדם שמאחורי הפרופיל.</p>
+      <p class="founder-pull">שייכות ואהבה</p>
+      <p>למצוא אדם שנוכל להיות לידו בדיוק מי <span class="nowrap">שאנחנו —</span> בלי מסכות, בלי משחקים ובלי לנסות להרשים</p>
+      <p>אבל בתקופה שבה יותר ויותר אנשים חווים בדידות וקושי לתת אמון, הדרך לאהבה הפכה מורכבת יותר הטכנולוגיה אמנם מקרבת בינינו, אך לא תמיד עוזרת לנו להרגיש מי באמת נמצא בצד השני</p>
+      <p>במשך שנים עזרתי לאנשים לתקשר, להביע את עצמם ולהביא את הקול האמיתי שלהם לעולם מתוך המקום הזה נולדה <span class="nowrap">Vme —</span> מרחב שמאפשר לראות, לשמוע ולהרגיש את האדם שמאחורי הפרופיל</p>
       <p>יחד עם השותפים שלי ואנשי מקצוע מוכשרים, בנינו את Vme מתוך אמונה פשוטה:</p>
-      <p class="founder-pull">אהבה מתחילה בנוכחות.</p>
-      <p>בקול, במבט, בשפת הגוף, בהומור ובאנרגיה שנוצרת בין שני אנשים.</p>
-      <p>Vme נבנתה כדי לעזור לכם להיות אמיתיים יותר, לזהות חיבור מוקדם יותר וליהנות גם מהדרך למציאת זוגיות משמעותית.</p>
-      <p>אני והצוות של Vme ממשיכים לפעול כדי ליצור עבורכם מרחב חיובי כזה שמאפשר להכיר, להיפתח ולהיות מי שאתם באמת.</p>
+      <p class="founder-pull">אהבה מתחילה בנוכחות</p>
+      <p>בקול, במבט, בשפת הגוף, בהומור ובאנרגיה שנוצרת בין שני אנשים</p>
+      <p>Vme נבנתה כדי לעזור לכם להיות אמיתיים יותר, לזהות חיבור מוקדם יותר וליהנות גם מהדרך למציאת זוגיות משמעותית</p>
+      <p>אני והצוות של Vme ממשיכים לפעול כדי ליצור עבורכם מרחב חיובי כזה שמאפשר להכיר, להיפתח ולהיות מי שאתם באמת</p>
     </div>
     <div class="founder-photo rev">
       <picture>
@@ -1211,70 +1305,13 @@ picture source{display:none} /* never a layout item (e.g. in flex containers wit
   </div>
 </section>
 
-<!-- TIMELINE -->
-<section class="how-steps" style="background:#EAF5F4;padding-left:24px;padding-right:24px;text-align:center;margin-top:calc(-1 * var(--diag));clip-path:var(--diag-top);">
-  <h2 style="font-size:clamp(20px,3vw,30px);font-weight:900;color:#414242;margin-bottom:24px;" class="rev">כך זה קורה</h2>
-  <div class="how-layout">
-    <div class="how-steps-col">
-      <div style="display:flex;flex-direction:column;align-items:center;gap:0;max-width:480px;margin:0 auto;">
-
-        <div class="rev" style="background:#fff;border-radius:20px;padding:12px 16px;width:100%;display:flex;align-items:center;gap:14px;border-right:3px solid #CF1C71;box-shadow:var(--shadow-card);box-sizing:border-box;">
-          <div style="width:36px;height:36px;border-radius:50%;background:rgba(207,28,113,0.1);display:flex;align-items:center;justify-content:center;font-size:18px;flex-shrink:0;">📝</div>
-          <div style="text-align:right;flex:1;">
-            <p style="font-size:19px;font-weight:800;color:#414242;margin:0 0 4px;">נרשמים</p>
-            <p style="font-size:15px;color:#5A6B66;margin:0;line-height:1.5;">בונים פרופיל אותנטי בשיטה הייחודית של <span class="nowrap">V-me</span></p>
-          </div>
-        </div>
-
-        <div class="how-arrow" aria-hidden="true">↓</div>
-
-        <div class="rev" style="background:#fff;border-radius:20px;padding:12px 16px;width:100%;display:flex;align-items:center;gap:14px;border-right:3px solid #82A79C;box-shadow:var(--shadow-card);box-sizing:border-box;">
-          <div style="width:36px;height:36px;border-radius:50%;background:#D4ECEA;display:flex;align-items:center;justify-content:center;font-size:18px;flex-shrink:0;">👀</div>
-          <div style="text-align:right;flex:1;">
-            <p style="font-size:19px;font-weight:800;color:#414242;margin:0 0 4px;">מכירים</p>
-            <p style="font-size:15px;color:#5A6B66;margin:0;line-height:1.5;">מרגישים וייב עוד לפני שמתחילים שיחה</p>
-          </div>
-        </div>
-
-        <div class="how-arrow" aria-hidden="true">↓</div>
-
-        <div class="rev" style="background:#fff;border-radius:20px;padding:12px 16px;width:100%;display:flex;align-items:center;gap:14px;border-right:3px solid #CF1C71;box-shadow:var(--shadow-card);box-sizing:border-box;">
-          <div style="width:36px;height:36px;border-radius:50%;background:rgba(207,28,113,0.1);display:flex;align-items:center;justify-content:center;font-size:18px;flex-shrink:0;">💬</div>
-          <div style="text-align:right;flex:1;">
-            <p style="font-size:19px;font-weight:800;color:#414242;margin:0 0 4px;">מתחברים</p>
-            <p style="font-size:15px;color:#5A6B66;margin:0;line-height:1.5;">השיחה נפתחת רק כשיש חיבור וכימיה הדדיים</p>
-          </div>
-        </div>
-
-        <div class="how-arrow" aria-hidden="true">↓</div>
-
-        <div class="rev" style="background:#fff;border-radius:20px;padding:12px 16px;width:100%;display:flex;align-items:center;gap:14px;border-right:3px solid #82A79C;box-shadow:var(--shadow-card);box-sizing:border-box;">
-          <div style="width:36px;height:36px;border-radius:50%;background:#D4ECEA;display:flex;align-items:center;justify-content:center;font-size:18px;flex-shrink:0;">💕</div>
-          <div style="text-align:right;flex:1;">
-            <p style="font-size:19px;font-weight:800;color:#414242;margin:0 0 4px;">נפגשים באמת</p>
-            <p style="font-size:15px;color:#5A6B66;margin:0;line-height:1.5;">דייט שמתחיל ממקום מחובר</p>
-          </div>
-        </div>
-
-      </div>
-      <div class="how-phone rev">
-        <picture>
-          <source type="image/webp" srcset="assets/images/overlapping-iphones-560.webp 560w, assets/images/overlapping-iphones-1122.webp 1122w" sizes="(max-width: 899px) 280px, 340px" />
-          <img src="assets/images/overlapping_iphones_with_hebrew_dating_app.png" width="1122" height="1402" loading="lazy" decoding="async" alt="אפליקציית Vme: שיחה ופרופיל וידאו על שני טלפונים" />
-        </picture>
-      </div>
-      <div class="rev" style="text-align:center;margin-top:32px;"><a class="btn-pink" href="#form">נשמע מתאים, רוצה להירשם ←</a></div>
-    </div>
-  </div>
-</section>
-
 <!-- QUOTE LAOZI -->
 
 <section class="trust">
   <div class="rev" style="background:#EAF5F4;border-radius:20px;padding:40px 36px;position:relative;margin-bottom:44px;border-right:4px solid #CF1C71;max-width:580px;margin-left:auto;margin-right:auto;overflow:hidden;text-align:center;">
     <div style="font-size:72px;color:rgba(207,28,113,0.07);font-family:Georgia,serif;line-height:1;position:absolute;top:10px;right:18px;pointer-events:none;letter-spacing:-4px;">""</div>
     <p style="font-size:clamp(20px,3.5vw,26px);font-weight:700;color:#414242;line-height:1.9;margin:0 0 24px;position:relative;z-index:1;">
-      אהבה אמיתית מתחילה<br>כשמישהו מכיר אותך כפי שאתה,<br>ועדיין בוחר בך.
+      אהבה אמיתית מתחילה<br>כשמישהו מכיר אותך כפי שאתה,<br>ועדיין בוחר בך
     </p>
     <div style="width:36px;height:2px;background:#CF1C71;margin:0 auto 16px;"></div>
     <p style="font-size:14px;font-weight:600;color:#CF1C71;margin:0;letter-spacing:0.2px;">לאו דזה, פילוסוף סיני ומייסד הטאואיזם</p>
@@ -1294,7 +1331,7 @@ picture source{display:none} /* never a layout item (e.g. in flex containers wit
   <div class="rev">
     <span class="sec-label">💭 רגע של כנות</span>
     <h2>למי Vme מתאימה ולמי פחות</h2>
-    <p class="fit-subtitle"><span class="nowrap">V-me</span> לא מתאימה לכולם, וזה בדיוק היתרון שלה.</p>
+    <p class="fit-subtitle"><span class="nowrap">V-me</span> לא מתאימה לכולם, וזה בדיוק היתרון שלה</p>
   </div>
   <div class="fit-grid">
     <div class="fit-col fit-col-yes rev">
@@ -1330,7 +1367,7 @@ picture source{display:none} /* never a layout item (e.g. in flex containers wit
   <div class="rev">
     <span class="sec-label">❓ שאלות נפוצות</span>
     <h2>שאלות שאולי עוברות לכם בראש</h2>
-    <p class="faq-subtitle">ריכזנו את הדברים שהכי טבעי לשאול לפני שמצטרפים ל־Vme.</p>
+    <p class="faq-subtitle">ריכזנו את הדברים שהכי טבעי לשאול לפני שמצטרפים ל־Vme</p>
   </div>
   <div class="faq-list">
     <div class="faq-item rev">
@@ -1339,9 +1376,9 @@ picture source{display:none} /* never a layout item (e.g. in flex containers wit
         <span class="faq-icon">+</span>
       </button>
       <div class="faq-answer" id="faq-a-1">
-        <p>ברוב אפליקציות ההיכרויות ההחלטה אם להכיר מישהו מבוססת בעיקר על תמונה וכמה שורות טקסט.</p>
-        <p>ב־Vme אפשר לראות את האדם שמאחורי הפרופיל. לשמוע אותו, להבין מה חשוב לו, לראות איך הוא מבטא את עצמו ולהרגיש קצת יותר את מי שהוא באמת.</p>
-        <p>המטרה היא לעזור ליצור חיבור שמבוסס על אישיות, ערכים ותחושת התאמה, ולא רק על תמונה או משפט פתיחה מוצלח.</p>
+        <p>ברוב אפליקציות ההיכרויות ההחלטה אם להכיר מישהו מבוססת בעיקר על תמונה וכמה שורות טקסט</p>
+        <p>ב־Vme אפשר לראות את האדם שמאחורי הפרופיל לשמוע אותו, להבין מה חשוב לו, לראות איך הוא מבטא את עצמו ולהרגיש קצת יותר את מי שהוא באמת</p>
+        <p>המטרה היא לעזור ליצור חיבור שמבוסס על אישיות, ערכים ותחושת התאמה, ולא רק על תמונה או משפט פתיחה מוצלח</p>
       </div>
     </div>
 
@@ -1351,10 +1388,10 @@ picture source{display:none} /* never a layout item (e.g. in flex containers wit
         <span class="faq-icon">+</span>
       </button>
       <div class="faq-answer" id="faq-a-2">
-        <p>כן. ב־Vme כולם משתפים וידאו, זה הבסיס של האפליקציה.</p>
-        <p>לא צריך להיות טובים מול מצלמה, לא צריך להיראות מושלמים ולא צריך להכין נאום.</p>
-        <p>המטרה היא לאפשר לצד השני להכיר אתכם מעבר לתמונה ולכמה שורות טקסט. לשמוע אתכם, לראות איך אתם מבטאים את עצמכם ולהרגיש אם יש חיבור.</p>
-        <p>שם הרבה פעמים מתחיל חיבור אמיתי.</p>
+        <p>כן ב־Vme כולם משתפים וידאו, זה הבסיס של האפליקציה</p>
+        <p>לא צריך להיות טובים מול מצלמה, לא צריך להיראות מושלמים ולא צריך להכין נאום</p>
+        <p>המטרה היא לאפשר לצד השני להכיר אתכם מעבר לתמונה ולכמה שורות טקסט לשמוע אתכם, לראות איך אתם מבטאים את עצמכם ולהרגיש אם יש חיבור</p>
+        <p>שם הרבה פעמים מתחיל חיבור אמיתי</p>
       </div>
     </div>
 
@@ -1364,9 +1401,9 @@ picture source{display:none} /* never a layout item (e.g. in flex containers wit
         <span class="faq-icon">+</span>
       </button>
       <div class="faq-answer" id="faq-a-3">
-        <p>רק משתמשים רשומים ב־Vme שגם העלו סרטוני וידאו משלהם יכולים לראות פרופילים של אחרים.</p>
-        <p>הפרופיל לא פתוח לציבור, לא מופיע בגוגל ולא נגיש למי שלא נמצא בתוך האפליקציה.</p>
-        <p>אם נתקלתם בהתנהגות לא מתאימה, אפשר לדווח על משתמשים או על תוכן, ואנחנו נטפל בזה כדי לשמור על מרחב בטוח ומכבד.</p>
+        <p>רק משתמשים רשומים ב־Vme שגם העלו סרטוני וידאו משלהם יכולים לראות פרופילים של אחרים</p>
+        <p>הפרופיל לא פתוח לציבור, לא מופיע בגוגל ולא נגיש למי שלא נמצא בתוך האפליקציה</p>
+        <p>אם נתקלתם בהתנהגות לא מתאימה, אפשר לדווח על משתמשים או על תוכן, ואנחנו נטפל בזה כדי לשמור על מרחב בטוח ומכבד</p>
       </div>
     </div>
 
@@ -1376,10 +1413,10 @@ picture source{display:none} /* never a layout item (e.g. in flex containers wit
         <span class="faq-icon">+</span>
       </button>
       <div class="faq-answer" id="faq-a-4">
-        <p>אחרי ההרשמה אנחנו עוברים על הפרטים ובודקים התאמה לפיילוט הראשוני של Vme.</p>
-        <p>אם זה מתאים לסבב הנוכחי, ניצור איתכם קשר ונשלח הסבר קצר על המשך התהליך, כולל איך נכנסים לאפליקציה ואיך מתחילים לבנות פרופיל וידאו.</p>
-        <p>גם אם לא תיכנסו בסבב הראשון, זה לא אומר שלא התאמתם. אנחנו פותחים את Vme בהדרגה ומתאימים כל סבב לפי קבוצות גיל, אזור מגורים ופרמטרים נוספים, כדי ליצור קהילה מאוזנת ורלוונטית יותר.</p>
-        <p>ההרשמה לא מחייבת בתשלום ולא מבטיחה קבלה אוטומטית לפיילוט.</p>
+        <p>אחרי ההרשמה אנחנו עוברים על הפרטים ובודקים התאמה לפיילוט הראשוני של Vme</p>
+        <p>אם זה מתאים לסבב הנוכחי, ניצור איתכם קשר ונשלח הסבר קצר על המשך התהליך, כולל איך נכנסים לאפליקציה ואיך מתחילים לבנות פרופיל וידאו</p>
+        <p>גם אם לא תיכנסו בסבב הראשון, זה לא אומר שלא התאמתם אנחנו פותחים את Vme בהדרגה ומתאימים כל סבב לפי קבוצות גיל, אזור מגורים ופרמטרים נוספים, כדי ליצור קהילה מאוזנת ורלוונטית יותר</p>
+        <p>ההרשמה לא מחייבת בתשלום ולא מבטיחה קבלה אוטומטית לפיילוט</p>
       </div>
     </div>
 
@@ -1389,9 +1426,9 @@ picture source{display:none} /* never a layout item (e.g. in flex containers wit
         <span class="faq-icon">+</span>
       </button>
       <div class="faq-answer" id="faq-a-5">
-        <p>Vme היא אפליקציית פרימיום, שנבנתה עבור אנשים שמחפשים היכרות רצינית ומוכנים להשקיע בתהליך.</p>
-        <p>מי שיבחר להיות חלק מנבחרת המשתמשים הראשונים של Vme יוכל ליהנות מהטבות מיוחדות.</p>
-        <p>המודל שלנו נועד גם לשמור על פרטיות המשתמשים, כך שסרטוני הווידאו לא יהיו חשופים לכל אחד, אלא רק למשתמשים רשומים מתוך הקהילה.</p>
+        <p>Vme היא אפליקציית פרימיום, שנבנתה עבור אנשים שמחפשים היכרות רצינית ומוכנים להשקיע בתהליך</p>
+        <p>מי שיבחר להיות חלק מנבחרת המשתמשים הראשונים של Vme יוכל ליהנות מהטבות מיוחדות</p>
+        <p>המודל שלנו נועד גם לשמור על פרטיות המשתמשים, כך שסרטוני הווידאו לא יהיו חשופים לכל אחד, אלא רק למשתמשים רשומים מתוך הקהילה</p>
       </div>
     </div>
 
@@ -1401,10 +1438,10 @@ picture source{display:none} /* never a layout item (e.g. in flex containers wit
         <span class="faq-icon">+</span>
       </button>
       <div class="faq-answer" id="faq-a-6">
-        <p>כן.</p>
-        <p>Vme מתאימה גם למי שכבר עבר זוגיות משמעותית ומגיע היום עם יותר ניסיון, יותר בהירות ויותר הבנה של מה הוא מחפש.</p>
-        <p>פרק ב׳ הוא לא "להתחיל מאפס". הוא להתחיל אחרת.</p>
-        <p>ב־Vme יש מקום לאנשים שרוצים להכיר ברצינות, בלי משחקים ובלי לבזבז זמן על חיבורים שלא באמת מתאימים.</p>
+        <p>כן</p>
+        <p>Vme מתאימה גם למי שכבר עבר זוגיות משמעותית ומגיע היום עם יותר ניסיון, יותר בהירות ויותר הבנה של מה הוא מחפש</p>
+        <p>פרק ב׳ הוא לא "להתחיל מאפס" הוא להתחיל אחרת</p>
+        <p>ב־Vme יש מקום לאנשים שרוצים להכיר ברצינות, בלי משחקים ובלי לבזבז זמן על חיבורים שלא באמת מתאימים</p>
       </div>
     </div>
 
@@ -1414,12 +1451,12 @@ picture source{display:none} /* never a layout item (e.g. in flex containers wit
         <span class="faq-icon">+</span>
       </button>
       <div class="faq-answer" id="faq-a-7">
-        <p>כן.</p>
-        <p>רוב האנשים שמגיעים ל־Vme הם לא שחקנים, לא משפיענים ולא רגילים לדבר למצלמה. זה טבעי לגמרי.</p>
-        <p>בדיוק בשביל זה בנינו תהליך שמלווה אתכם צעד אחר צעד, עם שאלות והכוונה שעוזרות להציג את עצמכם בצורה טבעית ונינוחה.</p>
-        <p>בנוסף, המנטורים של Vme מלווים את הקהילה ומשתפים תכנים, כלים ותובנות שיעזרו לכם להרגיש יותר בנוח בתהליך ההיכרות.</p>
-        <p>המטרה היא לא ליצור סרטון מושלם. המטרה היא לאפשר לאנשים להכיר אתכם קצת יותר לעומק מאשר דרך תמונה וכמה שורות טקסט.</p>
-        <p>שם הרבה פעמים מתחיל חיבור אמיתי.</p>
+        <p>כן</p>
+        <p>רוב האנשים שמגיעים ל־Vme הם לא שחקנים, לא משפיענים ולא רגילים לדבר למצלמה זה טבעי לגמרי</p>
+        <p>בדיוק בשביל זה בנינו תהליך שמלווה אתכם צעד אחר צעד, עם שאלות והכוונה שעוזרות להציג את עצמכם בצורה טבעית ונינוחה</p>
+        <p>בנוסף, המנטורים של Vme מלווים את הקהילה ומשתפים תכנים, כלים ותובנות שיעזרו לכם להרגיש יותר בנוח בתהליך ההיכרות</p>
+        <p>המטרה היא לא ליצור סרטון מושלם המטרה היא לאפשר לאנשים להכיר אתכם קצת יותר לעומק מאשר דרך תמונה וכמה שורות טקסט</p>
+        <p>שם הרבה פעמים מתחיל חיבור אמיתי</p>
       </div>
     </div>
 
@@ -1429,8 +1466,8 @@ picture source{display:none} /* never a layout item (e.g. in flex containers wit
         <span class="faq-icon">+</span>
       </button>
       <div class="faq-answer" id="faq-a-8">
-        <p>בשלב הפיילוט אנחנו בוחנים כל הרשמה ומתאימים את ההצטרפות בהדרגה לפי מגוון שיקולים, כמו גיל, אזור מגורים ויצירת איזון נכון בקהילה.</p>
-        <p>המטרה היא לא רק להכניס עוד אנשים למערכת, אלא ליצור סביבה שבה יש לכם סיכוי אמיתי להכיר אנשים רלוונטיים ומתאימים.</p>
+        <p>בשלב הפיילוט אנחנו בוחנים כל הרשמה ומתאימים את ההצטרפות בהדרגה לפי מגוון שיקולים, כמו גיל, אזור מגורים ויצירת איזון נכון בקהילה</p>
+        <p>המטרה היא לא רק להכניס עוד אנשים למערכת, אלא ליצור סביבה שבה יש לכם סיכוי אמיתי להכיר אנשים רלוונטיים ומתאימים</p>
       </div>
     </div>
   </div>
@@ -1533,13 +1570,13 @@ picture source{display:none} /* never a layout item (e.g. in flex containers wit
       <button type="submit" class="btn-pink btn-form">סיימתי ←</button>
     </div>
 
-    <p id="vme-form-error" style="display:none;color:#CF1C71;font-size:14px;text-align:center;margin-top:12px;">משהו השתבש בשליחה. נסו שוב, או צרו איתנו קשר ישירות.</p>
+    <p id="vme-form-error" style="display:none;color:#CF1C71;font-size:14px;text-align:center;margin-top:12px;">משהו השתבש בשליחה נסו שוב, או צרו איתנו קשר ישירות</p>
   </form>
   <a class="wa-btn wa-btn-secondary" id="wa-community-form" href="https://chat.whatsapp.com/D1RKvVYwOR1BVOvTqqcokn?mode=gi_t" target="_blank" rel="noopener noreferrer"><svg viewBox="0 0 24 24" aria-hidden="true"><path d="M17.472 14.382c-.297-.149-1.758-.867-2.03-.967-.273-.099-.471-.148-.67.15-.197.297-.767.966-.94 1.164-.173.199-.347.223-.644.075-.297-.15-1.255-.463-2.39-1.475-.883-.788-1.48-1.761-1.653-2.059-.173-.297-.018-.458.13-.606.134-.133.298-.347.446-.52.149-.174.198-.298.298-.497.099-.198.05-.371-.025-.52-.075-.149-.669-1.612-.916-2.207-.242-.579-.487-.5-.669-.51-.173-.008-.371-.01-.57-.01-.198 0-.52.074-.792.372-.272.297-1.04 1.016-1.04 2.479 0 1.462 1.065 2.875 1.213 3.074.149.198 2.096 3.2 5.077 4.487.709.306 1.262.489 1.694.625.712.227 1.36.195 1.871.118.571-.085 1.758-.719 2.006-1.413.248-.694.248-1.289.173-1.413-.074-.124-.272-.198-.57-.347m-5.421 7.403h-.004a9.87 9.87 0 01-5.031-1.378l-.361-.214-3.741.982.998-3.648-.235-.374a9.86 9.86 0 01-1.51-5.26c.001-5.45 4.436-9.884 9.888-9.884 2.64 0 5.122 1.03 6.988 2.898a9.825 9.825 0 012.893 6.994c-.003 5.45-4.437 9.884-9.885 9.884m8.413-18.297A11.815 11.815 0 0012.05 0C5.495 0 .16 5.335.157 11.892c0 2.096.547 4.142 1.588 5.945L.057 24l6.305-1.654a11.882 11.882 0 005.683 1.448h.005c6.554 0 11.89-5.335 11.893-11.893a11.821 11.821 0 00-3.48-8.413Z"/></svg><span>הצטרפו לקהילת Vme</span></a>
   <div id="vme-form-thankyou" class="rev" style="display:none;text-align:center;padding:20px 10px;">
     <div style="font-size:48px;margin-bottom:16px;">💕</div>
     <h3 style="font-size:22px;font-weight:900;color:var(--vme-dark);margin-bottom:10px;">תודה שנרשמת!</h3>
-    <p style="font-size:16px;color:#1A3A35;">קיבלנו את הפרטים שלך, וניצור איתך קשר בקרוב לתיאום שיחת התאמה לפיילוט.</p>
+    <p style="font-size:16px;color:#1A3A35;">קיבלנו את הפרטים שלך, וניצור איתך קשר בקרוב לתיאום שיחת התאמה לפיילוט</p>
     <a class="wa-btn wa-btn-primary" id="wa-community-thankyou" href="https://chat.whatsapp.com/D1RKvVYwOR1BVOvTqqcokn?mode=gi_t" target="_blank" rel="noopener noreferrer"><svg viewBox="0 0 24 24" aria-hidden="true"><path d="M17.472 14.382c-.297-.149-1.758-.867-2.03-.967-.273-.099-.471-.148-.67.15-.197.297-.767.966-.94 1.164-.173.199-.347.223-.644.075-.297-.15-1.255-.463-2.39-1.475-.883-.788-1.48-1.761-1.653-2.059-.173-.297-.018-.458.13-.606.134-.133.298-.347.446-.52.149-.174.198-.298.298-.497.099-.198.05-.371-.025-.52-.075-.149-.669-1.612-.916-2.207-.242-.579-.487-.5-.669-.51-.173-.008-.371-.01-.57-.01-.198 0-.52.074-.792.372-.272.297-1.04 1.016-1.04 2.479 0 1.462 1.065 2.875 1.213 3.074.149.198 2.096 3.2 5.077 4.487.709.306 1.262.489 1.694.625.712.227 1.36.195 1.871.118.571-.085 1.758-.719 2.006-1.413.248-.694.248-1.289.173-1.413-.074-.124-.272-.198-.57-.347m-5.421 7.403h-.004a9.87 9.87 0 01-5.031-1.378l-.361-.214-3.741.982.998-3.648-.235-.374a9.86 9.86 0 01-1.51-5.26c.001-5.45 4.436-9.884 9.888-9.884 2.64 0 5.122 1.03 6.988 2.898a9.825 9.825 0 012.893 6.994c-.003 5.45-4.437 9.884-9.885 9.884m8.413-18.297A11.815 11.815 0 0012.05 0C5.495 0 .16 5.335.157 11.892c0 2.096.547 4.142 1.588 5.945L.057 24l6.305-1.654a11.882 11.882 0 005.683 1.448h.005c6.554 0 11.89-5.335 11.893-11.893a11.821 11.821 0 00-3.48-8.413Z"/></svg><span>הצטרפו לקהילת Vme</span></a>
   </div>
 
@@ -1717,7 +1754,7 @@ if (vmeStep1Next) {
       if (missingFields.length > 0) {
         missingFields.forEach(function (f) { vmeMarkInvalid(f.el); });
         const labels = missingFields.map(function (f) { return f.label; });
-        vmeReportValidationFailure('missing required field(s) in step 1: ' + labels.join(', '), 'נא למלא: ' + labels.join(', ') + '.', step1ErrorEl);
+        vmeReportValidationFailure('missing required field(s) in step 1: ' + labels.join(', '), 'נא למלא: ' + labels.join(', '), step1ErrorEl);
         return;
       }
 
@@ -1725,20 +1762,20 @@ if (vmeStep1Next) {
       const phoneEl = step1.querySelector('[name="phone"]');
       if (!/^[^\s@]+@[^\s@]+\.[^\s@]{2,}$/.test(emailEl.value.trim())) {
         vmeMarkInvalid(emailEl);
-        vmeReportValidationFailure('email invalid', 'נא להזין כתובת דוא"ל תקינה.', step1ErrorEl);
+        vmeReportValidationFailure('email invalid', 'נא להזין כתובת דוא"ל תקינה', step1ErrorEl);
         return;
       }
       const phoneDigits = phoneEl.value.replace(/[\s\-().]/g, '');
       if (!/^\+?\d{9,15}$/.test(phoneDigits)) {
         vmeMarkInvalid(phoneEl);
-        vmeReportValidationFailure('phone invalid', 'נא להזין מספר טלפון תקין.', step1ErrorEl);
+        vmeReportValidationFailure('phone invalid', 'נא להזין מספר טלפון תקין', step1ErrorEl);
         return;
       }
 
       const dobValue = dobInput ? dobInput.value.trim() : '';
       if (!dobValue) {
-        vmeReportValidationFailure('birth date missing', 'נא להזין תאריך לידה.', step1ErrorEl);
-        vmeShowFieldError(dobInput, dobErrorEl, 'נא להזין תאריך לידה.');
+        vmeReportValidationFailure('birth date missing', 'נא להזין תאריך לידה', step1ErrorEl);
+        vmeShowFieldError(dobInput, dobErrorEl, 'נא להזין תאריך לידה');
         return;
       }
 
@@ -1747,15 +1784,15 @@ if (vmeStep1Next) {
       const dobHidden = document.getElementById('dob-value');
       if (dobHidden) dobHidden.value = birthDate ? vmeIsoDate(birthDate) : '';
       if (!birthDate || birthDate > today) {
-        vmeReportValidationFailure('birth date invalid', 'נא להזין תאריך לידה תקין.', step1ErrorEl);
-        vmeShowFieldError(dobInput, dobErrorEl, 'נא להזין תאריך לידה תקין.');
+        vmeReportValidationFailure('birth date invalid', 'נא להזין תאריך לידה תקין', step1ErrorEl);
+        vmeShowFieldError(dobInput, dobErrorEl, 'נא להזין תאריך לידה תקין');
         return;
       }
 
       const age = vmeCalculateAge(birthDate);
       if (age < 18) {
-        vmeReportValidationFailure('user under 18 (age=' + age + ')', 'מצטערים, השירות מיועד לגיל 18 ומעלה בלבד.', step1ErrorEl);
-        vmeShowFieldError(dobInput, dobErrorEl, 'מצטערים, השירות מיועד לגיל 18 ומעלה בלבד.');
+        vmeReportValidationFailure('user under 18 (age=' + age + ')', 'מצטערים, השירות מיועד לגיל 18 ומעלה בלבד', step1ErrorEl);
+        vmeShowFieldError(dobInput, dobErrorEl, 'מצטערים, השירות מיועד לגיל 18 ומעלה בלבד');
         return;
       }
 
@@ -1768,7 +1805,7 @@ if (vmeStep1Next) {
     } catch (err) {
       console.error('Unexpected error in step 1 validation:', err);
       if (step1ErrorEl) {
-        step1ErrorEl.textContent = 'אירעה שגיאה בטופס. אנא נסו שוב.';
+        step1ErrorEl.textContent = 'אירעה שגיאה בטופס אנא נסו שוב';
         step1ErrorEl.style.display = 'block';
       }
     }
@@ -1817,7 +1854,7 @@ if (vmeForm) {
         console.log('Validation failed: submit event fired while step 1 is still active (blocked)');
         const step1ErrorEl = document.getElementById('vme-step1-error');
         if (step1ErrorEl) {
-          step1ErrorEl.textContent = 'נא להשלים קודם את שלב 1 וללחוץ על "אני רוצה להכיר אחרת ←".';
+          step1ErrorEl.textContent = 'נא להשלים קודם את שלב 1 וללחוץ על "אני רוצה להכיר אחרת ←"';
           step1ErrorEl.style.display = 'block';
         }
         return;
@@ -1838,27 +1875,27 @@ if (vmeForm) {
 
       if (!genderEl || !genderEl.value) {
         vmeMarkInvalid(genderEl);
-        vmeReportValidationFailure('gender missing', 'נא לבחור מגדר.', consentErrorEl);
+        vmeReportValidationFailure('gender missing', 'נא לבחור מגדר', consentErrorEl);
         return;
       }
       if (!lookingForEl || !lookingForEl.value) {
         vmeMarkInvalid(lookingForEl);
-        vmeReportValidationFailure('looking_for missing', 'נא לבחור את מי ברצונך להכיר.', consentErrorEl);
+        vmeReportValidationFailure('looking_for missing', 'נא לבחור את מי ברצונך להכיר', consentErrorEl);
         return;
       }
       if (!cityEl || !cityEl.value.trim()) {
         vmeMarkInvalid(cityEl);
-        vmeReportValidationFailure('city missing', 'נא להזין עיר מגורים.', consentErrorEl);
+        vmeReportValidationFailure('city missing', 'נא להזין עיר מגורים', consentErrorEl);
         return;
       }
       if (!maritalEl || !maritalEl.value) {
         vmeMarkInvalid(maritalEl);
-        vmeReportValidationFailure('marital status missing', 'נא לבחור מצב משפחתי.', consentErrorEl);
+        vmeReportValidationFailure('marital status missing', 'נא לבחור מצב משפחתי', consentErrorEl);
         return;
       }
       if (!childrenEl || !childrenEl.value) {
         vmeMarkInvalid(childrenEl);
-        vmeReportValidationFailure('has_children missing', 'נא לבחור האם יש לך ילדים.', consentErrorEl);
+        vmeReportValidationFailure('has_children missing', 'נא לבחור האם יש לך ילדים', consentErrorEl);
         return;
       }
 
@@ -1868,17 +1905,17 @@ if (vmeForm) {
 
       if (!ageConfirmed || !ageConfirmed.checked) {
         vmeHighlightConsentItem(ageConfirmed);
-        vmeReportValidationFailure('age_confirmed checkbox unchecked', 'נא לאשר שאת/ה בן/בת 18 ומעלה.', consentErrorEl);
+        vmeReportValidationFailure('age_confirmed checkbox unchecked', 'נא לאשר שאת/ה בן/בת 18 ומעלה', consentErrorEl);
         return;
       }
       if (!termsAccepted || !termsAccepted.checked) {
         vmeHighlightConsentItem(termsAccepted);
-        vmeReportValidationFailure('terms_accepted checkbox unchecked', 'נא לאשר את תנאי השימוש.', consentErrorEl);
+        vmeReportValidationFailure('terms_accepted checkbox unchecked', 'נא לאשר את תנאי השימוש', consentErrorEl);
         return;
       }
       if (!privacyAccepted || !privacyAccepted.checked) {
         vmeHighlightConsentItem(privacyAccepted);
-        vmeReportValidationFailure('privacy_accepted checkbox unchecked', 'נא לאשר את מדיניות הפרטיות.', consentErrorEl);
+        vmeReportValidationFailure('privacy_accepted checkbox unchecked', 'נא לאשר את מדיניות הפרטיות', consentErrorEl);
         return;
       }
 
@@ -1915,7 +1952,7 @@ if (vmeForm) {
     } catch (err) {
       console.error('Unexpected error in form submit validation:', err);
       if (consentErrorEl) {
-        consentErrorEl.textContent = 'אירעה שגיאה בטופס. אנא נסו שוב.';
+        consentErrorEl.textContent = 'אירעה שגיאה בטופס אנא נסו שוב';
         consentErrorEl.style.display = 'block';
       }
     }
