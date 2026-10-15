@@ -353,6 +353,8 @@ body{font-family:'Heebo',sans-serif;background:#EAF5F4;color:var(--vme-dark);ove
 .wa-btn svg{width:20px;height:20px;flex:none;fill:currentColor}
 .wa-btn-secondary{display:flex;width:100%;max-width:460px;min-height:48px;margin:20px auto 0;padding:10px 22px;background:#fff;border:1.5px solid rgba(130,167,156,0.6);color:var(--vme-dark);font-size:16px;font-weight:600;box-shadow:0 4px 14px rgba(130,167,156,0.18)}
 .wa-btn-secondary svg{color:#25D366}
+/* short supporting line under the WhatsApp button */
+.wa-lead{max-width:460px;margin:12px auto 0;font-size:15px;font-weight:400;line-height:1.5;color:#34433F;text-align:center;text-wrap:balance}
 .wa-btn-secondary:hover{border-color:var(--vme-teal-dark);transform:translateY(-2px)}
 .wa-btn-primary{min-height:54px;margin-top:22px;padding:14px 30px;background:var(--vme-pink);border:2px solid var(--vme-pink);color:#fff;font-size:18px;font-weight:700;box-shadow:0 10px 28px rgba(207,28,113,0.28)}
 .wa-btn-primary:hover{background:var(--vme-berry);border-color:var(--vme-berry);transform:translateY(-2px)}
@@ -619,7 +621,6 @@ html { scroll-behavior: smooth; }
   .faq-item.open .faq-answer{padding:0 18px 18px}
   .faq-answer p{font-size:16px;}
 }
-.faq-section + .form-section{margin-top:calc(-1 * var(--diag));}
 
 /* ══════ Form extras: select-wrap, consent, textarea ══════ */
 .form-group textarea{
@@ -902,7 +903,7 @@ html { scroll-behavior: smooth; }
 .hub{position:relative;background:linear-gradient(180deg,#F5E2EA 0%,#F9ECF2 22%,#FCF5F8 48%);clip-path:var(--diag-top);margin-top:-100px;padding-left:24px;padding-right:24px}
 .hub-inner{max-width:1040px;margin:0 auto;display:grid;grid-template-columns:340px minmax(0,1fr);gap:64px;align-items:center}
 .hub-text{text-align:right;min-width:0}
-.hub-label{display:inline-block;padding:7px 18px;border-radius:50px;background:#fff;border:1.5px solid rgba(207,28,113,0.3);color:var(--vme-berry);font-size:16px;font-weight:500;margin-bottom:10px}
+.hub-label{display:inline-block;padding:7px 18px;border-radius:50px;background:#fff;border:1.5px solid rgba(207,28,113,0.3);color:var(--vme-berry);font-size:16px;font-weight:500;margin-bottom:8px}
 .hub h2{margin:0 0 14px;font-size:clamp(28px,3vw,40px);font-weight:900;line-height:1.25;color:var(--vme-dark)}
 .hub-sub{margin:0 0 28px;max-width:34em;font-size:18px;line-height:1.7;color:#4A5550}
 .hub-cards{display:flex;flex-direction:column;gap:12px}
@@ -948,10 +949,10 @@ html { scroll-behavior: smooth; }
 
 /* ── Section transitions: four styles, each drawn by the lower section's top edge ──
      diagonal      rises to the right   (A)  quote, how-steps, fit
-     diagonal      rises to the left    (B)  pain, founder, form
-     straight      clean flat edge      (C)  features, method, FAQ, footer
-     soft blend    no edge, colour fade (D)  profiles, hub, trust
-   Order down the page: D A C B C A D B D A C B C, so no two cuts in a row share a
+     diagonal      rises to the left    (B)  pain, founder
+     straight      clean flat edge      (C)  features, method, trust, FAQ, form
+     soft blend    no edge, colour fade (D)  profiles, hub, footer
+   Order down the page: D A C B C A D C A C B C D, so no two cuts in a row share a
    shape and two diagonals never follow each other. Every style keeps the existing
    overlap and paddings, so content positions and the spacing system don't change.
    Diagonals get a soft shade just under the edge (the upper section lies on top);
@@ -970,28 +971,28 @@ html { scroll-behavior: smooth; }
 .quote,.how-steps,.fit-section{clip-path:var(--cut-a)!important}
 .quote::before,.how-steps::before,.fit-section::before{background:linear-gradient(to bottom right,transparent 49.5%,var(--cut-shade)) right top / 200% 100% no-repeat}
 /* B: diagonal rising to the left */
-.pain,.founder,.form-section{clip-path:var(--cut-b)}
-.pain::before,.founder::before,.form-section::before{background:linear-gradient(to bottom left,transparent 49.5%,var(--cut-shade)) left top / 200% 100% no-repeat}
+.pain,.founder{clip-path:var(--cut-b)}
+.pain::before,.founder::before{background:linear-gradient(to bottom left,transparent 49.5%,var(--cut-shade)) left top / 200% 100% no-repeat}
 /* C: clean straight edge */
-.features,.method,.faq-section,footer{clip-path:var(--cut-flat)}
-.features::before,.method::before,.faq-section::before,footer::before{display:none}
+.features,.method,.trust,.faq-section,.form-section{clip-path:var(--cut-flat)}
+.features::before,.method::before,.trust::before,.faq-section::before,.form-section::before{display:none}
 /* D: soft blend, no edge: the section starts in the colour above it and fades into its own */
-.profiles,.hub,.trust{clip-path:none}
+.profiles,.hub,footer{clip-path:none}
 .profiles{background:linear-gradient(180deg,rgba(234,245,244,0) 0,#EAF5F4 120px)} /* the hero's own gradient shows through the overlap */
 /* hub: a short, decisive fade from the teal above into its blush, finished before the content starts */
-.hub::before{height:clamp(52px,6.5vw,92px);background:linear-gradient(180deg,#EAF5F4 0,rgba(234,245,244,0.85) 25%,rgba(234,245,244,0.4) 60%,rgba(234,245,244,0))}
-.trust::before{height:260px;background:linear-gradient(180deg,#FBF8F5 0,rgba(251,248,245,0.9) 38%,rgba(251,248,245,0.45) 68%,rgba(251,248,245,0))}
+.hub::before{height:clamp(40px,4.5vw,64px);background:linear-gradient(180deg,#EAF5F4 0,rgba(234,245,244,0.8) 30%,rgba(234,245,244,0.3) 70%,rgba(234,245,244,0))}
+footer::before{height:calc(var(--diag) + 10px);background:linear-gradient(180deg,#A3C8C5 0,rgba(163,200,197,0.75) 35%,rgba(163,200,197,0))}
 /* footer: a deeper teal, so the page clearly ends after the form */
-footer{background:var(--vme-teal-dark);margin-top:calc(-1 * var(--diag));padding-top:calc(40px + var(--diag))}
-/* hub keeps a blush tint at its bottom edge, so it doesn't melt into the cream founder letter */
+footer{background:var(--vme-teal-dark);margin-top:calc(-1 * var(--diag));padding-top:calc(24px + var(--diag));padding-bottom:calc(28px + env(safe-area-inset-bottom))}
+/* hub keeps a blush tint at its bottom edge, so its straight edge against the white quote section reads clearly */
 .hub{background:linear-gradient(180deg,#F5E2EA 0%,#F9ECF2 22%,#FCF5F8 48%,#FCF5F8 72%,#F7E7EE 100%)}
 
 /* ── Section spacing system ──
    Three gap levels between the content of neighbouring sections:
-     tight    phone 104px / desktop 152px   hero→profiles, fit→FAQ
-     standard phone 136px / desktop 184px   profiles→quote, quote→pain, about→how, how→trust, trust→fit, form→footer
-     major    phone 168px / desktop 224px   pain→method (desktop), features→about, FAQ→form, method→features (phones), how→hub
-     pain→method is standard on phones; method→features is standard on desktop (on phones the next section's 100px overlap makes major the smallest level)
+     tight    phone 104px / desktop 152px   hero→profiles, fit→FAQ, how→hub (desktop), form→footer
+     standard phone 136px / desktop 184px   profiles→quote, method→how, how→hub (phones), hub→trust, trust→fit, founder→form
+     major    phone 168px / desktop 224px   features→pain, pain→method (desktop), FAQ→founder
+     pain→method is standard on phones; quote→features is tight on phones
    Paddings below are tuned per section to land on those levels. Minimums keep
    content clear of the diagonal band (--diag) on both sides of every seam. */
 .hero{padding-bottom:148px}
@@ -999,14 +1000,14 @@ footer{background:var(--vme-teal-dark);margin-top:calc(-1 * var(--diag));padding
 .quote{padding-top:124px;padding-bottom:154px}
 .pain{padding-top:130px;padding-bottom:158px}
 .method{padding-top:130px;padding-bottom:124px}
-.hub{padding-top:100px;padding-bottom:160px}
+.hub{padding-top:70px;padding-bottom:160px}
 .features{padding-top:130px;padding-bottom:194px}
-.founder{padding-top:124px;padding-bottom:113px}
+.founder{padding-top:184px;padding-bottom:113px}
 .how-steps{padding-top:calc(53px + var(--diag));padding-bottom:127px}
-.trust{padding-top:130px;padding-bottom:160px}
+.trust{padding-top:124px;padding-bottom:160px}
 .fit-section{padding-top:124px;padding-bottom:88px}
-.faq-section{padding-top:124px;padding-bottom:124px}
-.form-section{padding-top:calc(100px + var(--diag));padding-bottom:144px}
+.faq-section{padding-top:124px;padding-bottom:140px}
+.form-section{padding-top:130px;padding-bottom:128px}
 @media (max-width:768px){
   .hero{padding-bottom:144px}
   .profiles{padding-top:80px;padding-bottom:176px}
@@ -1015,12 +1016,12 @@ footer{background:var(--vme-teal-dark);margin-top:calc(-1 * var(--diag));padding
   .method{padding-top:98px;padding-bottom:78px}
   .hub{padding-top:62px;padding-bottom:158px}
   .features{padding-top:80px;padding-bottom:156px}
-  .founder{padding-top:78px;padding-bottom:104px}
+  .founder{padding-top:128px;padding-bottom:104px}
   .how-steps{padding-top:calc(51px + var(--diag));padding-bottom:117px}
-  .trust{padding-top:105px;padding-bottom:158px}
+  .trust{padding-top:78px;padding-bottom:158px}
   .fit-section{padding-top:78px;padding-bottom:86px}
-  .faq-section{padding-top:78px;padding-bottom:78px}
-  .form-section{padding-top:calc(90px + var(--diag));padding-bottom:96px}
+  .faq-section{padding-top:78px;padding-bottom:140px}
+  .form-section{padding-top:105px;padding-bottom:80px}
 }
 @media (max-width:380px){
   .quote-lead { font-size: 17.5px; } /* keep the hand-set 3 lines on small phones */
@@ -1055,8 +1056,8 @@ picture source{display:none} /* never a layout item (e.g. in flex containers wit
         <p class="hero-signature" dir="ltr" lang="en">LOVE STARTS WITH A VIBE</p>
       </div>
       <h1>מפרופילים <span class="pk">לאנשים</span></h1>
-      <p class="hero-sub">Vme משנה את הדרך שבה מכירים</p>
-      <p class="hero-sub2">בואו לגלות איך אנחנו הופכים את תהליך מציאת האהבה ליותר חווייתי, זורם ואותנטי</p>
+      <p class="hero-sub">כי חיבור אמיתי מתחיל הרבה לפני הדייט</p>
+      <p class="hero-sub2">לפעמים מספיק רגע אחד כדי להרגיש אם יש שם משהו ששווה להמשיך איתו</p>
     </div>
 
     <div class="hero-media">
@@ -1436,6 +1437,142 @@ picture source{display:none} /* never a layout item (e.g. in flex containers wit
   </div>
 </section>
 
+<!-- QUOTE LAOZI -->
+
+<section class="trust">
+  <div class="rev" style="background:#EAF5F4;border-radius:20px;padding:40px 36px;position:relative;margin-bottom:0;border-right:4px solid #CF1C71;max-width:580px;margin-left:auto;margin-right:auto;overflow:hidden;text-align:center;">
+    <div style="font-size:72px;color:rgba(207,28,113,0.07);font-family:Georgia,serif;line-height:1;position:absolute;top:10px;right:18px;pointer-events:none;letter-spacing:-4px;">""</div>
+    <p style="font-size:clamp(20px,3.5vw,26px);font-weight:700;color:#414242;line-height:1.9;margin:0 0 24px;position:relative;z-index:1;">
+      אהבה אמיתית מתחילה<br>כשמישהו מכיר אותך כפי שאתה,<br>ועדיין בוחר בך
+    </p>
+    <div style="width:36px;height:2px;background:#CF1C71;margin:0 auto 16px;"></div>
+    <p style="font-size:14px;font-weight:600;color:#CF1C71;margin:0;letter-spacing:0.2px;">לאו דזה, פילוסוף סיני ומייסד הטאואיזם</p>
+  </div>
+</section>
+
+<!-- FIT -->
+<section class="fit-section">
+  <div class="rev">
+    <span class="sec-label">💭 רגע של כנות</span>
+    <h2>למי Vme מתאימה באמת</h2>
+    <p class="fit-subtitle"><span class="nowrap">V-me</span> לא מתאימה לכולם, וזה בדיוק היתרון שלה</p>
+  </div>
+  <div class="fit-grid">
+    <div class="fit-col fit-col-yes rev">
+      <div class="fit-col-header">
+        <h3>למי זה מתאים</h3>
+        <span class="fit-header-icon">🌿</span>
+      </div>
+      <ul>
+        <li><span class="fit-icon">✓</span><span class="fit-text">לאנשים שמחפשים קשר רציני</span></li>
+        <li><span class="fit-icon">✓</span><span class="fit-text">לאנשים שרוצים להבין יותר על האדם עוד לפני שנוצר קשר</span></li>
+        <li><span class="fit-icon">✓</span><span class="fit-text">לאנשים שרוצים שיכירו אותם באמת לפני ששולחים להם הודעה</span></li>
+        <li><span class="fit-icon">✓</span><span class="fit-text">לאנשים שמעדיפים פחות התאמות, אבל חיבורים מדויקים יותר</span></li>
+        <li><span class="fit-icon">✓</span><span class="fit-text">לאנשים שמוכנים להכיר בצורה פתוחה, אותנטית וקצת יותר אמיצה</span></li>
+      </ul>
+    </div>
+  </div>
+</section>
+
+<!-- FAQ -->
+<section class="faq-section" dir="rtl">
+  <div class="rev">
+    <span class="sec-label">שאלות נפוצות ❓</span>
+    <h2>שאלות שאולי עוברות לכם בראש</h2>
+    <p class="faq-subtitle">ריכזנו את הדברים שהכי טבעי לשאול לפני שמצטרפים ל־Vme</p>
+  </div>
+  <div class="faq-list">
+    <div class="faq-item rev">
+      <button type="button" class="faq-question" aria-expanded="false" aria-controls="faq-a-1" onclick="vmeToggleFaq(this)">
+        <span>במה Vme שונה מאפליקציות היכרויות אחרות?</span>
+        <span class="faq-icon">+</span>
+      </button>
+      <div class="faq-answer" id="faq-a-1">
+        <p>ב־Vme אפשר לראות את האדם שמאחורי הפרופיל לשמוע אותו, להבין מה חשוב לו, לראות איך הוא מבטא את עצמו ולהרגיש קצת יותר את מי שהוא באמת</p>
+        <p>המטרה היא לעזור ליצור חיבור שמבוסס על אישיות, ערכים ותחושת התאמה, ולא רק על תמונה או משפט פתיחה מוצלח</p>
+      </div>
+    </div>
+
+    <div class="faq-item rev">
+      <button type="button" class="faq-question" aria-expanded="false" aria-controls="faq-a-2" onclick="vmeToggleFaq(this)">
+        <span>האם חייבים להצטלם בווידאו?</span>
+        <span class="faq-icon">+</span>
+      </button>
+      <div class="faq-answer" id="faq-a-2">
+        <p>ב־Vme יש תרבות של וידאו, כולם משתפים, וזה הבסיס של האפליקציה</p>
+        <p>לא צריך להיות טובים מול מצלמה, לא צריך להיראות מושלמים ולא צריך להכין נאום</p>
+        <p>המטרה היא לאפשר לצד השני להכיר אתכם מעבר לתמונה ולכמה שורות טקסט לשמוע אתכם, לראות איך אתם מבטאים את עצמכם ולהרגיש אם יש חיבור</p>
+        <p>שם הרבה פעמים מתחיל חיבור אמיתי</p>
+      </div>
+    </div>
+
+    <div class="faq-item rev">
+      <button type="button" class="faq-question" aria-expanded="false" aria-controls="faq-a-3" onclick="vmeToggleFaq(this)">
+        <span>מי יכול לראות את הפרופיל שלי?</span>
+        <span class="faq-icon">+</span>
+      </button>
+      <div class="faq-answer" id="faq-a-3">
+        <p>רק משתמשים רשומים ב־Vme שגם העלו סרטוני וידאו משלהם יכולים לראות פרופילים של אחרים</p>
+        <p>הפרופיל לא פתוח לציבור ולא נגיש למי שלא נמצא בתוך האפליקציה</p>
+        <p>אם נתקלתם בהתנהגות לא מתאימה, אפשר לדווח על משתמשים או על תוכן, ואנחנו נטפל בזה כדי לשמור על מרחב בטוח ומכבד</p>
+      </div>
+    </div>
+
+    <div class="faq-item rev">
+      <button type="button" class="faq-question" aria-expanded="false" aria-controls="faq-a-4" onclick="vmeToggleFaq(this)">
+        <span>מה קורה אחרי שנרשמים?</span>
+        <span class="faq-icon">+</span>
+      </button>
+      <div class="faq-answer" id="faq-a-4">
+        <p>אם הצטרפתם בתקופת ההרצה</p>
+        <p>אתם חלק מהראשונים שמגלים את Vme!</p>
+        <p>לאחר ההרשמה תוכלו להצטרף למפגש הדרכה, לקבל עדכונים ישירות מהצוות על שלבי הכניסה לאפליקציה וליהנות מהטבות מיוחדות השמורות למצטרפים הראשונים</p>
+        <p>אם הצטרפתם לאחר תקופת ההרצה</p>
+        <p>תוכלו להוריד את אפליקציית Vme, ליצור את הפרופיל שלכם ולהתחיל לגלות דרך חדשה להכיר ולהרגיש חיבור</p>
+      </div>
+    </div>
+
+    <div class="faq-item rev">
+      <button type="button" class="faq-question" aria-expanded="false" aria-controls="faq-a-5" onclick="vmeToggleFaq(this)">
+        <span>האם Vme בחינם?</span>
+        <span class="faq-icon">+</span>
+      </button>
+      <div class="faq-answer" id="faq-a-5">
+        <p>Vme מציעה תקופת התנסות ללא עלות, כדי שתוכלו להכיר את האפליקציה, לחוות את הדרך החדשה להיכרויות ולגלות אם היא מתאימה לכם</p>
+        <p>משך תקופת ההתנסות וההטבות עשויים להשתנות מעת לעת, בהתאם למועד ההצטרפות ולמבצעים המוצעים</p>
+        <p>בסיום תקופת ההתנסות תוכלו לבחור את מסלול המנוי המתאים לכם ולהמשיך ליהנות מחוויית ההיכרויות של Vme</p>
+        <p>המצטרפים בתקופת ההרצה יוכלו ליהנות מהטבות וממחירים מיוחדים</p>
+      </div>
+    </div>
+
+    <div class="faq-item rev">
+      <button type="button" class="faq-question" aria-expanded="false" aria-controls="faq-a-6" onclick="vmeToggleFaq(this)">
+        <span>האם Vme מתאימה גם לפרק ב׳?</span>
+        <span class="faq-icon">+</span>
+      </button>
+      <div class="faq-answer" id="faq-a-6">
+        <p>בהחלט! ❤️</p>
+        <p>אנחנו מאמינים שלאהבה ולחיבור אמיתי יש מקום בכל שלב בחיים</p>
+      </div>
+    </div>
+
+    <div class="faq-item rev">
+      <button type="button" class="faq-question" aria-expanded="false" aria-controls="faq-a-7" onclick="vmeToggleFaq(this)">
+        <span>האם אפשר להצטרף גם אם אני ביישן או לא אוהב להצטלם?</span>
+        <span class="faq-icon">+</span>
+      </button>
+      <div class="faq-answer" id="faq-a-7">
+        <p>כן</p>
+        <p>רוב האנשים שמגיעים ל־Vme הם לא שחקנים, לא משפיענים ולא רגילים לדבר למצלמה זה טבעי לגמרי</p>
+        <p>בדיוק בשביל זה בנינו תהליך שמלווה אתכם צעד אחר צעד, עם שאלות והכוונה שעוזרות להציג את עצמכם בצורה טבעית ונינוחה</p>
+        <p>בנוסף, המנטורים של Vme מלווים את הקהילה ומשתפים תכנים, כלים ותובנות שיעזרו לכם להרגיש יותר בנוח בתהליך ההיכרות</p>
+        <p>המטרה היא לא ליצור סרטון מושלם המטרה היא לאפשר לאנשים להכיר אתכם קצת יותר לעומק מאשר דרך תמונה וכמה שורות טקסט</p>
+        <p>שם הרבה פעמים מתחיל חיבור אמיתי</p>
+      </div>
+    </div>
+  </div>
+</section>
+
 <!-- ABOUT -->
 <section class="founder" id="about">
   <div class="founder-head rev">
@@ -1477,158 +1614,9 @@ picture source{display:none} /* never a layout item (e.g. in flex containers wit
   </div>
 </section>
 
-<!-- QUOTE LAOZI -->
-
-<section class="trust">
-  <div class="rev" style="background:#EAF5F4;border-radius:20px;padding:40px 36px;position:relative;margin-bottom:0;border-right:4px solid #CF1C71;max-width:580px;margin-left:auto;margin-right:auto;overflow:hidden;text-align:center;">
-    <div style="font-size:72px;color:rgba(207,28,113,0.07);font-family:Georgia,serif;line-height:1;position:absolute;top:10px;right:18px;pointer-events:none;letter-spacing:-4px;">""</div>
-    <p style="font-size:clamp(20px,3.5vw,26px);font-weight:700;color:#414242;line-height:1.9;margin:0 0 24px;position:relative;z-index:1;">
-      אהבה אמיתית מתחילה<br>כשמישהו מכיר אותך כפי שאתה,<br>ועדיין בוחר בך
-    </p>
-    <div style="width:36px;height:2px;background:#CF1C71;margin:0 auto 16px;"></div>
-    <p style="font-size:14px;font-weight:600;color:#CF1C71;margin:0;letter-spacing:0.2px;">לאו דזה, פילוסוף סיני ומייסד הטאואיזם</p>
-  </div>
-</section>
-
-<!-- FIT -->
-<section class="fit-section">
-  <div class="rev">
-    <span class="sec-label">💭 רגע של כנות</span>
-    <h2>למי Vme מתאימה ולמי פחות</h2>
-    <p class="fit-subtitle"><span class="nowrap">V-me</span> לא מתאימה לכולם, וזה בדיוק היתרון שלה</p>
-  </div>
-  <div class="fit-grid">
-    <div class="fit-col fit-col-yes rev">
-      <div class="fit-col-header">
-        <h3>למי זה מתאים</h3>
-        <span class="fit-header-icon">🌿</span>
-      </div>
-      <ul>
-        <li><span class="fit-icon">✓</span><span class="fit-text">לאנשים שמחפשים קשר רציני</span></li>
-        <li><span class="fit-icon">✓</span><span class="fit-text">לאנשים שרוצים להבין יותר על האדם עוד לפני שנוצר קשר</span></li>
-        <li><span class="fit-icon">✓</span><span class="fit-text">לאנשים שרוצים שיכירו אותם באמת לפני ששולחים להם הודעה</span></li>
-        <li><span class="fit-icon">✓</span><span class="fit-text">לאנשים שמעדיפים פחות התאמות, אבל חיבורים מדויקים יותר</span></li>
-        <li><span class="fit-icon">✓</span><span class="fit-text">לאנשים שמוכנים להכיר בצורה פתוחה, אותנטית וקצת יותר אמיצה</span></li>
-      </ul>
-    </div>
-  </div>
-</section>
-
-<!-- FAQ -->
-<section class="faq-section" dir="rtl">
-  <div class="rev">
-    <span class="sec-label">❓ שאלות נפוצות</span>
-    <h2>שאלות שאולי עוברות לכם בראש</h2>
-    <p class="faq-subtitle">ריכזנו את הדברים שהכי טבעי לשאול לפני שמצטרפים ל־Vme</p>
-  </div>
-  <div class="faq-list">
-    <div class="faq-item rev">
-      <button type="button" class="faq-question" aria-expanded="false" aria-controls="faq-a-1" onclick="vmeToggleFaq(this)">
-        <span>במה Vme שונה מאפליקציות היכרויות אחרות?</span>
-        <span class="faq-icon">+</span>
-      </button>
-      <div class="faq-answer" id="faq-a-1">
-        <p>ברוב אפליקציות ההיכרויות ההחלטה אם להכיר מישהו מבוססת בעיקר על תמונה וכמה שורות טקסט</p>
-        <p>ב־Vme אפשר לראות את האדם שמאחורי הפרופיל לשמוע אותו, להבין מה חשוב לו, לראות איך הוא מבטא את עצמו ולהרגיש קצת יותר את מי שהוא באמת</p>
-        <p>המטרה היא לעזור ליצור חיבור שמבוסס על אישיות, ערכים ותחושת התאמה, ולא רק על תמונה או משפט פתיחה מוצלח</p>
-      </div>
-    </div>
-
-    <div class="faq-item rev">
-      <button type="button" class="faq-question" aria-expanded="false" aria-controls="faq-a-2" onclick="vmeToggleFaq(this)">
-        <span>האם חייבים להצטלם בווידאו?</span>
-        <span class="faq-icon">+</span>
-      </button>
-      <div class="faq-answer" id="faq-a-2">
-        <p>כן ב־Vme כולם משתפים וידאו, זה הבסיס של האפליקציה</p>
-        <p>לא צריך להיות טובים מול מצלמה, לא צריך להיראות מושלמים ולא צריך להכין נאום</p>
-        <p>המטרה היא לאפשר לצד השני להכיר אתכם מעבר לתמונה ולכמה שורות טקסט לשמוע אתכם, לראות איך אתם מבטאים את עצמכם ולהרגיש אם יש חיבור</p>
-        <p>שם הרבה פעמים מתחיל חיבור אמיתי</p>
-      </div>
-    </div>
-
-    <div class="faq-item rev">
-      <button type="button" class="faq-question" aria-expanded="false" aria-controls="faq-a-3" onclick="vmeToggleFaq(this)">
-        <span>מי יכול לראות את הפרופיל שלי?</span>
-        <span class="faq-icon">+</span>
-      </button>
-      <div class="faq-answer" id="faq-a-3">
-        <p>רק משתמשים רשומים ב־Vme שגם העלו סרטוני וידאו משלהם יכולים לראות פרופילים של אחרים</p>
-        <p>הפרופיל לא פתוח לציבור, לא מופיע בגוגל ולא נגיש למי שלא נמצא בתוך האפליקציה</p>
-        <p>אם נתקלתם בהתנהגות לא מתאימה, אפשר לדווח על משתמשים או על תוכן, ואנחנו נטפל בזה כדי לשמור על מרחב בטוח ומכבד</p>
-      </div>
-    </div>
-
-    <div class="faq-item rev">
-      <button type="button" class="faq-question" aria-expanded="false" aria-controls="faq-a-4" onclick="vmeToggleFaq(this)">
-        <span>מה קורה אחרי שנרשמים?</span>
-        <span class="faq-icon">+</span>
-      </button>
-      <div class="faq-answer" id="faq-a-4">
-        <p>אחרי ההרשמה אנחנו עוברים על הפרטים ובודקים התאמה לפיילוט הראשוני של Vme</p>
-        <p>אם זה מתאים לסבב הנוכחי, ניצור איתכם קשר ונשלח הסבר קצר על המשך התהליך, כולל איך נכנסים לאפליקציה ואיך מתחילים לבנות פרופיל וידאו</p>
-        <p>גם אם לא תיכנסו בסבב הראשון, זה לא אומר שלא התאמתם אנחנו פותחים את Vme בהדרגה ומתאימים כל סבב לפי קבוצות גיל, אזור מגורים ופרמטרים נוספים, כדי ליצור קהילה מאוזנת ורלוונטית יותר</p>
-        <p>ההרשמה לא מחייבת בתשלום ולא מבטיחה קבלה אוטומטית לפיילוט</p>
-      </div>
-    </div>
-
-    <div class="faq-item rev">
-      <button type="button" class="faq-question" aria-expanded="false" aria-controls="faq-a-5" onclick="vmeToggleFaq(this)">
-        <span>האם Vme בחינם?</span>
-        <span class="faq-icon">+</span>
-      </button>
-      <div class="faq-answer" id="faq-a-5">
-        <p>Vme היא אפליקציית פרימיום, שנבנתה עבור אנשים שמחפשים היכרות רצינית ומוכנים להשקיע בתהליך</p>
-        <p>מי שיבחר להיות חלק מנבחרת המשתמשים הראשונים של Vme יוכל ליהנות מהטבות מיוחדות</p>
-        <p>המודל שלנו נועד גם לשמור על פרטיות המשתמשים, כך שסרטוני הווידאו לא יהיו חשופים לכל אחד, אלא רק למשתמשים רשומים מתוך הקהילה</p>
-      </div>
-    </div>
-
-    <div class="faq-item rev">
-      <button type="button" class="faq-question" aria-expanded="false" aria-controls="faq-a-6" onclick="vmeToggleFaq(this)">
-        <span>האם Vme מתאימה גם לפרק ב׳?</span>
-        <span class="faq-icon">+</span>
-      </button>
-      <div class="faq-answer" id="faq-a-6">
-        <p>כן</p>
-        <p>Vme מתאימה גם למי שכבר עבר זוגיות משמעותית ומגיע היום עם יותר ניסיון, יותר בהירות ויותר הבנה של מה הוא מחפש</p>
-        <p>פרק ב׳ הוא לא "להתחיל מאפס" הוא להתחיל אחרת</p>
-        <p>ב־Vme יש מקום לאנשים שרוצים להכיר ברצינות, בלי משחקים ובלי לבזבז זמן על חיבורים שלא באמת מתאימים</p>
-      </div>
-    </div>
-
-    <div class="faq-item rev">
-      <button type="button" class="faq-question" aria-expanded="false" aria-controls="faq-a-7" onclick="vmeToggleFaq(this)">
-        <span>האם אפשר להצטרף גם אם אני ביישן או לא אוהב להצטלם?</span>
-        <span class="faq-icon">+</span>
-      </button>
-      <div class="faq-answer" id="faq-a-7">
-        <p>כן</p>
-        <p>רוב האנשים שמגיעים ל־Vme הם לא שחקנים, לא משפיענים ולא רגילים לדבר למצלמה זה טבעי לגמרי</p>
-        <p>בדיוק בשביל זה בנינו תהליך שמלווה אתכם צעד אחר צעד, עם שאלות והכוונה שעוזרות להציג את עצמכם בצורה טבעית ונינוחה</p>
-        <p>בנוסף, המנטורים של Vme מלווים את הקהילה ומשתפים תכנים, כלים ותובנות שיעזרו לכם להרגיש יותר בנוח בתהליך ההיכרות</p>
-        <p>המטרה היא לא ליצור סרטון מושלם המטרה היא לאפשר לאנשים להכיר אתכם קצת יותר לעומק מאשר דרך תמונה וכמה שורות טקסט</p>
-        <p>שם הרבה פעמים מתחיל חיבור אמיתי</p>
-      </div>
-    </div>
-
-    <div class="faq-item rev">
-      <button type="button" class="faq-question" aria-expanded="false" aria-controls="faq-a-8" onclick="vmeToggleFaq(this)">
-        <span>האם אתם בודקים מי מצטרף ל־Vme?</span>
-        <span class="faq-icon">+</span>
-      </button>
-      <div class="faq-answer" id="faq-a-8">
-        <p>בשלב הפיילוט אנחנו בוחנים כל הרשמה ומתאימים את ההצטרפות בהדרגה לפי מגוון שיקולים, כמו גיל, אזור מגורים ויצירת איזון נכון בקהילה</p>
-        <p>המטרה היא לא רק להכניס עוד אנשים למערכת, אלא ליצור סביבה שבה יש לכם סיכוי אמיתי להכיר אנשים רלוונטיים ומתאימים</p>
-      </div>
-    </div>
-  </div>
-</section>
-
 <!-- FORM -->
 <section class="form-section" id="form">
   <div class="rev" id="form-header">
-    <span class="sec-label">📝 סקרנתם אותי איך מתקדמים?</span>
     <h2>כאן תעשו את הצעד הבא לעבר <span class="pk">אהבה</span></h2>
     <p class="form-sub" id="form-sub-text">מלאו פרטים להרשמה</p>
   </div>
@@ -1726,6 +1714,7 @@ picture source{display:none} /* never a layout item (e.g. in flex containers wit
     <p id="vme-form-error" style="display:none;color:#CF1C71;font-size:14px;text-align:center;margin-top:12px;">משהו השתבש בשליחה נסו שוב, או צרו איתנו קשר ישירות</p>
   </form>
   <a class="wa-btn wa-btn-secondary" id="wa-community-form" href="https://chat.whatsapp.com/D1RKvVYwOR1BVOvTqqcokn?mode=gi_t" target="_blank" rel="noopener noreferrer"><svg viewBox="0 0 24 24" aria-hidden="true"><path d="M17.472 14.382c-.297-.149-1.758-.867-2.03-.967-.273-.099-.471-.148-.67.15-.197.297-.767.966-.94 1.164-.173.199-.347.223-.644.075-.297-.15-1.255-.463-2.39-1.475-.883-.788-1.48-1.761-1.653-2.059-.173-.297-.018-.458.13-.606.134-.133.298-.347.446-.52.149-.174.198-.298.298-.497.099-.198.05-.371-.025-.52-.075-.149-.669-1.612-.916-2.207-.242-.579-.487-.5-.669-.51-.173-.008-.371-.01-.57-.01-.198 0-.52.074-.792.372-.272.297-1.04 1.016-1.04 2.479 0 1.462 1.065 2.875 1.213 3.074.149.198 2.096 3.2 5.077 4.487.709.306 1.262.489 1.694.625.712.227 1.36.195 1.871.118.571-.085 1.758-.719 2.006-1.413.248-.694.248-1.289.173-1.413-.074-.124-.272-.198-.57-.347m-5.421 7.403h-.004a9.87 9.87 0 01-5.031-1.378l-.361-.214-3.741.982.998-3.648-.235-.374a9.86 9.86 0 01-1.51-5.26c.001-5.45 4.436-9.884 9.888-9.884 2.64 0 5.122 1.03 6.988 2.898a9.825 9.825 0 012.893 6.994c-.003 5.45-4.437 9.884-9.885 9.884m8.413-18.297A11.815 11.815 0 0012.05 0C5.495 0 .16 5.335.157 11.892c0 2.096.547 4.142 1.588 5.945L.057 24l6.305-1.654a11.882 11.882 0 005.683 1.448h.005c6.554 0 11.89-5.335 11.893-11.893a11.821 11.821 0 00-3.48-8.413Z"/></svg><span>הצטרפו לקהילת Vme</span></a>
+  <p class="wa-lead" id="wa-community-lead">תהיו הראשונים לדעת מה קורה<br>ואילו הזדמנויות מחכות לכם</p>
   <div id="vme-form-thankyou" class="rev" style="display:none;text-align:center;padding:20px 10px;">
     <div style="font-size:48px;margin-bottom:16px;">💕</div>
     <h3 style="font-size:22px;font-weight:900;color:var(--vme-dark);margin-bottom:10px;">תודה שנרשמת!</h3>
@@ -1738,7 +1727,6 @@ picture source{display:none} /* never a layout item (e.g. in flex containers wit
 <!-- FOOTER -->
 <footer>
   <p>© 2025 <span class="nowrap">V-me</span> | כל הזכויות שמורות</p>
-  <p>מייסדת שותפה ומנכ"לית: לינה מיארה</p>
   <p style="margin-top:6px;"><a href="terms-of-use.html" style="color:#343535;text-decoration:underline;">תנאי שימוש</a> &nbsp;|&nbsp; <a href="privacy-policy.html" style="color:#343535;text-decoration:underline;">מדיניות פרטיות</a></p>
 </footer>
 
@@ -2191,6 +2179,8 @@ if (vmeForm) {
           if (ty) ty.style.display = 'block';
           const waSecondary = document.getElementById('wa-community-form');
           if (waSecondary) waSecondary.style.display = 'none';
+          const waLead = document.getElementById('wa-community-lead');
+          if (waLead) waLead.style.display = 'none';
         })
         .catch(function (err) {
           console.error('Netlify form submission error:', err);
