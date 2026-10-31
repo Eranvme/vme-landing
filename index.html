@@ -1663,69 +1663,8 @@ picture source{display:none} /* never a layout item (e.g. in flex containers wit
       <div class="form-group"><input type="tel" name="phone" placeholder="טלפון" inputmode="tel" autocomplete="tel" aria-label="טלפון" /></div>
       <div class="form-group"><input type="email" name="email" placeholder='דוא"ל' autocomplete="email" aria-label='דוא"ל' /></div>
       <p id="vme-step1-error" class="consent-error"></p>
-      <button type="button" id="vme-step1-next" class="btn-pink btn-form">אני רוצה להכיר אחרת ←</button>
-    </div>
-
-    <div id="vme-step-2" style="display:none;">
-      <button type="button" id="vme-step2-back" style="background:none;border:none;color:var(--vme-teal-dark);font-size:14px;font-family:'Heebo',sans-serif;cursor:pointer;display:flex;align-items:center;gap:4px;margin-bottom:14px;padding:0;">→ חזרה לעריכת הפרטים שמילאתי</button>
-      <div class="form-group select-wrap">
-        <select name="gender" aria-label="המגדר שלי" onchange="this.classList.add('filled')">
-          <option value="" disabled selected>המגדר שלי</option>
-          <option value="גבר">גבר</option>
-          <option value="אישה">אישה</option>
-        </select>
-        <button type="button" class="select-clear" onclick="vmeClearSelect(this)" aria-label="נקה בחירה">✕</button>
-      </div>
-      <div class="form-group select-wrap">
-        <select name="looking_for" aria-label="אני מחפש/ת להכיר" onchange="this.classList.add('filled')">
-          <option value="" disabled selected>אני מחפש/ת להכיר</option>
-          <option value="גבר">גבר</option>
-          <option value="אישה">אישה</option>
-        </select>
-        <button type="button" class="select-clear" onclick="vmeClearSelect(this)" aria-label="נקה בחירה">✕</button>
-      </div>
-      <div class="form-group"><input type="text" name="city" placeholder="עיר מגורים" autocomplete="address-level2" aria-label="עיר מגורים" /></div>
-      <div class="step2-pair-grid" style="display:grid;grid-template-columns:1fr 1fr;gap:13px;margin-bottom:13px;">
-        <div class="form-group select-wrap" style="margin-bottom:0;">
-          <select name="marital_status" aria-label="מצב משפחתי" onchange="this.classList.add('filled')">
-            <option value="" disabled selected>מצב משפחתי</option>
-            <option value="פרק א׳">פרק א׳</option>
-            <option value="פרק ב׳">פרק ב׳</option>
-          </select>
-          <button type="button" class="select-clear" onclick="vmeClearSelect(this)" aria-label="נקה בחירה">✕</button>
-        </div>
-        <div class="form-group select-wrap" style="margin-bottom:0;">
-          <select name="has_children" aria-label="יש ילדים?" onchange="this.classList.add('filled')">
-            <option value="" disabled selected>יש ילדים?</option>
-            <option value="כן">כן</option>
-            <option value="לא">לא</option>
-          </select>
-          <button type="button" class="select-clear" onclick="vmeClearSelect(this)" aria-label="נקה בחירה">✕</button>
-        </div>
-      </div>
-      <div class="form-group"><textarea name="notes" placeholder='משהו שחשוב לך שנדע עלייך (לא חובה)' aria-label='משהו שחשוב לך שנדע עלייך (לא חובה)' rows="3"></textarea></div>
-
-      <div class="consent-group">
-        <label class="consent-item">
-          <input type="checkbox" name="age_confirmed" />
-          <span>אני מאשר/ת שאני בן/בת 18 ומעלה</span>
-        </label>
-        <label class="consent-item">
-          <input type="checkbox" name="terms_accepted" />
-          <span>קראתי ואני מסכים/ה ל<a href="terms-of-use.html" target="_blank" rel="noopener" onclick="event.stopPropagation()">תנאי השימוש</a></span>
-        </label>
-        <label class="consent-item">
-          <input type="checkbox" name="privacy_accepted" />
-          <span>קראתי ואני מסכים/ה ל<a href="privacy-policy.html" target="_blank" rel="noopener" onclick="event.stopPropagation()">מדיניות הפרטיות</a></span>
-        </label>
-        <label class="consent-item">
-          <input type="checkbox" name="marketing_consent" />
-          <span>אני מעוניין/ת לקבל עדכונים לגבי הפיילוט והשקת <span class="nowrap">V-me</span></span>
-        </label>
-      </div>
-      <p id="vme-consent-error" class="consent-error"></p>
-
-      <button type="submit" class="btn-pink btn-form">סיימתי ←</button>
+      <button type="submit" id="vme-step1-next" class="btn-pink btn-form">אני רוצה להכיר אחרת ←</button>
+      <p class="form-legal-note" style="font-size:12px;color:#1A3A35;text-align:center;margin-top:10px;">בשליחת הטופס אני מאשר/ת את <a href="terms-of-use.html" target="_blank" rel="noopener">תנאי השימוש</a> ו<a href="privacy-policy.html" target="_blank" rel="noopener">מדיניות הפרטיות</a></p>
     </div>
 
     <p id="vme-form-error" style="display:none;color:#CF1C71;font-size:14px;text-align:center;margin-top:12px;">משהו השתבש בשליחה נסו שוב, או צרו איתנו קשר ישירות</p>
@@ -2006,13 +1945,11 @@ function vmeClearSelect(btn) {
   select.classList.remove('filled');
 }
 
-const vmeStep1Next = document.getElementById('vme-step1-next');
-if (vmeStep1Next) {
-  vmeStep1Next.addEventListener('click', function () {
+// The registration is these five fields only; submit runs these checks.
+function vmeValidatePersonalDetails() {
     const step1ErrorEl = document.getElementById('vme-step1-error');
     try {
       const step1 = document.getElementById('vme-step-1');
-      const step2 = document.getElementById('vme-step-2');
       const dobInput = document.getElementById('dob-input');
       const dobErrorEl = document.getElementById('dob-error');
 
@@ -2032,7 +1969,7 @@ if (vmeStep1Next) {
         missingFields.forEach(function (f) { vmeMarkInvalid(f.el); });
         const labels = missingFields.map(function (f) { return f.label; });
         vmeReportValidationFailure('missing required field(s) in step 1: ' + labels.join(', '), 'נא למלא: ' + labels.join(', '), step1ErrorEl);
-        return;
+        return false;
       }
 
       const emailEl = step1.querySelector('[name="email"]');
@@ -2040,20 +1977,20 @@ if (vmeStep1Next) {
       if (!/^[^\s@]+@[^\s@]+\.[^\s@]{2,}$/.test(emailEl.value.trim())) {
         vmeMarkInvalid(emailEl);
         vmeReportValidationFailure('email invalid', 'נא להזין כתובת דוא"ל תקינה', step1ErrorEl);
-        return;
+        return false;
       }
       const phoneDigits = phoneEl.value.replace(/[\s\-().]/g, '');
       if (!/^\+?\d{9,15}$/.test(phoneDigits)) {
         vmeMarkInvalid(phoneEl);
         vmeReportValidationFailure('phone invalid', 'נא להזין מספר טלפון תקין', step1ErrorEl);
-        return;
+        return false;
       }
 
       const dobValue = dobInput ? dobInput.value.trim() : '';
       if (!dobValue) {
         vmeReportValidationFailure('birth date missing', 'נא להזין תאריך לידה', step1ErrorEl);
         vmeShowFieldError(dobInput, dobErrorEl, 'נא להזין תאריך לידה');
-        return;
+        return false;
       }
 
       const birthDate = vmeParseDob(dobValue);
@@ -2063,143 +2000,44 @@ if (vmeStep1Next) {
       if (/^\d{2}\/\d{2}\/\d{1,3}$/.test(dobValue)) {
         vmeReportValidationFailure('birth date year incomplete', 'נא להזין שנה מלאה, 4 ספרות (לדוגמה 25/06/1970)', step1ErrorEl);
         vmeShowFieldError(dobInput, dobErrorEl, 'נא להזין שנה מלאה, 4 ספרות (לדוגמה 25/06/1970)');
-        return;
+        return false;
       }
       if (!birthDate || birthDate > today) {
         vmeReportValidationFailure('birth date invalid', 'נא להזין תאריך לידה תקין', step1ErrorEl);
         vmeShowFieldError(dobInput, dobErrorEl, 'נא להזין תאריך לידה תקין');
-        return;
+        return false;
       }
 
       const age = vmeCalculateAge(birthDate);
       if (age < 18) {
         vmeReportValidationFailure('user under 18 (age=' + age + ')', 'מצטערים, השירות מיועד לגיל 18 ומעלה בלבד', step1ErrorEl);
         vmeShowFieldError(dobInput, dobErrorEl, 'מצטערים, השירות מיועד לגיל 18 ומעלה בלבד');
-        return;
+        return false;
       }
 
-      step1.style.display = 'none';
-      step2.style.display = 'block';
-      const subText = document.getElementById('form-sub-text');
-      if (subText) subText.textContent = 'רגע לפני שנסיים — כדי שנוכל להתאים לך את החוויה הכי טובה, עוד כמה שאלות קצרות';
-      const formHeader = document.getElementById('form-header');
-      vmeScrollTo(formHeader || step2);
+      return true;
     } catch (err) {
-      console.error('Unexpected error in step 1 validation:', err);
+      console.error('Unexpected error in registration validation:', err);
       if (step1ErrorEl) {
         step1ErrorEl.textContent = 'אירעה שגיאה בטופס אנא נסו שוב';
         step1ErrorEl.style.display = 'block';
       }
+      return false;
     }
-  });
 }
 
-const vmeStep2Back = document.getElementById('vme-step2-back');
-if (vmeStep2Back) {
-  vmeStep2Back.addEventListener('click', function () {
-    const step1 = document.getElementById('vme-step-1');
-    const step2 = document.getElementById('vme-step-2');
-    step2.style.display = 'none';
-    step1.style.display = 'block';
-    const subText = document.getElementById('form-sub-text');
-    if (subText) subText.textContent = 'מלאו פרטים להרשמה';
-    const formHeader = document.getElementById('form-header');
-    vmeScrollTo(formHeader || step1);
-  });
-}
 </script>
 
 <script>
 const vmeForm = document.getElementById('vme-form');
 if (vmeForm) {
-  vmeForm.addEventListener('keydown', function (e) {
-    if (e.key !== 'Enter') return;
-    if (e.target && e.target.tagName === 'TEXTAREA') return;
-    const step1 = document.getElementById('vme-step-1');
-    const step1Visible = step1 && step1.style.display !== 'none';
-    if (step1Visible) {
-      e.preventDefault();
-      console.log('Enter pressed during step 1 - advancing via step1-next instead of submitting the form');
-      const nextBtn = document.getElementById('vme-step1-next');
-      if (nextBtn) nextBtn.click();
-    }
-  });
-
   vmeForm.addEventListener('submit', function (e) {
     e.preventDefault();
     const errorEl = document.getElementById('vme-form-error');
-    const consentErrorEl = document.getElementById('vme-consent-error');
 
     try {
-      const step1Check = document.getElementById('vme-step-1');
-      if (step1Check && step1Check.style.display !== 'none') {
-        console.log('Validation failed: submit event fired while step 1 is still active (blocked)');
-        const step1ErrorEl = document.getElementById('vme-step1-error');
-        if (step1ErrorEl) {
-          step1ErrorEl.textContent = 'נא להשלים קודם את שלב 1 וללחוץ על "אני רוצה להכיר אחרת ←"';
-          step1ErrorEl.style.display = 'block';
-        }
-        return;
-      }
-
       if (errorEl) errorEl.style.display = 'none';
-      if (consentErrorEl) { consentErrorEl.textContent = ''; consentErrorEl.style.display = 'none'; }
-
-      const step2 = document.getElementById('vme-step-2');
-
-      const genderEl = step2.querySelector('[name="gender"]');
-      const lookingForEl = step2.querySelector('[name="looking_for"]');
-      const cityEl = step2.querySelector('[name="city"]');
-      const maritalEl = step2.querySelector('[name="marital_status"]');
-      const childrenEl = step2.querySelector('[name="has_children"]');
-      [genderEl, lookingForEl, cityEl, maritalEl, childrenEl].forEach(function (el) { vmeClearInvalid(el); });
-      vmeClearConsentHighlights(vmeForm.querySelector('.consent-group'));
-
-      if (!genderEl || !genderEl.value) {
-        vmeMarkInvalid(genderEl);
-        vmeReportValidationFailure('gender missing', 'נא לבחור מגדר', consentErrorEl);
-        return;
-      }
-      if (!lookingForEl || !lookingForEl.value) {
-        vmeMarkInvalid(lookingForEl);
-        vmeReportValidationFailure('looking_for missing', 'נא לבחור את מי ברצונך להכיר', consentErrorEl);
-        return;
-      }
-      if (!cityEl || !cityEl.value.trim()) {
-        vmeMarkInvalid(cityEl);
-        vmeReportValidationFailure('city missing', 'נא להזין עיר מגורים', consentErrorEl);
-        return;
-      }
-      if (!maritalEl || !maritalEl.value) {
-        vmeMarkInvalid(maritalEl);
-        vmeReportValidationFailure('marital status missing', 'נא לבחור מצב משפחתי', consentErrorEl);
-        return;
-      }
-      if (!childrenEl || !childrenEl.value) {
-        vmeMarkInvalid(childrenEl);
-        vmeReportValidationFailure('has_children missing', 'נא לבחור האם יש לך ילדים', consentErrorEl);
-        return;
-      }
-
-      const ageConfirmed = vmeForm.querySelector('[name="age_confirmed"]');
-      const termsAccepted = vmeForm.querySelector('[name="terms_accepted"]');
-      const privacyAccepted = vmeForm.querySelector('[name="privacy_accepted"]');
-
-      if (!ageConfirmed || !ageConfirmed.checked) {
-        vmeHighlightConsentItem(ageConfirmed);
-        vmeReportValidationFailure('age_confirmed checkbox unchecked', 'נא לאשר שאת/ה בן/בת 18 ומעלה', consentErrorEl);
-        return;
-      }
-      if (!termsAccepted || !termsAccepted.checked) {
-        vmeHighlightConsentItem(termsAccepted);
-        vmeReportValidationFailure('terms_accepted checkbox unchecked', 'נא לאשר את תנאי השימוש', consentErrorEl);
-        return;
-      }
-      if (!privacyAccepted || !privacyAccepted.checked) {
-        vmeHighlightConsentItem(privacyAccepted);
-        vmeReportValidationFailure('privacy_accepted checkbox unchecked', 'נא לאשר את מדיניות הפרטיות', consentErrorEl);
-        return;
-      }
+      if (!vmeValidatePersonalDetails()) return;
 
       function encodeFormData(form) {
         const formData = new FormData(form);
@@ -2234,11 +2072,8 @@ if (vmeForm) {
           if (errorEl) errorEl.style.display = 'block';
         });
     } catch (err) {
-      console.error('Unexpected error in form submit validation:', err);
-      if (consentErrorEl) {
-        consentErrorEl.textContent = 'אירעה שגיאה בטופס אנא נסו שוב';
-        consentErrorEl.style.display = 'block';
-      }
+      console.error('Unexpected error in form submit:', err);
+      if (errorEl) errorEl.style.display = 'block';
     }
   });
 }
