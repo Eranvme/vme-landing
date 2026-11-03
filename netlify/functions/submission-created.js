@@ -20,10 +20,6 @@ function buildBody(data, createdAt) {
   const notes = [
     'VME landing registration',
     `Submitted: ${clean(createdAt)}`,
-    `Looking for: ${clean(data.looking_for)}`,
-    `Marital status: ${clean(data.marital_status)}`,
-    `Has children: ${clean(data.has_children)}`,
-    `Notes: ${clean(data.notes)}`,
     `Age confirmed (18+): ${yesNo(data.age_confirmed)}`,
     `Messaging consent (WhatsApp, SMS, email): ${yesNo(data.marketing_consent)}`,
     `Referrer: ${source}`,

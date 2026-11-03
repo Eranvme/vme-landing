@@ -31,7 +31,7 @@ Forms API v3. HubSpot then creates/updates the contact by email.
 | `birth_date` | `date_of_birth` | `YYYY-MM-DD` |
 | `gender` | `sex` | `גבר` → `man`, `אישה` → `woman`, anything else omitted |
 | `source` | `referrer` | from `?ref=`, defaults to `direct` |
-| `looking_for`, `marital_status`, `has_children`, `notes`, `age_confirmed`, `marketing_consent`, submit date, referrer | `internal_notes` | multi-line summary, consents as yes/no |
+| `age_confirmed`, `marketing_consent`, submit date, referrer | `internal_notes` | multi-line summary, consents as yes/no |
 
 Empty values are not sent. The submission's page is recorded as
 `https://vme-landing.netlify.app/?ref=<source>` with page name `Vme Landing - <source>`.
@@ -63,7 +63,8 @@ A `ref` with no mentor behind it (e.g. `eran`, or a mentor whose link name isn't
 back here as `/?ref=<ref>#registered`, which shows the regular thank-you box. So to turn a
 person's link on, set their link name in admin; nothing here changes.
 
-Consent is on the first step, after the personal details: two required checkboxes, both
+The form is a single page (name, date of birth, phone, email, consent); `city` and `gender` are
+no longer collected, so those HubSpot fields stay empty. Consent comes after the personal details: two required checkboxes, both
 unticked by default — `age_confirmed` (18+) and `marketing_consent` (updates, event invitations
 and offers by WhatsApp, SMS and email; can be withdrawn at any time) — followed by the short
 privacy notice and the Terms of Use / Privacy Policy links. Both go into the HubSpot notes.

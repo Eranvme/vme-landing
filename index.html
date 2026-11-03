@@ -1686,50 +1686,6 @@ picture source{display:none} /* never a layout item (e.g. in flex containers wit
       <button type="button" id="vme-step1-next" class="btn-pink btn-form">אני רוצה להכיר אחרת ←</button>
     </div>
 
-    <div id="vme-step-2" style="display:none;">
-      <button type="button" id="vme-step2-back" style="background:none;border:none;color:var(--vme-teal-dark);font-size:14px;font-family:'Heebo',sans-serif;cursor:pointer;display:flex;align-items:center;gap:4px;margin-bottom:14px;padding:0;">→ חזרה לעריכת הפרטים שמילאתי</button>
-      <div class="form-group select-wrap">
-        <select name="gender" aria-label="המגדר שלי" onchange="this.classList.add('filled')">
-          <option value="" disabled selected>המגדר שלי</option>
-          <option value="גבר">גבר</option>
-          <option value="אישה">אישה</option>
-        </select>
-        <button type="button" class="select-clear" onclick="vmeClearSelect(this)" aria-label="נקה בחירה">✕</button>
-      </div>
-      <div class="form-group select-wrap">
-        <select name="looking_for" aria-label="אני מחפש/ת להכיר" onchange="this.classList.add('filled')">
-          <option value="" disabled selected>אני מחפש/ת להכיר</option>
-          <option value="גבר">גבר</option>
-          <option value="אישה">אישה</option>
-        </select>
-        <button type="button" class="select-clear" onclick="vmeClearSelect(this)" aria-label="נקה בחירה">✕</button>
-      </div>
-      <div class="form-group"><input type="text" name="city" placeholder="עיר מגורים" autocomplete="address-level2" aria-label="עיר מגורים" /></div>
-      <div class="step2-pair-grid" style="display:grid;grid-template-columns:1fr 1fr;gap:13px;margin-bottom:13px;">
-        <div class="form-group select-wrap" style="margin-bottom:0;">
-          <select name="marital_status" aria-label="מצב משפחתי" onchange="this.classList.add('filled')">
-            <option value="" disabled selected>מצב משפחתי</option>
-            <option value="פרק א׳">פרק א׳</option>
-            <option value="פרק ב׳">פרק ב׳</option>
-          </select>
-          <button type="button" class="select-clear" onclick="vmeClearSelect(this)" aria-label="נקה בחירה">✕</button>
-        </div>
-        <div class="form-group select-wrap" style="margin-bottom:0;">
-          <select name="has_children" aria-label="יש ילדים?" onchange="this.classList.add('filled')">
-            <option value="" disabled selected>יש ילדים?</option>
-            <option value="כן">כן</option>
-            <option value="לא">לא</option>
-          </select>
-          <button type="button" class="select-clear" onclick="vmeClearSelect(this)" aria-label="נקה בחירה">✕</button>
-        </div>
-      </div>
-      <div class="form-group"><textarea name="notes" placeholder='משהו שחשוב לך שנדע עלייך (לא חובה)' aria-label='משהו שחשוב לך שנדע עלייך (לא חובה)' rows="3"></textarea></div>
-
-      <p id="vme-consent-error" class="consent-error"></p>
-
-      <button type="submit" class="btn-pink btn-form">סיימתי ←</button>
-    </div>
-
     <p id="vme-form-error" style="display:none;color:#CF1C71;font-size:14px;text-align:center;margin-top:12px;">משהו השתבש בשליחה נסו שוב, או צרו איתנו קשר ישירות</p>
   </form>
   <div id="vme-form-thankyou" class="rev" style="display:none;text-align:center;padding:20px 10px;">
@@ -2035,7 +1991,6 @@ if (vmeStep1Next) {
     const step1ErrorEl = document.getElementById('vme-step1-error');
     try {
       const step1 = document.getElementById('vme-step-1');
-      const step2 = document.getElementById('vme-step-2');
       const dobInput = document.getElementById('dob-input');
       const dobErrorEl = document.getElementById('dob-error');
 
@@ -2116,14 +2071,9 @@ if (vmeStep1Next) {
         return;
       }
 
-      step1.style.display = 'none';
-      step2.style.display = 'block';
-      const subText = document.getElementById('form-sub-text');
-      if (subText) subText.textContent = 'רגע לפני שנסיים — כדי שנוכל להתאים לך את החוויה הכי טובה, עוד כמה שאלות קצרות';
-      const formHeader = document.getElementById('form-header');
-      vmeScrollTo(formHeader || step2);
+      vmeSendRegistration();
     } catch (err) {
-      console.error('Unexpected error in step 1 validation:', err);
+      console.error('Unexpected error in form validation:', err);
       if (step1ErrorEl) {
         step1ErrorEl.textContent = 'אירעה שגיאה בטופס אנא נסו שוב';
         step1ErrorEl.style.display = 'block';
@@ -2132,131 +2082,63 @@ if (vmeStep1Next) {
   });
 }
 
-const vmeStep2Back = document.getElementById('vme-step2-back');
-if (vmeStep2Back) {
-  vmeStep2Back.addEventListener('click', function () {
-    const step1 = document.getElementById('vme-step-1');
-    const step2 = document.getElementById('vme-step-2');
-    step2.style.display = 'none';
-    step1.style.display = 'block';
-    const subText = document.getElementById('form-sub-text');
-    if (subText) subText.textContent = 'מלאו פרטים להרשמה';
-    const formHeader = document.getElementById('form-header');
-    vmeScrollTo(formHeader || step1);
-  });
-}
 </script>
 
 <script>
 const vmeForm = document.getElementById('vme-form');
+
+function vmeEncodeFormData(form) {
+  const params = new URLSearchParams();
+  for (const pair of new FormData(form).entries()) params.append(pair[0], pair[1]);
+  return params.toString();
+}
+
+/** Sends the (already validated) form to Netlify, then continues to the mentor page or the thank-you. */
+function vmeSendRegistration() {
+  const errorEl = document.getElementById('vme-form-error');
+  const button = document.getElementById('vme-step1-next');
+  if (!vmeForm || (button && button.disabled)) return;
+  if (errorEl) errorEl.style.display = 'none';
+  if (button) button.disabled = true;
+
+  fetch('/', {
+    method: 'POST',
+    headers: { 'Content-Type': 'application/x-www-form-urlencoded' },
+    body: vmeEncodeFormData(vmeForm)
+  })
+    .then(function (response) {
+      if (!response.ok) {
+        throw new Error('Netlify form submission failed with status ' + response.status);
+      }
+      // A mentor's link (?ref=<their slug>) continues to that mentor's page:
+      // photo, app download credited to them, personal WhatsApp. /r/ sends
+      // anything without a mentor back here with #registered.
+      const ref = (document.getElementById('vme-source') || {}).value || '';
+      if (/^[a-z0-9][a-z0-9-]{1,63}$/i.test(ref) && ref.toLowerCase() !== 'direct') {
+        window.location.href = VME_MENTOR_PAGE_BASE + '/r/' + encodeURIComponent(ref.toLowerCase());
+        return;
+      }
+      vmeShowThankYou();
+    })
+    .catch(function (err) {
+      console.error('Netlify form submission error:', err);
+      if (errorEl) errorEl.style.display = 'block';
+      if (button) button.disabled = false;
+    });
+}
+
 if (vmeForm) {
+  // Enter and native submits run the same validation as the button.
   vmeForm.addEventListener('keydown', function (e) {
     if (e.key !== 'Enter') return;
-    if (e.target && e.target.tagName === 'TEXTAREA') return;
-    const step1 = document.getElementById('vme-step-1');
-    const step1Visible = step1 && step1.style.display !== 'none';
-    if (step1Visible) {
-      e.preventDefault();
-      console.log('Enter pressed during step 1 - advancing via step1-next instead of submitting the form');
-      const nextBtn = document.getElementById('vme-step1-next');
-      if (nextBtn) nextBtn.click();
-    }
+    e.preventDefault();
+    const button = document.getElementById('vme-step1-next');
+    if (button) button.click();
   });
-
   vmeForm.addEventListener('submit', function (e) {
     e.preventDefault();
-    const errorEl = document.getElementById('vme-form-error');
-    const consentErrorEl = document.getElementById('vme-consent-error');
-
-    try {
-      const step1Check = document.getElementById('vme-step-1');
-      if (step1Check && step1Check.style.display !== 'none') {
-        console.log('Validation failed: submit event fired while step 1 is still active (blocked)');
-        const step1ErrorEl = document.getElementById('vme-step1-error');
-        if (step1ErrorEl) {
-          step1ErrorEl.textContent = 'נא להשלים קודם את שלב 1 וללחוץ על "אני רוצה להכיר אחרת ←"';
-          step1ErrorEl.style.display = 'block';
-        }
-        return;
-      }
-
-      if (errorEl) errorEl.style.display = 'none';
-      if (consentErrorEl) { consentErrorEl.textContent = ''; consentErrorEl.style.display = 'none'; }
-
-      const step2 = document.getElementById('vme-step-2');
-
-      const genderEl = step2.querySelector('[name="gender"]');
-      const lookingForEl = step2.querySelector('[name="looking_for"]');
-      const cityEl = step2.querySelector('[name="city"]');
-      const maritalEl = step2.querySelector('[name="marital_status"]');
-      const childrenEl = step2.querySelector('[name="has_children"]');
-      [genderEl, lookingForEl, cityEl, maritalEl, childrenEl].forEach(function (el) { vmeClearInvalid(el); });
-
-      if (!genderEl || !genderEl.value) {
-        vmeMarkInvalid(genderEl);
-        vmeReportValidationFailure('gender missing', 'נא לבחור מגדר', consentErrorEl);
-        return;
-      }
-      if (!lookingForEl || !lookingForEl.value) {
-        vmeMarkInvalid(lookingForEl);
-        vmeReportValidationFailure('looking_for missing', 'נא לבחור את מי ברצונך להכיר', consentErrorEl);
-        return;
-      }
-      if (!cityEl || !cityEl.value.trim()) {
-        vmeMarkInvalid(cityEl);
-        vmeReportValidationFailure('city missing', 'נא להזין עיר מגורים', consentErrorEl);
-        return;
-      }
-      if (!maritalEl || !maritalEl.value) {
-        vmeMarkInvalid(maritalEl);
-        vmeReportValidationFailure('marital status missing', 'נא לבחור מצב משפחתי', consentErrorEl);
-        return;
-      }
-      if (!childrenEl || !childrenEl.value) {
-        vmeMarkInvalid(childrenEl);
-        vmeReportValidationFailure('has_children missing', 'נא לבחור האם יש לך ילדים', consentErrorEl);
-        return;
-      }
-
-      function encodeFormData(form) {
-        const formData = new FormData(form);
-        const params = new URLSearchParams();
-        for (const pair of formData.entries()) {
-          params.append(pair[0], pair[1]);
-        }
-        return params.toString();
-      }
-
-      fetch('/', {
-        method: 'POST',
-        headers: { 'Content-Type': 'application/x-www-form-urlencoded' },
-        body: encodeFormData(vmeForm)
-      })
-        .then(function (response) {
-          if (!response.ok) {
-            throw new Error('Netlify form submission failed with status ' + response.status);
-          }
-          // A mentor's link (?ref=<their slug>) continues to that mentor's page:
-          // photo, app download credited to them, personal WhatsApp. /r/ sends
-          // anything without a mentor back here with #registered.
-          const ref = (document.getElementById('vme-source') || {}).value || '';
-          if (/^[a-z0-9][a-z0-9-]{1,63}$/i.test(ref) && ref.toLowerCase() !== 'direct') {
-            window.location.href = VME_MENTOR_PAGE_BASE + '/r/' + encodeURIComponent(ref.toLowerCase());
-            return;
-          }
-          vmeShowThankYou();
-        })
-        .catch(function (err) {
-          console.error('Netlify form submission error:', err);
-          if (errorEl) errorEl.style.display = 'block';
-        });
-    } catch (err) {
-      console.error('Unexpected error in form submit validation:', err);
-      if (consentErrorEl) {
-        consentErrorEl.textContent = 'אירעה שגיאה בטופס אנא נסו שוב';
-        consentErrorEl.style.display = 'block';
-      }
-    }
+    const button = document.getElementById('vme-step1-next');
+    if (button) button.click();
   });
 }
 </script>
