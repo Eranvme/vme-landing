@@ -51,6 +51,21 @@ The page copies the `?ref=` URL parameter into the hidden `source` field (`direc
 | Adi (עדי) | https://vme-landing.netlify.app/?ref=adi |
 | Eran (ערן) | https://vme-landing.netlify.app/?ref=eran |
 
+### After the form: the mentor's page
+
+When `?ref=` is set (and isn't `direct`), a successful submission sends the visitor to
+`https://profile.vme-value.com/r/<ref>`. vme-admin looks up the mentor whose **Registration link
+name (ref)** is `<ref>` (Mentors → mentor → Invite Landing Page) and redirects to their page
+`/m/<token>?registered=1`: photo, name, title, short description, iOS/Android buttons credited to
+the mentor, QR code and the mentor's personal WhatsApp button.
+
+A `ref` with no mentor behind it (e.g. `eran`, or a mentor whose link name isn't set yet) comes
+back here as `/?ref=<ref>#registered`, which shows the regular thank-you box. So to turn a
+person's link on, set their link name in admin; nothing here changes.
+
+`whatsapp_consent` (optional, unticked by default) records that the person agreed to receive
+WhatsApp messages from Vme; it is included in the HubSpot notes.
+
 ### Seeing leads per person in HubSpot
 
 - **Marketing → Forms → "Vme Landing - Pilot Registration" → Submissions**: every submission,

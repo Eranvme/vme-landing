@@ -1722,6 +1722,10 @@ picture source{display:none} /* never a layout item (e.g. in flex containers wit
           <input type="checkbox" name="marketing_consent" />
           <span>אני מעוניין/ת לקבל עדכונים לגבי הפיילוט והשקת <span class="nowrap">V-me</span></span>
         </label>
+        <label class="consent-item">
+          <input type="checkbox" name="whatsapp_consent" />
+          <span>אני מאשר/ת לקבל הודעות וואטסאפ מצוות <span class="nowrap">V-me</span> (למשל לגבי מפגשי עזרה בבניית פרופיל)</span>
+        </label>
       </div>
       <p id="vme-consent-error" class="consent-error"></p>
 
@@ -1730,13 +1734,10 @@ picture source{display:none} /* never a layout item (e.g. in flex containers wit
 
     <p id="vme-form-error" style="display:none;color:#CF1C71;font-size:14px;text-align:center;margin-top:12px;">משהו השתבש בשליחה נסו שוב, או צרו איתנו קשר ישירות</p>
   </form>
-  <a class="wa-btn wa-btn-secondary" id="wa-community-form" href="https://chat.whatsapp.com/D1RKvVYwOR1BVOvTqqcokn?mode=gi_t" target="_blank" rel="noopener noreferrer"><svg viewBox="0 0 24 24" aria-hidden="true"><path d="M17.472 14.382c-.297-.149-1.758-.867-2.03-.967-.273-.099-.471-.148-.67.15-.197.297-.767.966-.94 1.164-.173.199-.347.223-.644.075-.297-.15-1.255-.463-2.39-1.475-.883-.788-1.48-1.761-1.653-2.059-.173-.297-.018-.458.13-.606.134-.133.298-.347.446-.52.149-.174.198-.298.298-.497.099-.198.05-.371-.025-.52-.075-.149-.669-1.612-.916-2.207-.242-.579-.487-.5-.669-.51-.173-.008-.371-.01-.57-.01-.198 0-.52.074-.792.372-.272.297-1.04 1.016-1.04 2.479 0 1.462 1.065 2.875 1.213 3.074.149.198 2.096 3.2 5.077 4.487.709.306 1.262.489 1.694.625.712.227 1.36.195 1.871.118.571-.085 1.758-.719 2.006-1.413.248-.694.248-1.289.173-1.413-.074-.124-.272-.198-.57-.347m-5.421 7.403h-.004a9.87 9.87 0 01-5.031-1.378l-.361-.214-3.741.982.998-3.648-.235-.374a9.86 9.86 0 01-1.51-5.26c.001-5.45 4.436-9.884 9.888-9.884 2.64 0 5.122 1.03 6.988 2.898a9.825 9.825 0 012.893 6.994c-.003 5.45-4.437 9.884-9.885 9.884m8.413-18.297A11.815 11.815 0 0012.05 0C5.495 0 .16 5.335.157 11.892c0 2.096.547 4.142 1.588 5.945L.057 24l6.305-1.654a11.882 11.882 0 005.683 1.448h.005c6.554 0 11.89-5.335 11.893-11.893a11.821 11.821 0 00-3.48-8.413Z"/></svg><span>הצטרפו לקהילת Vme</span></a>
-  <p class="wa-lead" id="wa-community-lead">תהיו הראשונים לדעת מה קורה<br>ואילו הזדמנויות מחכות לכם</p>
   <div id="vme-form-thankyou" class="rev" style="display:none;text-align:center;padding:20px 10px;">
     <div style="font-size:48px;margin-bottom:16px;">💕</div>
     <h3 style="font-size:22px;font-weight:900;color:var(--vme-dark);margin-bottom:10px;">תודה שנרשמת!</h3>
     <p style="font-size:16px;color:#1A3A35;">קיבלנו את הפרטים שלך, וניצור איתך קשר בקרוב לתיאום שיחת התאמה לפיילוט</p>
-    <a class="wa-btn wa-btn-primary" id="wa-community-thankyou" href="https://chat.whatsapp.com/D1RKvVYwOR1BVOvTqqcokn?mode=gi_t" target="_blank" rel="noopener noreferrer"><svg viewBox="0 0 24 24" aria-hidden="true"><path d="M17.472 14.382c-.297-.149-1.758-.867-2.03-.967-.273-.099-.471-.148-.67.15-.197.297-.767.966-.94 1.164-.173.199-.347.223-.644.075-.297-.15-1.255-.463-2.39-1.475-.883-.788-1.48-1.761-1.653-2.059-.173-.297-.018-.458.13-.606.134-.133.298-.347.446-.52.149-.174.198-.298.298-.497.099-.198.05-.371-.025-.52-.075-.149-.669-1.612-.916-2.207-.242-.579-.487-.5-.669-.51-.173-.008-.371-.01-.57-.01-.198 0-.52.074-.792.372-.272.297-1.04 1.016-1.04 2.479 0 1.462 1.065 2.875 1.213 3.074.149.198 2.096 3.2 5.077 4.487.709.306 1.262.489 1.694.625.712.227 1.36.195 1.871.118.571-.085 1.758-.719 2.006-1.413.248-.694.248-1.289.173-1.413-.074-.124-.272-.198-.57-.347m-5.421 7.403h-.004a9.87 9.87 0 01-5.031-1.378l-.361-.214-3.741.982.998-3.648-.235-.374a9.86 9.86 0 01-1.51-5.26c.001-5.45 4.436-9.884 9.888-9.884 2.64 0 5.122 1.03 6.988 2.898a9.825 9.825 0 012.893 6.994c-.003 5.45-4.437 9.884-9.885 9.884m8.413-18.297A11.815 11.815 0 0012.05 0C5.495 0 .16 5.335.157 11.892c0 2.096.547 4.142 1.588 5.945L.057 24l6.305-1.654a11.882 11.882 0 005.683 1.448h.005c6.554 0 11.89-5.335 11.893-11.893a11.821 11.821 0 00-3.48-8.413Z"/></svg><span>הצטרפו לקהילת Vme</span></a>
   </div>
 
 </section>
@@ -1805,6 +1806,30 @@ document.querySelectorAll('a[href^="#"]').forEach(anchor => {
 </script>
 
 <script>
+/* Mentor pages (photo, app download, personal WhatsApp) live on the Vme profile host. */
+const VME_MENTOR_PAGE_BASE = 'https://profile.vme-value.com';
+
+function vmeShowThankYou() {
+  const form = document.getElementById('vme-form');
+  if (form) form.style.display = 'none';
+  const formHeader = document.getElementById('form-header');
+  if (formHeader) formHeader.style.display = 'none';
+  const ty = document.getElementById('vme-form-thankyou');
+  if (ty) ty.style.display = 'block';
+}
+
+// Back from /r/<ref> with no mentor behind the ref: show the thank-you, not an empty form.
+if (window.location.hash === '#registered') {
+  document.addEventListener('DOMContentLoaded', function () {
+    vmeShowThankYou();
+    const ty = document.getElementById('vme-form-thankyou');
+    if (ty) {
+      ty.classList.add('on');
+      if (typeof vmeScrollTo === 'function') vmeScrollTo(ty);
+    }
+  });
+}
+
 (function () {
   const sourceField = document.getElementById('vme-source');
   if (!sourceField) return;
@@ -2219,15 +2244,15 @@ if (vmeForm) {
           if (!response.ok) {
             throw new Error('Netlify form submission failed with status ' + response.status);
           }
-          vmeForm.style.display = 'none';
-          const formHeader = document.getElementById('form-header');
-          if (formHeader) formHeader.style.display = 'none';
-          const ty = document.getElementById('vme-form-thankyou');
-          if (ty) ty.style.display = 'block';
-          const waSecondary = document.getElementById('wa-community-form');
-          if (waSecondary) waSecondary.style.display = 'none';
-          const waLead = document.getElementById('wa-community-lead');
-          if (waLead) waLead.style.display = 'none';
+          // A mentor's link (?ref=<their slug>) continues to that mentor's page:
+          // photo, app download credited to them, personal WhatsApp. /r/ sends
+          // anything without a mentor back here with #registered.
+          const ref = (document.getElementById('vme-source') || {}).value || '';
+          if (/^[a-z0-9][a-z0-9-]{1,63}$/i.test(ref) && ref.toLowerCase() !== 'direct') {
+            window.location.href = VME_MENTOR_PAGE_BASE + '/r/' + encodeURIComponent(ref.toLowerCase());
+            return;
+          }
+          vmeShowThankYou();
         })
         .catch(function (err) {
           console.error('Netlify form submission error:', err);

@@ -28,6 +28,7 @@ function buildBody(data, createdAt) {
     `Terms accepted: ${yesNo(data.terms_accepted)}`,
     `Privacy accepted: ${yesNo(data.privacy_accepted)}`,
     `Marketing consent: ${yesNo(data.marketing_consent)}`,
+    `WhatsApp consent: ${yesNo(data.whatsapp_consent)}`,
     `Referrer: ${source}`,
   ].join('\n');
 
