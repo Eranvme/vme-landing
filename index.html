@@ -698,6 +698,11 @@ html { scroll-behavior: smooth; }
 .consent-item span{font-size:14px;line-height:1.6;color:var(--vme-dark);text-align:right}
 .consent-item span a{color:var(--vme-pink);text-decoration:underline;font-weight:600}
 .consent-error{display:none;color:#CF1C71;font-size:14px;text-align:center;margin:4px 0 8px;}
+.consent-note{display:block;font-size:13px;color:#4A6560;margin-top:2px}
+.privacy-notice{margin:6px 0 14px;font-size:12.5px;line-height:1.6;color:#4A6560;text-align:right}
+.privacy-notice p{margin:0 0 6px}
+.privacy-notice a{color:var(--vme-pink);text-decoration:underline;font-weight:600}
+.privacy-notice .privacy-links{margin-top:8px}
 .field-error{display:none;color:#CF1C71;font-size:13px;text-align:right;margin:6px 0 0;}
 @media(max-width:480px){
   .step2-pair-grid{grid-template-columns:1fr!important;}
@@ -1662,6 +1667,21 @@ picture source{display:none} /* never a layout item (e.g. in flex containers wit
       </div>
       <div class="form-group"><input type="tel" name="phone" placeholder="טלפון" inputmode="tel" autocomplete="tel" aria-label="טלפון" /></div>
       <div class="form-group"><input type="email" name="email" placeholder='דוא"ל' autocomplete="email" aria-label='דוא"ל' /></div>
+      <div class="consent-group" id="vme-step1-consent">
+        <label class="consent-item">
+          <input type="checkbox" name="age_confirmed" />
+          <span>אני מאשר/ת שגילי 18 ומעלה.</span>
+        </label>
+        <label class="consent-item">
+          <input type="checkbox" name="marketing_consent" />
+          <span>אני מסכים/ה לקבל מ־<span class="nowrap">Vme</span> עדכונים, הזמנות למפגשים והצעות רלוונטיות בוואטסאפ, ב־SMS ובדוא״ל.<br><small class="consent-note">אפשר להסיר את ההסכמה בכל עת.</small></span>
+        </label>
+      </div>
+      <div class="privacy-notice">
+        <p>מסירת הפרטים היא מרצונך, ואין חובה חוקית למסור אותם. הפרטים ישמשו את <span class="nowrap">Vme</span> לטיפול בהרשמתך לפיילוט וליצירת קשר בקשר לבקשתך. הודעות שיווקיות יישלחו רק בכפוף להסכמתך לעיל.</p>
+        <p>לפרטים על השימוש במידע, הגורמים שאליהם יועבר וזכויותיך: <a href="privacy-policy.html" target="_blank" rel="noopener">מדיניות הפרטיות</a>.</p>
+        <p class="privacy-links"><a href="terms-of-use.html" target="_blank" rel="noopener">תנאי השימוש</a> | <a href="privacy-policy.html" target="_blank" rel="noopener">מדיניות הפרטיות</a></p>
+      </div>
       <p id="vme-step1-error" class="consent-error"></p>
       <button type="button" id="vme-step1-next" class="btn-pink btn-form">אני רוצה להכיר אחרת ←</button>
     </div>
@@ -1705,28 +1725,6 @@ picture source{display:none} /* never a layout item (e.g. in flex containers wit
       </div>
       <div class="form-group"><textarea name="notes" placeholder='משהו שחשוב לך שנדע עלייך (לא חובה)' aria-label='משהו שחשוב לך שנדע עלייך (לא חובה)' rows="3"></textarea></div>
 
-      <div class="consent-group">
-        <label class="consent-item">
-          <input type="checkbox" name="age_confirmed" />
-          <span>אני מאשר/ת שאני בן/בת 18 ומעלה</span>
-        </label>
-        <label class="consent-item">
-          <input type="checkbox" name="terms_accepted" />
-          <span>קראתי ואני מסכים/ה ל<a href="terms-of-use.html" target="_blank" rel="noopener" onclick="event.stopPropagation()">תנאי השימוש</a></span>
-        </label>
-        <label class="consent-item">
-          <input type="checkbox" name="privacy_accepted" />
-          <span>קראתי ואני מסכים/ה ל<a href="privacy-policy.html" target="_blank" rel="noopener" onclick="event.stopPropagation()">מדיניות הפרטיות</a></span>
-        </label>
-        <label class="consent-item">
-          <input type="checkbox" name="marketing_consent" />
-          <span>אני מעוניין/ת לקבל עדכונים לגבי הפיילוט והשקת <span class="nowrap">V-me</span></span>
-        </label>
-        <label class="consent-item">
-          <input type="checkbox" name="whatsapp_consent" />
-          <span>אני מאשר/ת לקבל הודעות וואטסאפ מצוות <span class="nowrap">V-me</span> (למשל לגבי מפגשי עזרה בבניית פרופיל)</span>
-        </label>
-      </div>
       <p id="vme-consent-error" class="consent-error"></p>
 
       <button type="submit" class="btn-pink btn-form">סיימתי ←</button>
@@ -2103,6 +2101,21 @@ if (vmeStep1Next) {
         return;
       }
 
+      const step1Consent = document.getElementById('vme-step1-consent');
+      vmeClearConsentHighlights(step1Consent);
+      const ageConfirmed = step1.querySelector('[name="age_confirmed"]');
+      const messagingConsent = step1.querySelector('[name="marketing_consent"]');
+      if (!ageConfirmed || !ageConfirmed.checked) {
+        vmeHighlightConsentItem(ageConfirmed);
+        vmeReportValidationFailure('age_confirmed checkbox unchecked', 'נא לאשר שגילך 18 ומעלה', step1ErrorEl);
+        return;
+      }
+      if (!messagingConsent || !messagingConsent.checked) {
+        vmeHighlightConsentItem(messagingConsent);
+        vmeReportValidationFailure('marketing_consent checkbox unchecked', 'נא לאשר את קבלת העדכונים מ־Vme', step1ErrorEl);
+        return;
+      }
+
       step1.style.display = 'none';
       step2.style.display = 'block';
       const subText = document.getElementById('form-sub-text');
@@ -2178,7 +2191,6 @@ if (vmeForm) {
       const maritalEl = step2.querySelector('[name="marital_status"]');
       const childrenEl = step2.querySelector('[name="has_children"]');
       [genderEl, lookingForEl, cityEl, maritalEl, childrenEl].forEach(function (el) { vmeClearInvalid(el); });
-      vmeClearConsentHighlights(vmeForm.querySelector('.consent-group'));
 
       if (!genderEl || !genderEl.value) {
         vmeMarkInvalid(genderEl);
@@ -2203,26 +2215,6 @@ if (vmeForm) {
       if (!childrenEl || !childrenEl.value) {
         vmeMarkInvalid(childrenEl);
         vmeReportValidationFailure('has_children missing', 'נא לבחור האם יש לך ילדים', consentErrorEl);
-        return;
-      }
-
-      const ageConfirmed = vmeForm.querySelector('[name="age_confirmed"]');
-      const termsAccepted = vmeForm.querySelector('[name="terms_accepted"]');
-      const privacyAccepted = vmeForm.querySelector('[name="privacy_accepted"]');
-
-      if (!ageConfirmed || !ageConfirmed.checked) {
-        vmeHighlightConsentItem(ageConfirmed);
-        vmeReportValidationFailure('age_confirmed checkbox unchecked', 'נא לאשר שאת/ה בן/בת 18 ומעלה', consentErrorEl);
-        return;
-      }
-      if (!termsAccepted || !termsAccepted.checked) {
-        vmeHighlightConsentItem(termsAccepted);
-        vmeReportValidationFailure('terms_accepted checkbox unchecked', 'נא לאשר את תנאי השימוש', consentErrorEl);
-        return;
-      }
-      if (!privacyAccepted || !privacyAccepted.checked) {
-        vmeHighlightConsentItem(privacyAccepted);
-        vmeReportValidationFailure('privacy_accepted checkbox unchecked', 'נא לאשר את מדיניות הפרטיות', consentErrorEl);
         return;
       }
 

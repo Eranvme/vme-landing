@@ -24,11 +24,8 @@ function buildBody(data, createdAt) {
     `Marital status: ${clean(data.marital_status)}`,
     `Has children: ${clean(data.has_children)}`,
     `Notes: ${clean(data.notes)}`,
-    `Age confirmed: ${yesNo(data.age_confirmed)}`,
-    `Terms accepted: ${yesNo(data.terms_accepted)}`,
-    `Privacy accepted: ${yesNo(data.privacy_accepted)}`,
-    `Marketing consent: ${yesNo(data.marketing_consent)}`,
-    `WhatsApp consent: ${yesNo(data.whatsapp_consent)}`,
+    `Age confirmed (18+): ${yesNo(data.age_confirmed)}`,
+    `Messaging consent (WhatsApp, SMS, email): ${yesNo(data.marketing_consent)}`,
     `Referrer: ${source}`,
   ].join('\n');
 
