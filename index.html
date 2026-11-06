@@ -1052,6 +1052,23 @@ footer{background:var(--vme-teal-dark);margin-top:calc(-1 * var(--diag));padding
 picture{display:contents} /* wrappers for WebP images: no layout box of their own */
 picture source{display:none} /* never a layout item (e.g. in flex containers with gap) */
 </style>
+<style id="vme-schedule-style">
+#vme-schedule{display:none;max-width:720px;margin:24px auto;padding:32px 24px;border:1px solid #c6dbd5;border-top:5px solid #d31878;border-radius:28px;background:#eaf5f3;color:#40534e;text-align:center;direction:rtl;box-shadow:0 12px 30px #263a3415}
+#vme-schedule *{box-sizing:border-box}
+#vme-schedule h3{font-size:clamp(23px,3vw,32px);font-weight:800;line-height:1.4;margin:10px auto;color:#40534e}
+#vme-schedule p{font-size:17px;line-height:1.7;max-width:520px;margin:8px auto 21px}
+#vme-schedule .meet-logo{display:block;width:155px;height:auto;max-width:65%;margin:2px auto 17px}
+#vme-schedule .meet-steps{display:flex;gap:9px;width:155px;margin:0 auto 28px;direction:rtl}
+#vme-schedule .meet-steps i{height:5px;border-radius:99px;flex:1;background:#d5e5df}
+#vme-schedule .meet-steps i.on{background:#d31878}
+#vme-schedule .meet-action{display:block;width:100%;max-width:480px;margin:11px auto;padding:16px;border-radius:17px;border:0;background:#d31878;color:white;font:700 18px/1.5 Arial,sans-serif;cursor:pointer;text-align:center;text-decoration:none}
+#vme-schedule .meet-action.ghost{background:white;color:#40534e;border:1.5px solid #c4dbd2}
+#vme-schedule .meet-item{display:flex;justify-content:space-between;align-items:center;gap:15px;width:100%;max-width:480px;margin:11px auto;padding:17px;background:white;border:2px solid #c6ded6;border-radius:16px;color:#40534e;font:600 17px Arial,sans-serif;cursor:pointer;text-align:right}
+#vme-schedule .meet-item[aria-pressed=true]{border-color:#d31878;background:#fff7fb}
+#vme-schedule .meet-summary{background:white;border:1px solid #c8ddd5;border-radius:18px;padding:20px;margin:18px auto;max-width:480px;line-height:1.85}
+#vme-schedule [hidden]{display:none!important}
+@media(max-width:600px){#vme-schedule{margin:16px auto;padding:24px 14px;border-radius:21px}#vme-schedule .meet-action{font-size:16px}}
+</style>
 </head>
 <body>
 
@@ -1688,6 +1705,43 @@ picture source{display:none} /* never a layout item (e.g. in flex containers wit
 
     <p id="vme-form-error" style="display:none;color:#CF1C71;font-size:14px;text-align:center;margin-top:12px;">משהו השתבש בשליחה נסו שוב, או צרו איתנו קשר ישירות</p>
   </form>
+  <div id="vme-schedule" dir="rtl" aria-live="polite">
+    <img src="assets/images/vme-logo.png" alt="Vme" class="meet-logo" />
+    <div class="meet-steps" aria-hidden="true"><i class="on"></i><i></i><i></i></div>
+    <section id="meet-invite">
+      <div aria-hidden="true" style="font-size:35px;color:#85b0a1">♡</div>
+      <h3>שמחים שהצטרפתם ל־Vme!</h3>
+      <p>רוצים להכיר אותנו קצת יותר לפני שמתחילים? נשמח לפגוש אתכם במפגש היכרות אונליין, לשמוע ולענות על שאלות.</p>
+      <button class="meet-action" type="button" onclick="vmeSchedulePage('dates')">כן, אשמח לבחור מועד</button>
+      <button class="meet-action ghost" type="button" onclick="vmeContinueToMentorPage()">לא כרגע, אמשיך הלאה</button>
+    </section>
+    <section id="meet-dates" hidden>
+      <h3>מתי נוח לכם להיפגש?</h3>
+      <p>בחרו מועד למפגש ההיכרות עם צוות Vme</p>
+      <p id="meet-sample-note"><strong>מועדים לדוגמה לתצוגה מקדימה בלבד</strong></p>
+      <div id="meet-times"></div>
+      <p id="meet-error" style="display:none;color:#CF1C71;font-size:14px;">משהו השתבש בשמירת המועד. נסו שוב.</p>
+      <button class="meet-action" id="meet-confirm" type="button" onclick="vmeConfirmMeeting()">מאשרים הרשמה למפגש</button>
+      <button class="meet-action ghost" type="button" onclick="vmeSchedulePage('invite')">חזרה</button>
+    </section>
+    <section id="meet-confirmed" hidden>
+      <div style="color:#85b0a1;font-size:39px" aria-hidden="true">✓</div>
+      <h3>נתראה במפגש!</h3>
+      <div class="meet-summary"><strong id="meet-chosen"></strong><div>קישור למפגש יישלח אליכם בהמשך</div></div>
+      <button class="meet-action" type="button" onclick="vmeContinueToMentorPage()">המשך לעמוד המפנה ולהורדת האפליקציה</button>
+    </section>
+  </div>
+
+  <form name="vme-meeting-choice" method="POST" action="/" data-netlify="true" netlify-honeypot="bot-field" hidden>
+    <input type="hidden" name="form-name" value="vme-meeting-choice" />
+    <input type="text" name="first_name" />
+    <input type="text" name="last_name" />
+    <input type="email" name="email" />
+    <input type="tel" name="phone" />
+    <input type="text" name="source" />
+    <input type="text" name="meeting_time" />
+    <input name="bot-field" />
+  </form>
   <div id="vme-form-thankyou" class="rev" style="display:none;text-align:center;padding:20px 10px;">
     <div style="font-size:48px;margin-bottom:16px;">💕</div>
     <h3 style="font-size:22px;font-weight:900;color:var(--vme-dark);margin-bottom:10px;">תודה שנרשמת!</h3>
@@ -2093,7 +2147,7 @@ function vmeEncodeFormData(form) {
   return params.toString();
 }
 
-/** Sends the (already validated) form to Netlify, then continues to the mentor page or the thank-you. */
+/** Sends the (already validated) form to Netlify, then opens the meeting step. */
 function vmeSendRegistration() {
   const errorEl = document.getElementById('vme-form-error');
   const button = document.getElementById('vme-step1-next');
@@ -2110,21 +2164,100 @@ function vmeSendRegistration() {
       if (!response.ok) {
         throw new Error('Netlify form submission failed with status ' + response.status);
       }
-      // A mentor's link (?ref=<their slug>) continues to that mentor's page:
-      // photo, app download credited to them, personal WhatsApp. /r/ sends
-      // anything without a mentor back here with #registered.
-      const ref = (document.getElementById('vme-source') || {}).value || '';
-      if (/^[a-z0-9][a-z0-9-]{1,63}$/i.test(ref) && ref.toLowerCase() !== 'direct') {
-        window.location.href = VME_MENTOR_PAGE_BASE + '/r/' + encodeURIComponent(ref.toLowerCase());
-        return;
-      }
-      vmeShowThankYou();
+      vmeShowSchedule();
     })
     .catch(function (err) {
       console.error('Netlify form submission error:', err);
       if (errorEl) errorEl.style.display = 'block';
       if (button) button.disabled = false;
     });
+}
+
+// Meeting step: shown after the registration is saved. Replace VME_MEETING_TIMES with the real
+// times and remove #meet-sample-note before this goes live.
+const VME_MEETING_TIMES = [
+  'מפגש לדוגמה · יום ראשון, 20:00',
+  'מפגש לדוגמה · יום שלישי, 19:30',
+  'מפגש לדוגמה · יום חמישי, 20:30'
+];
+const VME_DEFAULT_MENTOR_SLUG = 'lina';
+let vmeChosenMeeting = 0;
+
+function vmeSelectMeeting(index) {
+  vmeChosenMeeting = index;
+  document.querySelectorAll('#meet-times .meet-item').forEach(function (item, i) {
+    item.setAttribute('aria-pressed', String(i === index));
+  });
+}
+
+function vmeSchedulePage(page) {
+  ['invite', 'dates', 'confirmed'].forEach(function (name) {
+    document.getElementById('meet-' + name).hidden = name !== page;
+  });
+  const step = { invite: 0, dates: 1, confirmed: 2 }[page];
+  document.querySelectorAll('#vme-schedule .meet-steps i').forEach(function (el, i) {
+    el.classList.toggle('on', i <= step);
+  });
+}
+
+function vmeShowSchedule() {
+  const list = document.getElementById('meet-times');
+  VME_MEETING_TIMES.forEach(function (label, i) {
+    const item = document.createElement('button');
+    item.type = 'button';
+    item.className = 'meet-item';
+    item.textContent = label;
+    item.onclick = function () { vmeSelectMeeting(i); };
+    list.appendChild(item);
+  });
+  vmeSelectMeeting(0);
+  vmeForm.style.display = 'none';
+  document.getElementById('form-header').style.display = 'none';
+  const screen = document.getElementById('vme-schedule');
+  screen.style.display = 'block';
+  vmeSchedulePage('invite');
+  screen.scrollIntoView({ behavior: 'smooth', block: 'start' });
+}
+
+/** Saves the chosen time in its own Netlify form, so it never creates a second HubSpot lead. */
+function vmeConfirmMeeting() {
+  const errorEl = document.getElementById('meet-error');
+  const button = document.getElementById('meet-confirm');
+  if (button.disabled) return;
+  errorEl.style.display = 'none';
+  button.disabled = true;
+  const body = new URLSearchParams({ 'form-name': 'vme-meeting-choice', meeting_time: VME_MEETING_TIMES[vmeChosenMeeting] });
+  ['first_name', 'last_name', 'email', 'phone', 'source'].forEach(function (name) {
+    body.append(name, vmeForm.elements[name].value);
+  });
+  fetch('/', {
+    method: 'POST',
+    headers: { 'Content-Type': 'application/x-www-form-urlencoded' },
+    body: body.toString()
+  })
+    .then(function (response) {
+      if (!response.ok) {
+        throw new Error('Meeting choice submission failed with status ' + response.status);
+      }
+      document.getElementById('meet-chosen').textContent = VME_MEETING_TIMES[vmeChosenMeeting];
+      vmeSchedulePage('confirmed');
+    })
+    .catch(function (err) {
+      console.error('Meeting choice submission error:', err);
+      errorEl.style.display = 'block';
+    })
+    .finally(function () {
+      button.disabled = false;
+    });
+}
+
+// A mentor's link (?ref=<their slug>) continues to that mentor's page: photo, app download
+// credited to them, personal WhatsApp. No mentor link uses the default mentor. /r/ sends a slug
+// with no mentor behind it back here with #registered.
+function vmeContinueToMentorPage() {
+  const ref = ((document.getElementById('vme-source') || {}).value || '').toLowerCase();
+  const hasRef = /^[a-z0-9][a-z0-9-]{1,63}$/.test(ref) && ref !== 'direct';
+  window.location.href = VME_MENTOR_PAGE_BASE + '/r/' + encodeURIComponent(hasRef ? ref : VME_DEFAULT_MENTOR_SLUG);
 }
 
 if (vmeForm) {
