@@ -1065,6 +1065,11 @@ picture source{display:none} /* never a layout item (e.g. in flex containers wit
 #vme-schedule .meet-action.ghost{background:white;color:#40534e;border:1.5px solid #c4dbd2}
 #vme-schedule .meet-item{display:flex;justify-content:space-between;align-items:center;gap:15px;width:100%;max-width:480px;margin:11px auto;padding:17px;background:white;border:2px solid #c6ded6;border-radius:16px;color:#40534e;font:600 17px Arial,sans-serif;cursor:pointer;text-align:right}
 #vme-schedule .meet-item[aria-pressed=true]{border-color:#d31878;background:#fff7fb}
+#vme-schedule .meet-item:disabled{cursor:default;opacity:.55;background:#f4f8f6}
+#vme-schedule .meet-item small{display:block;font-weight:400;font-size:14px;color:#6b7f79;margin-top:2px}
+#vme-schedule .meet-item .meet-time{font-weight:800;font-size:19px;direction:ltr}
+#vme-schedule .meet-status{color:#6b7f79;font-size:16px}
+#vme-schedule .meet-summary a{color:#d31878;word-break:break-all}
 #vme-schedule .meet-summary{background:white;border:1px solid #c8ddd5;border-radius:18px;padding:20px;margin:18px auto;max-width:480px;line-height:1.85}
 #vme-schedule [hidden]{display:none!important}
 @media(max-width:600px){#vme-schedule{margin:16px auto;padding:24px 14px;border-radius:21px}#vme-schedule .meet-action{font-size:16px}}
@@ -1718,30 +1723,26 @@ picture source{display:none} /* never a layout item (e.g. in flex containers wit
     <section id="meet-dates" hidden>
       <h3>מתי נוח לכם להיפגש?</h3>
       <p>בחרו מועד למפגש ההיכרות עם צוות Vme</p>
-      <p id="meet-sample-note"><strong>מועדים לדוגמה לתצוגה מקדימה בלבד</strong></p>
+      <p id="meet-status" class="meet-status" hidden></p>
       <div id="meet-times"></div>
-      <p id="meet-error" style="display:none;color:#CF1C71;font-size:14px;">משהו השתבש בשמירת המועד. נסו שוב.</p>
+      <p id="meet-error" style="display:none;color:#CF1C71;font-size:14px;"></p>
       <button class="meet-action" id="meet-confirm" type="button" onclick="vmeConfirmMeeting()">מאשרים הרשמה למפגש</button>
       <button class="meet-action ghost" type="button" onclick="vmeSchedulePage('invite')">חזרה</button>
     </section>
     <section id="meet-confirmed" hidden>
       <div style="color:#85b0a1;font-size:39px" aria-hidden="true">✓</div>
       <h3>נתראה במפגש!</h3>
-      <div class="meet-summary"><strong id="meet-chosen"></strong><div>קישור למפגש יישלח אליכם בהמשך</div></div>
+      <div class="meet-summary">
+        <strong id="meet-chosen"></strong>
+        <div>קישור למפגש: <a id="meet-link" href="#" target="_blank" rel="noopener" dir="ltr"></a></div>
+        <div id="meet-emailed" hidden>שלחנו לכם הזמנה ליומן במייל</div>
+      </div>
+      <a class="meet-action ghost" id="meet-google" href="#" target="_blank" rel="noopener">הוספה ליומן Google</a>
+      <button class="meet-action ghost" type="button" onclick="vmeDownloadMeetingIcs()">הוספה ליומן אחר (Apple, Outlook)</button>
       <button class="meet-action" type="button" onclick="vmeContinueToMentorPage()">המשך לעמוד המפנה ולהורדת האפליקציה</button>
     </section>
   </div>
 
-  <form name="vme-meeting-choice" method="POST" action="/" data-netlify="true" netlify-honeypot="bot-field" hidden>
-    <input type="hidden" name="form-name" value="vme-meeting-choice" />
-    <input type="text" name="first_name" />
-    <input type="text" name="last_name" />
-    <input type="email" name="email" />
-    <input type="tel" name="phone" />
-    <input type="text" name="source" />
-    <input type="text" name="meeting_time" />
-    <input name="bot-field" />
-  </form>
   <div id="vme-form-thankyou" class="rev" style="display:none;text-align:center;padding:20px 10px;">
     <div style="font-size:48px;margin-bottom:16px;">💕</div>
     <h3 style="font-size:22px;font-weight:900;color:var(--vme-dark);margin-bottom:10px;">תודה שנרשמת!</h3>
@@ -2173,21 +2174,22 @@ function vmeSendRegistration() {
     });
 }
 
-// Meeting step: shown after the registration is saved. Replace VME_MEETING_TIMES with the real
-// times and remove #meet-sample-note before this goes live.
-const VME_MEETING_TIMES = [
-  'מפגש לדוגמה · יום ראשון, 20:00',
-  'מפגש לדוגמה · יום שלישי, 19:30',
-  'מפגש לדוגמה · יום חמישי, 20:30'
-];
+// Meeting step: shown after the registration is saved. The meetings are the ones added in
+// Vme admin (Meetings); booking takes a seat there and emails a calendar invite.
+const VME_MEETINGS_API = /^(localhost|127\.0\.0\.1)$/.test(location.hostname)
+  ? 'http://localhost:3001/api/meetings'
+  : VME_MENTOR_PAGE_BASE + '/api/meetings';
 const VME_DEFAULT_MENTOR_SLUG = 'lina';
-let vmeChosenMeeting = 0;
+let vmeMeetingSlots = [];
+let vmeChosenMeeting = -1;
+let vmeBookedMeeting = null;
 
 function vmeSelectMeeting(index) {
   vmeChosenMeeting = index;
   document.querySelectorAll('#meet-times .meet-item').forEach(function (item, i) {
     item.setAttribute('aria-pressed', String(i === index));
   });
+  document.getElementById('meet-confirm').disabled = index < 0;
 }
 
 function vmeSchedulePage(page) {
@@ -2200,17 +2202,67 @@ function vmeSchedulePage(page) {
   });
 }
 
-function vmeShowSchedule() {
+function vmeMeetingStatus(text) {
+  const el = document.getElementById('meet-status');
+  el.textContent = text || '';
+  el.hidden = !text;
+}
+
+function vmeRenderMeetings() {
   const list = document.getElementById('meet-times');
-  VME_MEETING_TIMES.forEach(function (label, i) {
+  list.textContent = '';
+  let firstOpen = -1;
+  vmeMeetingSlots.forEach(function (slot, i) {
     const item = document.createElement('button');
     item.type = 'button';
     item.className = 'meet-item';
-    item.textContent = label;
+    item.disabled = slot.isFull;
+    const day = document.createElement('span');
+    day.textContent = slot.day;
+    if (slot.isFull || slot.seatsLeft <= 10) {
+      const hint = document.createElement('small');
+      hint.textContent = slot.isFull ? 'המפגש מלא' : 'נותרו ' + slot.seatsLeft + ' מקומות';
+      day.appendChild(hint);
+    }
+    const time = document.createElement('span');
+    time.className = 'meet-time';
+    time.textContent = slot.time;
+    item.appendChild(day);
+    item.appendChild(time);
     item.onclick = function () { vmeSelectMeeting(i); };
     list.appendChild(item);
+    if (firstOpen < 0 && !slot.isFull) firstOpen = i;
   });
-  vmeSelectMeeting(0);
+  vmeSelectMeeting(firstOpen);
+  const confirm = document.getElementById('meet-confirm');
+  confirm.hidden = firstOpen < 0;
+  if (!vmeMeetingSlots.length) vmeMeetingStatus('אין כרגע מועדים פתוחים. נעדכן אתכם כשייפתחו מועדים חדשים.');
+  else if (firstOpen < 0) vmeMeetingStatus('כל המפגשים הקרובים מלאים. נעדכן אתכם כשייפתחו מועדים חדשים.');
+  else vmeMeetingStatus('');
+}
+
+function vmeLoadMeetings() {
+  vmeMeetingStatus('טוענים מועדים...');
+  document.getElementById('meet-times').textContent = '';
+  document.getElementById('meet-confirm').hidden = true;
+  return fetch(VME_MEETINGS_API + '/slots')
+    .then(function (response) {
+      if (!response.ok) throw new Error('Meeting slots failed with status ' + response.status);
+      return response.json();
+    })
+    .then(function (data) {
+      vmeMeetingSlots = data.slots || [];
+      vmeRenderMeetings();
+    })
+    .catch(function (err) {
+      console.error('Meeting slots error:', err);
+      vmeMeetingSlots = [];
+      vmeMeetingStatus('לא הצלחנו לטעון את המועדים כרגע. אפשר להמשיך ולחזור לזה בהמשך.');
+    });
+}
+
+function vmeShowSchedule() {
+  vmeLoadMeetings();
   vmeForm.style.display = 'none';
   document.getElementById('form-header').style.display = 'none';
   const screen = document.getElementById('vme-schedule');
@@ -2219,36 +2271,68 @@ function vmeShowSchedule() {
   screen.scrollIntoView({ behavior: 'smooth', block: 'start' });
 }
 
-/** Saves the chosen time in its own Netlify form, so it never creates a second HubSpot lead. */
+/** Takes a seat in the chosen meeting; Vme admin emails the calendar invite. */
 function vmeConfirmMeeting() {
   const errorEl = document.getElementById('meet-error');
   const button = document.getElementById('meet-confirm');
-  if (button.disabled) return;
+  const slot = vmeMeetingSlots[vmeChosenMeeting];
+  if (button.disabled || !slot) return;
   errorEl.style.display = 'none';
   button.disabled = true;
-  const body = new URLSearchParams({ 'form-name': 'vme-meeting-choice', meeting_time: VME_MEETING_TIMES[vmeChosenMeeting] });
-  ['first_name', 'last_name', 'email', 'phone', 'source'].forEach(function (name) {
-    body.append(name, vmeForm.elements[name].value);
-  });
-  fetch('/', {
+  const field = function (name) { return (vmeForm.elements[name] || {}).value || ''; };
+  fetch(VME_MEETINGS_API + '/book', {
     method: 'POST',
-    headers: { 'Content-Type': 'application/x-www-form-urlencoded' },
-    body: body.toString()
+    headers: { 'Content-Type': 'application/json' },
+    body: JSON.stringify({
+      slotId: slot.id,
+      firstName: field('first_name'),
+      lastName: field('last_name'),
+      email: field('email'),
+      phone: field('phone'),
+      source: field('source')
+    })
   })
     .then(function (response) {
-      if (!response.ok) {
-        throw new Error('Meeting choice submission failed with status ' + response.status);
-      }
-      document.getElementById('meet-chosen').textContent = VME_MEETING_TIMES[vmeChosenMeeting];
-      vmeSchedulePage('confirmed');
+      return response.json().catch(function () { return {}; }).then(function (data) {
+        if (response.status === 409 || response.status === 404) {
+          errorEl.textContent = response.status === 409
+            ? 'המפגש הזה התמלא הרגע. בחרו מועד אחר.'
+            : 'המועד הזה כבר לא זמין. בחרו מועד אחר.';
+          errorEl.style.display = 'block';
+          return vmeLoadMeetings();
+        }
+        if (!response.ok) throw new Error('Meeting booking failed with status ' + response.status);
+        vmeBookedMeeting = data.meeting;
+        document.getElementById('meet-chosen').textContent = data.meeting.day + ' · ' + data.meeting.time;
+        const link = document.getElementById('meet-link');
+        link.href = data.meeting.meetingUrl;
+        link.textContent = data.meeting.meetingUrl.replace(/^https:\/\//, '');
+        document.getElementById('meet-google').href = data.meeting.googleCalendarUrl;
+        document.getElementById('meet-emailed').hidden = !data.booking.inviteEmailSent;
+        vmeSchedulePage('confirmed');
+      });
     })
     .catch(function (err) {
-      console.error('Meeting choice submission error:', err);
+      console.error('Meeting booking error:', err);
+      errorEl.textContent = 'משהו השתבש בשמירת המועד. נסו שוב.';
       errorEl.style.display = 'block';
     })
     .finally(function () {
-      button.disabled = false;
+      button.disabled = vmeChosenMeeting < 0;
     });
+}
+
+/** The booked meeting as an .ics file: Apple Calendar, Outlook and others open it. */
+function vmeDownloadMeetingIcs() {
+  if (!vmeBookedMeeting) return;
+  const url = URL.createObjectURL(new Blob([vmeBookedMeeting.ics], { type: 'text/calendar;charset=utf-8' }));
+  const a = document.createElement('a');
+  a.href = url;
+  a.download = 'vme-meeting.ics';
+  document.body.appendChild(a);
+  a.click();
+  a.remove();
+  setTimeout(function () { URL.revokeObjectURL(url); }, 1000);
 }
 
 // A mentor's link (?ref=<their slug>) continues to that mentor's page: photo, app download
