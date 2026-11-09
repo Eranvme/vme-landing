@@ -1727,6 +1727,7 @@ picture source{display:none} /* never a layout item (e.g. in flex containers wit
       <div id="meet-times"></div>
       <p id="meet-error" style="display:none;color:#CF1C71;font-size:14px;"></p>
       <button class="meet-action" id="meet-confirm" type="button" onclick="vmeConfirmMeeting()">מאשרים הרשמה למפגש</button>
+      <button class="meet-action" id="meet-skip" type="button" onclick="vmeContinueToMentorPage()" hidden>המשך לעמוד המפנה ולהורדת האפליקציה</button>
       <button class="meet-action ghost" type="button" onclick="vmeSchedulePage('invite')">חזרה</button>
     </section>
     <section id="meet-confirmed" hidden>
@@ -2234,8 +2235,9 @@ function vmeRenderMeetings() {
     if (firstOpen < 0 && !slot.isFull) firstOpen = i;
   });
   vmeSelectMeeting(firstOpen);
-  const confirm = document.getElementById('meet-confirm');
-  confirm.hidden = firstOpen < 0;
+  document.getElementById('meet-confirm').hidden = firstOpen < 0;
+  // Nothing to book: let them go straight on instead of back.
+  document.getElementById('meet-skip').hidden = firstOpen >= 0;
   if (!vmeMeetingSlots.length) vmeMeetingStatus('אין כרגע מועדים פתוחים. נעדכן אתכם כשייפתחו מועדים חדשים.');
   else if (firstOpen < 0) vmeMeetingStatus('כל המפגשים הקרובים מלאים. נעדכן אתכם כשייפתחו מועדים חדשים.');
   else vmeMeetingStatus('');
@@ -2245,6 +2247,7 @@ function vmeLoadMeetings() {
   vmeMeetingStatus('טוענים מועדים...');
   document.getElementById('meet-times').textContent = '';
   document.getElementById('meet-confirm').hidden = true;
+  document.getElementById('meet-skip').hidden = true;
   return fetch(VME_MEETINGS_API + '/slots')
     .then(function (response) {
       if (!response.ok) throw new Error('Meeting slots failed with status ' + response.status);
@@ -2258,6 +2261,7 @@ function vmeLoadMeetings() {
       console.error('Meeting slots error:', err);
       vmeMeetingSlots = [];
       vmeMeetingStatus('לא הצלחנו לטעון את המועדים כרגע. אפשר להמשיך ולחזור לזה בהמשך.');
+      document.getElementById('meet-skip').hidden = false;
     });
 }
 
