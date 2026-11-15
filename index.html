@@ -1727,7 +1727,7 @@ picture source{display:none} /* never a layout item (e.g. in flex containers wit
       <div id="meet-times"></div>
       <p id="meet-error" style="display:none;color:#CF1C71;font-size:14px;"></p>
       <button class="meet-action" id="meet-confirm" type="button" onclick="vmeConfirmMeeting()">מאשרים הרשמה למפגש</button>
-      <button class="meet-action" id="meet-skip" type="button" onclick="vmeContinueToMentorPage()" hidden>המשך לעמוד המפנה ולהורדת האפליקציה</button>
+      <button class="meet-action" id="meet-skip" type="button" onclick="vmeContinueToMentorPage()" hidden>המשך לעמוד המפנה</button>
       <button class="meet-action ghost" type="button" onclick="vmeSchedulePage('invite')">חזרה</button>
     </section>
     <section id="meet-confirmed" hidden>
@@ -1740,7 +1740,7 @@ picture source{display:none} /* never a layout item (e.g. in flex containers wit
       </div>
       <a class="meet-action ghost" id="meet-google" href="#" target="_blank" rel="noopener">הוספה ליומן Google</a>
       <button class="meet-action ghost" type="button" onclick="vmeDownloadMeetingIcs()">הוספה ליומן אחר (Apple, Outlook)</button>
-      <button class="meet-action" type="button" onclick="vmeContinueToMentorPage()">המשך לעמוד המפנה ולהורדת האפליקציה</button>
+      <button class="meet-action" type="button" onclick="vmeContinueToMentorPage()">המשך לעמוד המפנה</button>
     </section>
   </div>
 
@@ -1816,7 +1816,7 @@ document.querySelectorAll('a[href^="#"]').forEach(anchor => {
 </script>
 
 <script>
-/* Mentor pages (photo, app download, personal WhatsApp) live on the Vme profile host. */
+/* Mentor pages (photo, welcome text, personal WhatsApp) live on the Vme profile host. */
 const VME_MENTOR_PAGE_BASE = 'https://profile.vme-value.com';
 
 function vmeShowThankYou() {
@@ -2339,8 +2339,8 @@ function vmeDownloadMeetingIcs() {
   setTimeout(function () { URL.revokeObjectURL(url); }, 1000);
 }
 
-// A mentor's link (?ref=<their slug>) continues to that mentor's page: photo, app download
-// credited to them, personal WhatsApp. No mentor link uses the default mentor. /r/ sends a slug
+// A mentor's link (?ref=<their slug>) continues to that mentor's page: photo, welcome text,
+// personal WhatsApp. No mentor link uses the default mentor. /r/ sends a slug
 // with no mentor behind it back here with #registered.
 function vmeContinueToMentorPage() {
   const ref = ((document.getElementById('vme-source') || {}).value || '').toLowerCase();
