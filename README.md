@@ -2,39 +2,32 @@
 
 Static landing page for Vme, deployed on Netlify (`vme-landing`) and auto-published from `main`.
 
-## HubSpot leads
+## Registrations (Vme admin)
 
 ### How it works
 
-The registration form is a Netlify Form named `vme-pilot-registration` and keeps working
-exactly as before. After Netlify verifies each submission it automatically runs the event
-function [`netlify/functions/submission-created.js`](netlify/functions/submission-created.js),
-which also submits the registration to the HubSpot form **"Vme Landing - Pilot Registration"**
-(portal `146832758`, EU, form GUID `88768169-3ffc-4840-bbd4-9590f4378bc0`) via the public
-Forms API v3. HubSpot then creates/updates the contact by email.
+The registration form posts straight to Vme admin: `POST https://profile.vme-value.com/api/meetings/register`
+(`http://localhost:3001` when the page runs on localhost). Admin saves one row per email in
+**Registrations**: sending the form again updates the details and adds the submission, with its
+`?ref=` source, to the history. The reply carries the registration id, which the meeting step
+sends along with the booking (`POST /api/meetings/book`).
 
-- Submissions from any other form, or without an email, are ignored.
-- It posts to `api.hsforms.com` and falls back to `api-eu1.hsforms.com` if that returns 404.
-- HubSpot errors are only logged; the function always returns 200, so they never affect the
-  Netlify submission.
-- No API token is needed for this endpoint (`HUBSPOT_TOKEN` is not used).
+HubSpot and Netlify Forms are no longer used (the `submission-created` function was removed).
+Older submissions stay in the Netlify Forms dashboard and in HubSpot.
 
-### Field mapping
+| Form field | Sent as |
+|---|---|
+| `first_name`, `last_name` | `firstName`, `lastName` |
+| `email` | `email` (admin lowercases it) |
+| `phone` | `phone` |
+| `birth_date` | `birthDate` (`YYYY-MM-DD`) |
+| `age_confirmed`, `marketing_consent` | `ageConfirmed`, `marketingConsent` (booleans) |
+| `source` | `source` (from `?ref=`, defaults to `direct`) |
+| `bot-field` | `botField` (honeypot; admin ignores anything that fills it) |
 
-| Form field | HubSpot field | Notes |
-|---|---|---|
-| `email` | `email` | trimmed + lowercased |
-| `first_name` | `firstname` | |
-| `last_name` | `lastname` | |
-| `phone` | `phone` | |
-| `city` | `city` | |
-| `birth_date` | `date_of_birth` | `YYYY-MM-DD` |
-| `gender` | `sex` | `גבר` → `man`, `אישה` → `woman`, anything else omitted |
-| `source` | `referrer` | from `?ref=`, defaults to `direct` |
-| `age_confirmed`, `marketing_consent`, submit date, referrer | `internal_notes` | multi-line summary, consents as yes/no |
-
-Empty values are not sent. The submission's page is recorded as
-`https://vme-landing.netlify.app/?ref=<source>` with page name `Vme Landing - <source>`.
+After a booking, Vme admin sends the confirmation, a Google Calendar invite (when Google
+Workspace is connected), reminders before the start, and a "meeting started" email to anyone
+not in the call yet.
 
 ### Per-person links
 
@@ -64,20 +57,15 @@ back here as `/?ref=<ref>#registered`, which shows the regular thank-you box. So
 person's link on, set their link name in admin; nothing here changes.
 
 The form is a single page (name, date of birth, phone, email, consent); `city` and `gender` are
-no longer collected, so those HubSpot fields stay empty. Consent comes after the personal details: two required checkboxes, both
+no longer collected. Consent comes after the personal details: two required checkboxes, both
 unticked by default — `age_confirmed` (18+) and `marketing_consent` (updates, event invitations
 and offers by WhatsApp, SMS and email; can be withdrawn at any time) — followed by the short
-privacy notice and the Terms of Use / Privacy Policy links. Both go into the HubSpot notes.
+privacy notice and the Terms of Use / Privacy Policy links. Both are saved on the registration.
 
-### Seeing leads per person in HubSpot
+### Seeing registrations per person
 
-- **Marketing → Forms → "Vme Landing - Pilot Registration" → Submissions**: every submission,
-  with the Referrer column and page URL (`?ref=<name>`).
-- **CRM → Contacts**: add a filter **Referrer** is `<name>` (e.g. `shira`) and save it as a view
-  per person if useful.
+In Vme admin, **Registrations**: filter by source (`shira`, `lina`, …), search, or export CSV.
 
 ### Logs
 
-Netlify → Logs → Functions → `submission-created`. Success lines start with
-`HubSpot: form submitted`; failures with `HubSpot: submit failed (<status>)` plus HubSpot's
-error body.
+Registration and booking errors are logged by Vme admin (Railway service logs), not Netlify.

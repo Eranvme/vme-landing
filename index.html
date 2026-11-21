@@ -1664,8 +1664,7 @@ picture source{display:none} /* never a layout item (e.g. in flex containers wit
     <h2>כאן תעשו את הצעד הבא לעבר <span class="pk">אהבה</span></h2>
     <p class="form-sub" id="form-sub-text">מלאו פרטים להרשמה</p>
   </div>
-  <form id="vme-form" class="form-box rev" name="vme-pilot-registration" method="POST" action="/" data-netlify="true" netlify-honeypot="bot-field">
-    <input type="hidden" name="form-name" value="vme-pilot-registration" />
+  <form id="vme-form" class="form-box rev" name="vme-pilot-registration" method="POST" action="/">
     <input type="hidden" name="source" id="vme-source" value="direct" />
     <p style="display:none;" aria-hidden="true">
       <label>Don’t fill this out: <input name="bot-field" tabindex="-1" autocomplete="off" /></label>
@@ -2143,13 +2142,16 @@ if (vmeStep1Next) {
 <script>
 const vmeForm = document.getElementById('vme-form');
 
-function vmeEncodeFormData(form) {
-  const params = new URLSearchParams();
-  for (const pair of new FormData(form).entries()) params.append(pair[0], pair[1]);
-  return params.toString();
+function vmeFormField(name) {
+  const el = vmeForm && vmeForm.elements[name];
+  if (!el) return '';
+  return el.type === 'checkbox' ? el.checked : (el.value || '').trim();
 }
 
-/** Sends the (already validated) form to Netlify, then opens the meeting step. */
+// The registration saved in Vme admin; the meeting booking is linked to it.
+let vmeRegistrationId = null;
+
+/** Saves the (already validated) form in Vme admin (Registrations), then opens the meeting step. */
 function vmeSendRegistration() {
   const errorEl = document.getElementById('vme-form-error');
   const button = document.getElementById('vme-step1-next');
@@ -2157,19 +2159,30 @@ function vmeSendRegistration() {
   if (errorEl) errorEl.style.display = 'none';
   if (button) button.disabled = true;
 
-  fetch('/', {
+  fetch(VME_MEETINGS_API + '/register', {
     method: 'POST',
-    headers: { 'Content-Type': 'application/x-www-form-urlencoded' },
-    body: vmeEncodeFormData(vmeForm)
+    headers: { 'Content-Type': 'application/json' },
+    body: JSON.stringify({
+      firstName: vmeFormField('first_name'),
+      lastName: vmeFormField('last_name'),
+      email: vmeFormField('email'),
+      phone: vmeFormField('phone'),
+      birthDate: vmeFormField('birth_date'),
+      ageConfirmed: vmeFormField('age_confirmed'),
+      marketingConsent: vmeFormField('marketing_consent'),
+      source: vmeFormField('source'),
+      botField: vmeFormField('bot-field')
+    })
   })
     .then(function (response) {
-      if (!response.ok) {
-        throw new Error('Netlify form submission failed with status ' + response.status);
-      }
-      vmeShowSchedule();
+      return response.json().catch(function () { return {}; }).then(function (data) {
+        if (!response.ok) throw new Error('Registration failed with status ' + response.status);
+        vmeRegistrationId = (data.registration && data.registration.id) || null;
+        vmeShowSchedule();
+      });
     })
     .catch(function (err) {
-      console.error('Netlify form submission error:', err);
+      console.error('Registration error:', err);
       if (errorEl) errorEl.style.display = 'block';
       if (button) button.disabled = false;
     });
@@ -2293,7 +2306,8 @@ function vmeConfirmMeeting() {
       lastName: field('last_name'),
       email: field('email'),
       phone: field('phone'),
-      source: field('source')
+      source: field('source'),
+      registrationId: vmeRegistrationId
     })
   })
     .then(function (response) {
@@ -2312,7 +2326,7 @@ function vmeConfirmMeeting() {
         link.href = data.meeting.meetingUrl;
         link.textContent = data.meeting.meetingUrl.replace(/^https:\/\//, '');
         document.getElementById('meet-google').href = data.meeting.googleCalendarUrl;
-        document.getElementById('meet-emailed').hidden = !data.booking.inviteEmailSent;
+        document.getElementById('meet-emailed').hidden = !(data.booking.inviteEmailSent || data.booking.calendarInviteSent);
         vmeSchedulePage('confirmed');
       });
     })
